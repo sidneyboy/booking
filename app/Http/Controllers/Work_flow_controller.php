@@ -8,6 +8,7 @@ use App\Models\Principal;
 use App\Models\Inventory;
 use App\Models\Customer_principal_price;
 use App\Models\Customer_principal_code;
+use App\Models\Sales_register;
 use Illuminate\Http\Request;
 
 class Work_flow_controller extends Controller
@@ -27,34 +28,48 @@ class Work_flow_controller extends Controller
 
     public function work_flow_show_inventory(Request $request)
     {
-        $customer = Customer::select('store_name', 'credit_limit', 'id')->find($request->input('customer'));
-
-        $customer_principal_price = Customer_principal_price::select('price_level')
-            ->where('customer_id', $request->input('customer'))
+        $sales_register = Sales_register::select('id')->where('customer_id', $request->input('customer'))
             ->where('principal_id', $request->input('principal'))
+            ->latest()
             ->first();
 
-        $customer_principal_code = Customer_principal_code::select('store_code')
-            ->where('customer_id', $request->input('customer'))
-            ->where('principal_id', $request->input('principal'))
-            ->first();
+        foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
+            $registered_inventory[] = $data->inventory_id;
+        }
 
-
-        $inventory = Inventory::select('sku_type','description','sku_code','id')->where('principal_id', $request->input('principal'))
-            ->where('sku_type', $request->input('sku_type'))
-            ->where('running_balance', '!=', 0)
+        $prev_inventory = Inventory::select('sku_type', 'description', 'sku_code', 'id')
+            ->whereIn('id', $registered_inventory)
             ->get();
 
-        return view('work_flow_show_inventory',[
-            'customer' => $customer,
-            'customer_principal_price' => $customer_principal_price,
-            'customer_principal_code' => $customer_principal_code,
-            'inventory' => $inventory,
-        ]);
+        $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+                                ->where('principal_id',$request->input('principal'))
+                                ->whereNotIn('id',$registered_inventory)
+                                ->get();
+
+        return view('work_flow_show_inventory', [
+            'prev_inventory' => $prev_inventory,
+            'sales_order_inventory' => $sales_order_inventory,
+        ])->with('customer_id', $request->input('customer'))
+            ->with('principal_id', $request->input('principal'));
     }
 
     public function work_flow_suggested_sales_order(Request $request)
     {
         return $request->input();
+        $order_data = array_filter($request->input('order_quantity'));
+        $bo_data = array_filter($request->input('bo'));
+        $remaining_data = array_filter($request->input('remaining'));
+        $inventory_data = array_filter($request->input('inventory_id'));
+        $sales_order_inventory_data = array_filter($request->input('sales_order_inventory'));
+        
+
+        $sales_register = Sales_register::where('customer_id', $request->input('customer_id'))
+            ->where('principal_id', $request->input('principal_id'))
+            ->latest()
+            ->first();
+
+        return view('work_flow_suggested_sales_order', [
+            'sales_register' => $sales_register,
+        ]);
     }
 }

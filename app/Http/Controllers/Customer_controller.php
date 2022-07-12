@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Agent_user;
 use App\Models\Customer_principal_code;
 use App\Models\Customer_principal_price;
+use App\Models\Customer;
 use App\Models\Audit_trail;
 use DB;
 use Illuminate\Http\Request;
@@ -22,9 +23,6 @@ class Customer_controller extends Controller
 
     public function customer_upload_process(Request $request)
     {
-        //  Schema::disableForeignKeyConstraints();
-        // DB::table('locations')->truncate();
-        // Schema::enableForeignKeyConstraints();
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
 

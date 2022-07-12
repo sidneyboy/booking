@@ -18,4 +18,14 @@ class Sales_register extends Model
         'principal_id',
         'status'
     ];
+
+    public function sales_register_details()
+    {
+      return $this->hasMany('App\Models\Sales_register_details', 'sales_register_id');
+    }
+
+    public function sales_register_details_for_inventory_filter()
+    {
+      return $this->hasMany('App\Models\Sales_register_details', 'sales_register_id')->select('inventory_id');
+    }
 }
