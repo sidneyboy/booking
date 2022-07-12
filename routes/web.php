@@ -33,3 +33,28 @@ Route::post('/principal_upload_process', [App\Http\Controllers\Principal_control
 
 Route::get('/customer_upload', [App\Http\Controllers\Customer_controller::class, 'index'])->name('customer_upload');
 Route::post('/customer_upload_process', [App\Http\Controllers\Customer_controller::class, 'customer_upload_process'])->name('customer_upload_process');
+Route::get('/customer_principal_code_upload', [App\Http\Controllers\Customer_controller::class, 'customer_principal_code_upload'])->name('customer_principal_code_upload');
+Route::post('/customer_principal_code_upload_process', [App\Http\Controllers\Customer_controller::class, 'customer_principal_code_upload_process'])->name('customer_principal_code_upload_process');
+Route::get('/customer_principal_price_upload', [App\Http\Controllers\Customer_controller::class, 'customer_principal_price_upload'])->name('customer_principal_price_upload');
+Route::post('/customer_principal_price_upload_process', [App\Http\Controllers\Customer_controller::class, 'customer_principal_price_upload_process'])->name('customer_principal_price_upload_process');
+
+
+
+Route::get('/inventory_upload', [App\Http\Controllers\Inventory_controller::class, 'index'])->name('inventory_upload');
+Route::post('/inventory_upload_process', [App\Http\Controllers\Inventory_controller::class, 'inventory_upload_process'])->name('inventory_upload_process');
+
+Route::get('/sales_register_upload', [App\Http\Controllers\Sales_register_controller::class, 'index'])->name('sales_register_upload');
+Route::post('/sales_register_upload_process', [App\Http\Controllers\Sales_register_controller::class, 'sales_register_upload_process'])->name('sales_register_upload_process');
+
+
+
+
+Route::get('/work_flow', [App\Http\Controllers\Work_flow_controller::class, 'index'])->name('work_flow');
+Route::post('/work_flow_show_inventory', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_show_inventory'])->name('work_flow_show_inventory');
+Route::post('/work_flow_suggested_sales_order', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_suggested_sales_order'])->name('work_flow_suggested_sales_order');
+
+
+
+
+
+

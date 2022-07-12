@@ -10,27 +10,30 @@ class Landing_page_controller extends Controller
     public function proceed_to_controller()
     {
         $user_check = Agent_user::count();
+        $agent_user = Agent_user::first();
         if ($user_check == 0) {
             return view('user_login');
         }else{
-            return view('location_upload');
+            return view('location_upload')
+            ->with('agent_user',$agent_user)
+            ->with('active','location_upload');
         }
     }
 
     public function user_credential(Request $request)
     {
 
-        // $file= $request->file('user_image');
-        // $filename= $file->getClientOriginalName();
-        // $file->move(public_path('images'), $filename);
+        $file= $request->file('user_image');
+        $filename= $file->getClientOriginalName();
+        $file->move(public_path('images'), $filename);
            
-        // $user_save = new Agent_user([
-        //     'agent_id' => $request->input('user_id'),
-        //     'agent_name' => $request->input('agent_name'),
-        //     'agent_image' => $filename,
-        // ]);
+        $user_save = new Agent_user([
+            'agent_id' => $request->input('user_id'),
+            'agent_name' => $request->input('agent_name'),
+            'agent_image' => $filename,
+        ]);
 
-        // $user_save->save();
+        $user_save->save();
         return redirect('location_upload');
     }
 }

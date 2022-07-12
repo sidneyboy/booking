@@ -334,8 +334,53 @@
                 </a>
               </li>
 
-              
-              
+              <li class="nav-item">
+                <a href="{{ url('customer_principal_code_upload') }}"  class="nav-link {{ $active == 'customer_principal_code_upload' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    Principal Code Upload
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ url('customer_principal_price_upload') }}"  class="nav-link {{ $active == 'customer_principal_price_upload' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    Principal Price Upload
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ url('inventory_upload') }}"  class="nav-link {{ $active == 'inventory_upload' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    Inventory Upload
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ url('sales_register_upload') }}"  class="nav-link {{ $active == 'sales_register_upload' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    Sales Register Upload
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ url('work_flow') }}"  class="nav-link {{ $active == 'work_flow' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    Work Flow
+                  </p>
+                </a>
+              </li>
+
+             
+
             </ul>
           </nav>
           <!-- /.sidebar-menu -->

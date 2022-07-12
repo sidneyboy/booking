@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Principal;
 use App\Models\Agent_user;
+use App\Models\Audit_trail;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -45,6 +46,12 @@ class Principal_controller extends Controller
                 $principal_saved->save();
             }
          }
+
+         $audit_trail = new Audit_trail([
+            'description' => 'Uploaded Principal',
+         ]);
+
+         $audit_trail->save();
          
 
          fclose($handle);

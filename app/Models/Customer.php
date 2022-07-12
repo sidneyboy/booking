@@ -15,4 +15,14 @@ class Customer extends Model
         'store_name',
         'credit_limit',
     ];
+
+    public function customer_principal_price()
+    {
+      return $this->hasMany('App\Models\Customer_principal_price', 'customer_id');
+    }
+
+    public function customer_principal_code()
+    {
+      return $this->hasMany('App\Models\Customer_principal_code', 'customer_id');
+    }
 }

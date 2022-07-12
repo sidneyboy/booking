@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Location;
 use App\Models\Agent_user;
+use App\Models\Sales_register;
 use App\Models\Audit_trail;
-use DB;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
-class Location_controller extends Controller
+class Sales_register_controller extends Controller
 {
     public function index()
     {
         $agent_user = Agent_user::first();
 
-        return view('location_upload')->with('active', 'location_upload')
+        return view('sales_register_upload')->with('active', 'sales_register_upload')
             ->with('agent_user', $agent_user);
     }
 
-    public function location_upload_process(Request $request)
+    public function sales_register_upload_process(Request $request)
     {
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
@@ -34,25 +34,27 @@ class Location_controller extends Controller
         }
 
 
-
+        //return $csv;
         $counter = count($csv);
 
         for ($i = 1; $i < $counter; $i++) {
-            $location = Location::find($csv[$i][0]);
-            if (!$location) {
-                $location_saved = new Location([
-                    'id' => $csv[$i][0],
-                    'location' => $csv[$i][1],
-                ]);
-                $location_saved->save();
-            }
+            $sales_register_saved = new Sales_register([
+                'customer_id' => $csv[$i][0],
+                'principal_id' => $csv[$i][1],
+                'export_code' => $csv[$i][2],
+                'total_amount' => $csv[$i][3],
+                'dr' => $csv[$i][4],
+                'date_delivered' => $csv[$i][5],
+                'status' => $csv[$i][6],
+            ]);
+            $sales_register_saved->save();
+            $sales_register_saved_last_id = $sales_register_saved->id;
         }
-
 
         fclose($handle);
 
         $audit_trail = new Audit_trail([
-            'description' => 'Uploaded Location',
+            'description' => 'Uploaded Sales Register',
         ]);
 
         $audit_trail->save();

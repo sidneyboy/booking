@@ -1,6 +1,6 @@
  @extends('layouts.master')
 
- @section('title', 'UPLOAD CUSTOMER')
+ @section('title', 'UPLOAD CODE')
 
  @section('navbar')
 
@@ -16,7 +16,7 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title" style="font-weight: bold;">UPLOAD NEW CUSTOMER</h3>
+          <h3 class="card-title" style="font-weight: bold;">UPLOAD NEW CUSTOMER CODE</h3>
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
             <i class="fas fa-minus"></i></button>
@@ -25,14 +25,14 @@
           </div>
         </div>
         <div class="card-body">
-          <form id="customer_upload_process">
+          <form id="customer_principal_code_upload_process">
             <div class="form-group">
               <label for="exampleInputFile">File input</label>
               <input type="file" name="agent_csv_file" required class="form-control">
             </div>
              <div class="form-group">
               
-              <button type="submit" class="btn btn-success btn-block">UPDATED CUSTOMER</button>
+              <button type="submit" class="btn btn-success btn-block">UPLOAD CUSTOMER CODE</button>
             </div>
           </form>
         </div>
@@ -58,11 +58,11 @@
   });
 
 
-  $("#customer_upload_process").on('submit',(function(e){
+  $("#customer_principal_code_upload_process").on('submit',(function(e){
         e.preventDefault();
         //$('.loading').show();
         $.ajax({
-                  url: "customer_upload_process",
+                  url: "customer_principal_code_upload_process",
                   type: "POST",
                   data:  new FormData(this),
                   contentType: false,
@@ -78,7 +78,7 @@
                           showConfirmButton: false,
                           timer: 1500
                         })
-                        window.location.href = "/customer_principal_code_upload";
+                        window.location.href = "/customer_principal_price_upload";
                       }else if(data == 'incorrect_file'){
                         Swal.fire(
                           'INCORRECT FILE',
