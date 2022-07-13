@@ -1,3 +1,4 @@
+
 <form id="work_flow_suggested_sales_order">
     @csrf
     <div class="table table-responsive">

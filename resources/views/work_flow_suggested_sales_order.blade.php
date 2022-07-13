@@ -1,11 +1,17 @@
+<style>
+    #table_suggested_so th:first-child,
+    #table_suggested_so td:first-child {
+        position: sticky;
+        left: 0px;
+        background-color:antiquewhite;
+    }
+</style>
+
 <form id="work_flow_final_summary">
     @csrf
     <div class="table table-responsive">
-        <table class="table table-bordered table-sm">
+        <table class="table table-bordered table-sm" id="table_suggested_so">
             <thead>
-                <tr>
-                    <th colspan="9">SUGGESTED SO</th>
-                </tr>
                 <tr>
                     <th>Desc</th>
                     <th>Delivered Inventory</th>
@@ -61,9 +67,10 @@
                         <td>
                             <input type="hidden" name="sales_order_final_inventory_id[]"
                                 value="{{ $current_inventory_data }}">
-                            <input type="hidden" name="sales_order_final_inventory_description[{{ $current_inventory_data }}]"
+                            <input type="hidden"
+                                name="sales_order_final_inventory_description[{{ $current_inventory_data }}]"
                                 value="{{ $current_inventory_description[$current_inventory_data] }}">
-                            
+
                             <input type="number" style="width:100px;text-align:right" min="0" value="0"
                                 class="form-control" required
                                 name="sales_order_final_quantity[{{ $current_inventory_data }}]">
@@ -81,7 +88,8 @@
                         <td style="text-align:right">0</td>
                         <td style="text-align:right">0</td>
                         <td>
-                            <input type="hidden" name="sales_order_final_inventory_description[{{$new_sales_order_inventory_id }}]"
+                            <input type="hidden"
+                                name="sales_order_final_inventory_description[{{ $new_sales_order_inventory_id }}]"
                                 value="{{ $new_sales_order_inventory_description[$new_sales_order_inventory_id] }}">
                             <input type="hidden" name="sales_order_final_inventory_id[]"
                                 value="{{ $new_sales_order_inventory_id }}">
@@ -93,12 +101,11 @@
                 @endforeach
             </tbody>
         </table>
-
-        <input type="hidden" value="{{ $customer_id }}" name="customer_id">
-        <input type="hidden" value="{{ $principal_id }}" name="principal_id">
-        <input type="hidden" value="{{ $sku_type }}" name="sku_type">
-        <button type="submit" class="btn btn-block btn-info">PROCEED TO FINAL SUMMARY</button>
     </div>
+    <input type="hidden" value="{{ $customer_id }}" name="customer_id">
+    <input type="hidden" value="{{ $principal_id }}" name="principal_id">
+    <input type="hidden" value="{{ $sku_type }}" name="sku_type">
+    <button type="submit" class="btn btn-block btn-info">PROCEED TO FINAL SUMMARY</button>
 </form>
 
 <script>

@@ -119,6 +119,8 @@ class Work_flow_controller extends Controller
             'sales_order_final_inventory_id' => $request->input('sales_order_final_inventory_id'),
             'sales_order_final_quantity' => $request->input('sales_order_final_quantity'),
             'inventory_data' => $inventory_data,
-        ])->with('customer_principal_price', $customer_principal_price);
+        ])->with('customer_principal_price', $customer_principal_price)
+          ->with('principal_id',$request->input('principal_id'))
+          ->with('customer_id',$request->input('customer_id'));
     }
 }
