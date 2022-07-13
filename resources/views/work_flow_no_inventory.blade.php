@@ -1,10 +1,20 @@
-<form action="">
+<form id="work_flow_no_inventory_proceed_to_final_summary">
     @csrf
     <div class="table table-responsive">
         <table class="table table-sm table-bordered">
             <thead>
                 <tr>
                     <th colspan="3">New Sales Order</th>
+                </tr>
+                <tr>
+                    <th colspan="3">
+                        <select name="mode_of_transaction" class="form-control select2" required style="width:100%">
+                            <option value="" default>Select Mode of Transaction</option>
+                            <option value="COD">COD</option>
+                            <option value="PDC">PDC</option>
+                            <option value="VALE">VALE</option>
+                        </select>
+                    </th>
                 </tr>
                 <tr>
                     <th>Desc</th>
@@ -34,3 +44,24 @@
     </div>
     <button class="btn btn-block btn-info" type="submit">PROCEED</button>
 </form>
+
+<script>
+    $('.select2').select2();
+    $("#work_flow_no_inventory_proceed_to_final_summary").on('submit', (function(e) {
+        e.preventDefault();
+        //$('.loading').show();
+        $.ajax({
+            url: "work_flow_no_inventory_proceed_to_final_summary",
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                $('.loading').hide();
+                $('#work_flow_suggested_sales_order_page').hide();
+                $('#work_flow_final_summary_page').html(data);
+            },
+        });
+    }));
+</script>

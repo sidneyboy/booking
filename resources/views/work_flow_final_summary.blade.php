@@ -2,6 +2,18 @@
     <table class="table table-bordered table-sm">
         <thead>
             <tr>
+                <th>{{ $customer_principal_price->customer->store_name }}</th>
+                <th>{{ $customer_principal_price->principal->principal }}</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>{{ $mode_of_transaction }} - {{ $agent_id }}</th>
+                <th>{{ $sku_type }}</th>
+                <th>{{ $customer_id }}</th>
+                <th>{{ $principal_id }}</th>
+            </tr>
+            <tr>
                 <th>Desc</th>
                 <th>Qty</th>
                 <th>U/P</th>

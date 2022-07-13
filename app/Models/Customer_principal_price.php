@@ -14,4 +14,15 @@ class Customer_principal_price extends Model
         'principal_id',
         'price_level',
     ];
+
+    public function customer()
+    {
+      return $this->belongsTo('App\Models\Customer', 'customer_id');
+    }
+
+    public function principal()
+    {
+      return $this->belongsTo('App\Models\Principal', 'principal_id');
+    }
+
 }

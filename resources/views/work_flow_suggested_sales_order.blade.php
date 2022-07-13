@@ -3,7 +3,7 @@
     #table_suggested_so td:first-child {
         position: sticky;
         left: 0px;
-        background-color:antiquewhite;
+        background-color: antiquewhite;
     }
 </style>
 
@@ -13,13 +13,21 @@
         <table class="table table-bordered table-sm" id="table_suggested_so">
             <thead>
                 <tr>
+                    <th colspan="9">
+                        <select name="mode_of_transaction" class="form-control" required style="width:100%">
+                            <option value="" default>Select Mode of Transaction</option>
+                            <option value="COD">COD</option>
+                            <option value="PDC">PDC</option>
+                            <option value="VALE">VALE</option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
                     <th>Desc</th>
                     <th>Delivered Inventory</th>
                     <th>Current Inventory</th>
-
                     <th>Sales/Offtake</th>
                     <th>No. of Days</th>
-
                     <th>Average Daily Sales</th>
                     <th>Current Bo</th>
                     <th>Suggested Sales Order</th>
@@ -71,8 +79,8 @@
                                 name="sales_order_final_inventory_description[{{ $current_inventory_data }}]"
                                 value="{{ $current_inventory_description[$current_inventory_data] }}">
 
-                            <input type="number" style="width:100px;text-align:right" min="0" value="0"
-                                class="form-control" required
+                            <input type="number" style="width:100px;text-align:right" min="0"
+                                class="form-control" required value="{{ $suggested_sales_order }}"
                                 name="sales_order_final_quantity[{{ $current_inventory_data }}]">
                         </td>
                     </tr>

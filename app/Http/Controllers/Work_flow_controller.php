@@ -7,8 +7,9 @@ use App\Models\Customer;
 use App\Models\Principal;
 use App\Models\Inventory;
 use App\Models\Customer_principal_price;
-use App\Models\Customer_principal_code;
 use App\Models\Sales_register;
+use App\Models\Sales_order_details;
+use App\Models\Sales_order;
 use Illuminate\Http\Request;
 
 class Work_flow_controller extends Controller
@@ -55,7 +56,7 @@ class Work_flow_controller extends Controller
                 ->with('principal_id', $request->input('principal'))
                 ->with('sku_type', $request->input('sku_type'));
         } else {
-            return $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+            $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
                 ->where('principal_id', $request->input('principal'))
                 ->where('sku_type', $request->input('sku_type'))
                 ->get();
@@ -63,8 +64,8 @@ class Work_flow_controller extends Controller
             return view('work_flow_no_inventory', [
                 'sales_order_inventory' => $sales_order_inventory,
             ])->with('customer_id', $request->input('customer'))
-              ->with('principal_id', $request->input('principal'))
-              ->with('sku_type', $request->input('sku_type'));
+                ->with('principal_id', $request->input('principal'))
+                ->with('sku_type', $request->input('sku_type'));
         }
     }
 
@@ -95,7 +96,7 @@ class Work_flow_controller extends Controller
     public function work_flow_final_summary(Request $request)
     {
 
-        $customer_principal_price = Customer_principal_price::select('price_level')
+        $customer_principal_price = Customer_principal_price::select('price_level', 'customer_id', 'principal_id')
             ->where('customer_id', $request->input('customer_id'))
             ->where('principal_id', $request->input('principal_id'))
             ->first();
@@ -113,6 +114,9 @@ class Work_flow_controller extends Controller
             ->get();
 
 
+        $agent_user = Agent_user::select('agent_id')->first();
+
+
         return view('work_flow_final_summary', [
             'sales_order_final_inventory_description' => $request->input('sales_order_final_inventory_description'),
             'sales_order_final_inventory_id' => $request->input('sales_order_final_inventory_id'),
@@ -120,6 +124,73 @@ class Work_flow_controller extends Controller
             'inventory_data' => $inventory_data,
         ])->with('customer_principal_price', $customer_principal_price)
             ->with('principal_id', $request->input('principal_id'))
-            ->with('customer_id', $request->input('customer_id'));
+            ->with('customer_id', $request->input('customer_id'))
+            ->with('agent_id', $agent_user->agent_id)
+            ->with('mode_of_transaction', $request->input('mode_of_transaction'))
+            ->with('sku_type', $request->input('sku_type'));
+    }
+
+    public function work_flow_no_inventory_proceed_to_final_summary(Request $request)
+    {
+        $customer_principal_price = Customer_principal_price::select('price_level', 'customer_id', 'principal_id')
+            ->where('customer_id', $request->input('customer_id'))
+            ->where('principal_id', $request->input('principal_id'))
+            ->first();
+
+        $new_sales_order_inventory_quantity = array_filter($request->input('new_sales_order_inventory_quantity'));
+
+        $inventory_data = Inventory::select(
+            'sku_type',
+            'description',
+            'sku_code',
+            'id',
+            'price_1',
+            'price_2',
+            'price_3',
+            'price_4'
+        )->whereIn('id', array_keys($new_sales_order_inventory_quantity))
+            ->get();
+
+        $agent_user = Agent_user::select('agent_id')->first();
+
+        return view('work_flow_no_inventory_proceed_to_final_summary', [
+            'inventory_data' => $inventory_data,
+            'new_sales_order_inventory_description' => $request->input('new_sales_order_inventory_description'),
+            'new_sales_order_inventory_quantity' => $request->input('new_sales_order_inventory_quantity'),
+        ])->with('customer_id', $request->input('customer_id'))
+            ->with('principal_id', $request->input('principal_id'))
+            ->with('customer_principal_price', $customer_principal_price)
+            ->with('sku_type', $request->input('sku_type'))
+            ->with('agent_id', $agent_user->agent_id)
+            ->with('mode_of_transaction', $request->input('mode_of_transaction'));
+    }
+
+    public function work_flow_no_inventory_save(Request $request)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+        //return $request->input();
+        $sales_order_save = new Sales_order([
+            'customer_id' => $request->input('customer_id'),
+            'principal_id' => $request->input('principal_id'),
+            'mode_of_transaction' => $request->input('mode_of_transaction'),
+            'sku_type' => $request->input('sku_type'),
+            'total_amount' => $request->input('total_amount'),
+            'agent_id' => $request->input('agent_id'),
+        ]);
+
+        $sales_order_save->save();
+
+        foreach ($request->input('inventory_id') as $key => $data) {
+            $sales_order_details_save = new Sales_order_details([
+                'sales_order_id' => $sales_order_save->id,
+                'inventory_id' => $data,
+                'quantity' => $request->input('sales_order_quantity')[$data],
+                'unit_price' => $request->input('unit_price')[$data],
+                'sku_type' => $request->input('sku_type'),
+            ]);
+
+            $sales_order_details_save->save();
+        }
     }
 }
