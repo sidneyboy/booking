@@ -15,6 +15,7 @@ class Sales_register extends Model
         'total_amount',
         'dr',
         'date_delivered',
+        'sku_type',
         'principal_id',
         'status'
     ];

@@ -1,0 +1,2 @@
+add sku_type_column sa sales register nga exported
+apil sa database sa main system

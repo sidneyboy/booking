@@ -73,7 +73,7 @@
                Swal.fire({
                  position: 'top-end',
                  icon: 'success',
-                 title: 'Location Data Uploaded',
+                 title: 'Sale Register Uploaded',
                  showConfirmButton: false,
                  timer: 1500
                })

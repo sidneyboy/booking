@@ -1,8 +1,8 @@
-Customer ID,Prinjcipal ID,exportcode,totalamount,dr,delivered date,Status
-1,3,export_code_3,50000,DR-PFC-0001,,
-956,50,10.45,BUTAL,,,
-957,100,10.45,BUTAL,,,
-958,150,10.45,BUTAL,,,
-959,200,10.45,BUTAL,,,
-960,300,10.45,BUTAL,,,
-961,20,10.45,BUTAL,,,
+Customer ID,Prinjcipal ID,exportcode,totalamount,dr,delivered date,Status,SkuType
+1,3,export_code_3,50000,DR-PFC-0001,2022-07-05,Paid,Butal
+956,50,10.45,BUTAL,,,,
+957,100,10.45,BUTAL,,,,
+958,150,10.45,BUTAL,,,,
+959,200,10.45,BUTAL,,,,
+960,300,10.45,BUTAL,,,,
+961,20,10.45,BUTAL,,,,

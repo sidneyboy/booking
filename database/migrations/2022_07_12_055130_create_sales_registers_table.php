@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('export_code');
             $table->decimal('total_amount',15,2);
             $table->string('dr');
-            $table->string('date_delivered');
+            $table->date('date_delivered');
             $table->string('status',20);
             $table->timestamps();
         });

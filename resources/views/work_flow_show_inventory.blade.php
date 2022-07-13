@@ -4,7 +4,7 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th colspan="3">Prev. Sales Order</th>
+                    <th colspan="3">Current Sales Order</th>
                 </tr>
                 <tr>
                     <th>Desc</th>
@@ -13,17 +13,23 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($prev_inventory as $data)
+                @foreach ($sales_register->sales_register_details as $data)
                     <tr>
                         <td>
-                            {{ $data->description }} <br />
+                            {{ $data->inventory->description }} <br />
                             {{ $data->sku_type }}
-                            <input type="hidden" name="prev_inventory_id[]" value="{{ $data->id }}">
+                            <input type="hidden" name="current_inventory_id[]" value="{{ $data->inventory_id }}">
+                            <input type="hidden" name="current_inventory_description[{{ $data->inventory_id }}]"
+                                value="{{ $data->inventory->description }}">
                         </td>
-                        <td><input style="width:100px;" name="bo[{{ $data->id }}]" type="number" min="0"
-                                value="0" required class="form-control"></td>
-                        <td><input style="width:100px;" name="remaining[{{ $data->id }}]" type="number"
-                                min="0" value="0" required class="form-control"></td>
+                        <td>
+                            <input style="width:100px;" name="current_bo[{{ $data->inventory_id }}]" type="number" min="0" value="0" required class="form-control">
+                            
+                        </td>
+                        <td>
+                            <input style="width:100px;" name="current_remaining_inventory[{{ $data->inventory_id }}]" type="number" min="0" value="0" required class="form-control">
+                            <input type="hidden" name="prev_delivered_inventory[{{ $data->inventory_id }}]" value="{{ $data->delivered_quantity }}">
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -33,7 +39,7 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th colspan="3">Sales Order</th>
+                    <th colspan="3">New Sales Order</th>
                 </tr>
                 <tr>
                     <th>Desc</th>
@@ -48,7 +54,7 @@
                             {{ $data->sku_type }}
                             <input type="hidden" name="sales_order_inventory[]" value="{{ $data->id }}">
                         </td>
-                        <td><input style="width:100px;" name="order_quantity[{{ $data->id }}]" type="number"
+                        <td><input style="width:100px;" name="sales_order_quantity[{{ $data->id }}]" type="number"
                                 min="0" value="0" required class="form-control"></td>
                     </tr>
                 @endforeach
@@ -57,6 +63,7 @@
     </div>
     <input type="hidden" value="{{ $customer_id }}" name="customer_id">
     <input type="hidden" value="{{ $principal_id }}" name="principal_id">
+    <input type="hidden" value="{{ $sales_register->date_delivered }}" name="date_delivered">
     <button class="btn btn-block btn-info" type="submit">PROCEED</button>
 </form>
 
