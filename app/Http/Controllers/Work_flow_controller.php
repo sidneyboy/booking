@@ -37,26 +37,35 @@ class Work_flow_controller extends Controller
             ->latest()
             ->first();
 
-        foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
-            $registered_inventory[] = $data->inventory_id;
+        if ($sales_register) {
+            foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
+                $registered_inventory[] = $data->inventory_id;
+            }
+
+            $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+                ->where('principal_id', $request->input('principal'))
+                ->where('sku_type', $request->input('sku_type'))
+                ->whereNotIn('id', $registered_inventory)
+                ->get();
+
+            return view('work_flow_show_inventory', [
+                'sales_register' => $sales_register,
+                'sales_order_inventory' => $sales_order_inventory,
+            ])->with('customer_id', $request->input('customer'))
+                ->with('principal_id', $request->input('principal'))
+                ->with('sku_type', $request->input('sku_type'));
+        } else {
+            return $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+                ->where('principal_id', $request->input('principal'))
+                ->where('sku_type', $request->input('sku_type'))
+                ->get();
+
+            return view('work_flow_no_inventory', [
+                'sales_order_inventory' => $sales_order_inventory,
+            ])->with('customer_id', $request->input('customer'))
+              ->with('principal_id', $request->input('principal'))
+              ->with('sku_type', $request->input('sku_type'));
         }
-
-        // $prev_inventory = Inventory::select('sku_type', 'description', 'sku_code', 'id')
-        //     ->whereIn('id', $registered_inventory)
-        //     ->get();
-
-        $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
-            ->where('principal_id', $request->input('principal'))
-            ->where('sku_type', $request->input('sku_type'))
-            ->whereNotIn('id', $registered_inventory)
-            ->get();
-
-        return view('work_flow_show_inventory', [
-            'sales_register' => $sales_register,
-            'sales_order_inventory' => $sales_order_inventory,
-        ])->with('customer_id', $request->input('customer'))
-            ->with('principal_id', $request->input('principal'))
-            ->with('sku_type', $request->input('sku_type'));
     }
 
     public function work_flow_suggested_sales_order(Request $request)
@@ -64,18 +73,8 @@ class Work_flow_controller extends Controller
         //return $request->input();
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
-        //return $request->input();
-        // $order_data = array_filter($request->input('sales_order_quantity'));
-        // $bo_data = array_filter($request->input('bo'));
-        // $remaining_data = array_filter($request->input('remaining'));
-        // $inventory_data = array_filter($request->input('inventory_id'));
+
         $new_sales_order_inventory_quantity = array_filter($request->input('new_sales_order_inventory_quantity'));
-
-
-        // $sales_register = Sales_register::where('customer_id', $request->input('customer_id'))
-        //     ->where('principal_id', $request->input('principal_id'))
-        //     ->latest()
-        //     ->first();
 
         return view('work_flow_suggested_sales_order', [
             'current_bo' => $request->input('current_bo'),
@@ -111,7 +110,7 @@ class Work_flow_controller extends Controller
             'price_3',
             'price_4'
         )->whereIn('id', $request->input('sales_order_final_inventory_id'))
-         ->get();
+            ->get();
 
 
         return view('work_flow_final_summary', [
@@ -120,7 +119,7 @@ class Work_flow_controller extends Controller
             'sales_order_final_quantity' => $request->input('sales_order_final_quantity'),
             'inventory_data' => $inventory_data,
         ])->with('customer_principal_price', $customer_principal_price)
-          ->with('principal_id',$request->input('principal_id'))
-          ->with('customer_id',$request->input('customer_id'));
+            ->with('principal_id', $request->input('principal_id'))
+            ->with('customer_id', $request->input('customer_id'));
     }
 }

@@ -53,7 +53,7 @@ Route::get('/work_flow', [App\Http\Controllers\Work_flow_controller::class, 'ind
 Route::post('/work_flow_show_inventory', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_show_inventory'])->name('work_flow_show_inventory');
 Route::post('/work_flow_suggested_sales_order', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_suggested_sales_order'])->name('work_flow_suggested_sales_order');
 Route::post('/work_flow_final_summary', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_final_summary'])->name('work_flow_final_summary');
-
+Route::post('/work_flow_no_inventory', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory'])->name('work_flow_no_inventory');
 
 
 

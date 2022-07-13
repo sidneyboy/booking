@@ -83,7 +83,7 @@
                //window.location.href = "/principal_upload";
              }else{
                Swal.fire(
-                 'Something went wrong!',
+                 'Incorrect File',
                  data,
                  'error'
                )
