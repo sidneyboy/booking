@@ -117,6 +117,7 @@
 </form>
 
 <script>
+    $('.select2').select2();
     $("#work_flow_final_summary").on('submit', (function(e) {
         e.preventDefault();
         //$('.loading').show();

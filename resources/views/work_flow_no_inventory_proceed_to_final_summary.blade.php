@@ -1,19 +1,30 @@
 <form id="work_flow_no_inventory_save">
-    <div class="table table-responsive">
-        <table class="table table-bordered table-sm">
+    <div id="export_table_as_image" style="background-color:antiquewhite">
+        <table class="table table-borderless table-sm" style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
             <thead>
                 <tr>
-                    <th>{{ $customer_principal_price->customer->store_name }}</th>
-                    <th>{{ $customer_principal_price->principal->principal }}</th>
-                    <th></th>
-                    <th></th>
+                    <th style="text-align: center;" colspan="3">JULMAR COMMERCIAL INC.</th>
                 </tr>
                 <tr>
-                    <th>{{ $mode_of_transaction }} - {{ $agent_id }}</th>
-                    <th>{{ $sku_type }}</th>
-                    <th>{{ $customer_id }}</th>
-                    <th>{{ $principal_id }}</th>
+                    <th style="text-align: center;" colspan="3">OSMENA ST., CDO</th>
                 </tr>
+                <tr>
+                    <th style="text-align: center;" colspan="3">TEL 857-6197, 858-5771</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;" colspan="3">Vat Reg. TIN 486-701-947-000</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;" colspan="3">REP: {{ $agent_user->agent_name }}</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;" colspan="3">{{ $date }}</th>
+                </tr>
+            </thead>
+        </table>
+        <table class="table table-borderless table-sm"
+            style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
+            <thead>
                 <tr>
                     <th>Desc</th>
                     <th>Qty</th>
@@ -58,7 +69,8 @@
                                 $sum_total[] = $sub_total;
                             @endphp
                             <input type="hidden" value="{{ $data->id }}" name="inventory_id[]">
-                            <input type="hidden" value="{{ $new_sales_order_inventory_quantity[$data->id] }}" name="sales_order_quantity[{{ $data->id }}]">
+                            <input type="hidden" value="{{ $new_sales_order_inventory_quantity[$data->id] }}"
+                                name="sales_order_quantity[{{ $data->id }}]">
                         </th>
                     </tr>
                 @endforeach
@@ -71,33 +83,62 @@
             </tfoot>
         </table>
     </div>
-    
-    <input type="hidden" name="agent_id" value="{{ $agent_id }}">
+
+    <input type="hidden" name="agent_id" value="{{ $agent_user->agent_id }}">
     <input type="hidden" name="total_amount" value="{{ array_sum($sum_total) }}">
     <input type="hidden" name="principal_id" value="{{ $principal_id }}">
     <input type="hidden" name="customer_id" value="{{ $customer_id }}">
     <input type="hidden" name="sku_type" value="{{ $sku_type }}">
     <input type="hidden" name="mode_of_transaction" value="{{ $mode_of_transaction }}">
-    <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-info btn-block" id="convert">Export as Image</button>
+        </div>
+        <div class="col-md-12">
+            <br />
+            <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button>
+        </div>
+    </div>
 </form>
+
+<div style="" id="result"></div>
 
 
 
 <script>
+    $("#convert").on('click', (function(e) {
+        $('.loading').show();
+        var resultDiv = document.getElementById("result");
+        html2canvas(document.getElementById("export_table_as_image"), {
+            onrendered: function(canvas) {
+                var img = canvas.toDataURL("image/png");
+                result.innerHTML =
+                    '<a download="summary of data accounts.jpeg" style="display:block;width:100%;border:none;background-color: #04AA6D;padding: 14px 28px;font-size: 16px;cursor: pointer;text-align: center;color:white;" href="' +
+                    img + '" id="download_button">DOWNLOAD IMAGE</a>';
+                $('.loading').hide();
+                document.getElementById('download_button').click();
+                $('#download_button').hide();
+            }
+        });
+    }));
+
+
     $("#work_flow_no_inventory_save").on('submit', (function(e) {
-            e.preventDefault();
-            //$('.loading').show();
-            $.ajax({
-                url: "work_flow_no_inventory_save",
-                type: "POST",
-                data: new FormData(this),
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(data) {
-                    $('.loading').hide();
-                    
-                },
-            });
-        }));
+        e.preventDefault();
+        $('.loading').show();
+        $.ajax({
+            url: "work_flow_no_inventory_save",
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                $('.loading').hide();
+                window.location.href = "/collection";  
+            },
+        });
+    }));
 </script>

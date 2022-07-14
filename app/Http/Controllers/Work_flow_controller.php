@@ -95,7 +95,8 @@ class Work_flow_controller extends Controller
 
     public function work_flow_final_summary(Request $request)
     {
-
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
         $customer_principal_price = Customer_principal_price::select('price_level', 'customer_id', 'principal_id')
             ->where('customer_id', $request->input('customer_id'))
             ->where('principal_id', $request->input('principal_id'))
@@ -114,7 +115,7 @@ class Work_flow_controller extends Controller
             ->get();
 
 
-        $agent_user = Agent_user::select('agent_id')->first();
+        $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
 
 
         return view('work_flow_final_summary', [
@@ -125,13 +126,16 @@ class Work_flow_controller extends Controller
         ])->with('customer_principal_price', $customer_principal_price)
             ->with('principal_id', $request->input('principal_id'))
             ->with('customer_id', $request->input('customer_id'))
-            ->with('agent_id', $agent_user->agent_id)
+            ->with('agent_user', $agent_user)
             ->with('mode_of_transaction', $request->input('mode_of_transaction'))
-            ->with('sku_type', $request->input('sku_type'));
+            ->with('sku_type', $request->input('sku_type'))
+            ->with('date', $date);
     }
 
     public function work_flow_no_inventory_proceed_to_final_summary(Request $request)
     {
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
         $customer_principal_price = Customer_principal_price::select('price_level', 'customer_id', 'principal_id')
             ->where('customer_id', $request->input('customer_id'))
             ->where('principal_id', $request->input('principal_id'))
@@ -151,7 +155,7 @@ class Work_flow_controller extends Controller
         )->whereIn('id', array_keys($new_sales_order_inventory_quantity))
             ->get();
 
-        $agent_user = Agent_user::select('agent_id')->first();
+        $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
 
         return view('work_flow_no_inventory_proceed_to_final_summary', [
             'inventory_data' => $inventory_data,
@@ -161,7 +165,8 @@ class Work_flow_controller extends Controller
             ->with('principal_id', $request->input('principal_id'))
             ->with('customer_principal_price', $customer_principal_price)
             ->with('sku_type', $request->input('sku_type'))
-            ->with('agent_id', $agent_user->agent_id)
+            ->with('agent_user', $agent_user)
+            ->with('date', $date)
             ->with('mode_of_transaction', $request->input('mode_of_transaction'));
     }
 
@@ -192,5 +197,7 @@ class Work_flow_controller extends Controller
 
             $sales_order_details_save->save();
         }
+
+        return 'saved';
     }
 }
