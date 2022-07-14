@@ -16,5 +16,11 @@ class Sales_order extends Model
         'sku_type',
         'total_amount',
         'agent_id',
+        'status',
     ];
+
+    public function principal()
+    {
+        return $this->belongsTo('App\Models\Principal', 'principal_id');
+    }
 }

@@ -53,7 +53,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-info btn-block">PROCEED</button>
+                        <button type="submit" class="btn btn-info btn-block" id="proceed" style="display: none">PROCEED</button>
                     </div>
                 </form>
             </div>
@@ -125,13 +125,32 @@
             }
         });
 
-        // $("#customer").change(function() {
-        //     alert("Handler for .change() called.");
-        // }); desisyonan pani unsay maau nga agent intervention
+        $("#customer").change(function(e) {
+            e.preventDefault();
+            //$('.loading').show();
+            customer = $('#customer').val();
+            $.post({
+                type: "POST",
+                url: "/work_flow_check_customer_sales_order_status",
+                data: 'customer=' + customer,
+                success: function(data) {
+                    if (data == 'maximum_allowed_sales_order_consumed') {
+                        Swal.fire(
+                            'Maximum Allowed Sales Order Consumed',
+                            'Please Pay Past Sales Order First!',
+                            'error'
+                        );
 
-        // $("#principal").change(function() {
-        //      alert("Handler for .change() called.");
-        // }); 
+                        $('#proceed').hide();
+                    }else{
+                        $('#proceed').show();
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        });
 
         $("#work_flow_show_inventory").on('submit', (function(e) {
             e.preventDefault();

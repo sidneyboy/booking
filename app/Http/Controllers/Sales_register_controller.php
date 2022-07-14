@@ -36,7 +36,7 @@ class Sales_register_controller extends Controller
         }
 
 
-        return $csv;
+        //return $csv;
         $counter = count($csv);
 
 

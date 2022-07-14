@@ -80,7 +80,7 @@
 
                $('.loading').hide();
                // location.reload();
-               //window.location.href = "/principal_upload";
+               window.location.href = "/work_flow";
              }else{
                Swal.fire(
                  'Incorrect File',

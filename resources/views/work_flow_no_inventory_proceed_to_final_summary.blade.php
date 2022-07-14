@@ -115,7 +115,7 @@
             onrendered: function(canvas) {
                 var img = canvas.toDataURL("image/png");
                 result.innerHTML =
-                    '<a download="summary of data accounts.jpeg" style="display:block;width:100%;border:none;background-color: #04AA6D;padding: 14px 28px;font-size: 16px;cursor: pointer;text-align: center;color:white;" href="' +
+                    '<a download="{{ $customer_principal_price->customer->store_name }} - SALES ORDER.jpeg" style="display:block;width:100%;border:none;background-color: #04AA6D;padding: 14px 28px;font-size: 16px;cursor: pointer;text-align: center;color:white;" href="' +
                     img + '" id="download_button">DOWNLOAD IMAGE</a>';
                 $('.loading').hide();
                 document.getElementById('download_button').click();

@@ -57,10 +57,13 @@ Route::post('/work_flow_no_inventory', [App\Http\Controllers\Work_flow_controlle
 Route::post('/work_flow_no_inventory_proceed_to_final_summary', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory_proceed_to_final_summary'])->name('work_flow_no_inventory_proceed_to_final_summary');
 Route::post('/work_flow_no_inventory_save', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory_save'])->name('work_flow_no_inventory_save');
 Route::post('/work_flow_inventory_save', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_inventory_save'])->name('work_flow_inventory_save');
+Route::post('/work_flow_check_customer_sales_order_status', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_check_customer_sales_order_status'])->name('work_flow_check_customer_sales_order_status');
 
 
 
 Route::get('/collection', [App\Http\Controllers\Collection_controller::class, 'index'])->name('collection');
+Route::post('/collection_generate_customer_payables', [App\Http\Controllers\Collection_controller::class, 'collection_generate_customer_payables'])->name('collection_generate_customer_payables');
+
 
 
 

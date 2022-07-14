@@ -35,7 +35,7 @@ class Customer_controller extends Controller
             }
         }
 
-
+        //return $csv;
 
         $counter = count($csv);
 
@@ -50,6 +50,7 @@ class Customer_controller extends Controller
                         'location_id' => $csv[$i][1],
                         'credit_limit' => $csv[$i][2],
                         'store_name' => $csv[$i][3],
+                        'allowed_number_of_sales_order' => $csv[$i][5],
                     ]);
                     $customer_saved->save();
                 }

@@ -14,6 +14,7 @@ class Customer extends Model
         'location_id',
         'store_name',
         'credit_limit',
+        'allowed_number_of_sales_order',
     ];
 
     public function customer_principal_price()

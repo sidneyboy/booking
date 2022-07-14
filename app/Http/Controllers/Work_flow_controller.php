@@ -69,6 +69,41 @@ class Work_flow_controller extends Controller
         }
     }
 
+    public function work_flow_check_customer_sales_order_status(Request $request)
+    {
+        $customer_allowed_number_of_sales_order = Customer::select('allowed_number_of_sales_order')->find($request->input('customer'));
+
+        if ($customer_allowed_number_of_sales_order->allowed_number_of_sales_order == 0) {
+            $sales_order_count = Sales_register::where('customer_id', $request->input('customer'))
+                ->where('status', '!=', 'paid')
+                ->count();
+
+            $sales_register_count = Sales_order::where('customer_id', $request->input('customer'))
+                ->count();
+
+            //return $sales_order_count + $sales_register_count;
+
+            if ($sales_order_count + $sales_register_count != 0) {
+                return 'maximum_allowed_sales_order_consumed';
+            } else {
+                return 'procced';
+            }
+        } else {
+            $sales_order_count = Sales_register::where('customer_id', $request->input('customer'))
+                ->where('status', '!=', 'paid')
+                ->count();
+
+            $sales_register_count = Sales_order::where('customer_id', $request->input('customer'))
+                ->count();
+
+            if ($sales_order_count + $sales_register_count <= $customer_allowed_number_of_sales_order->allowed_number_of_sales_order) {
+                return 'proceed';
+            } else {
+                return 'maximum_allowed_sales_order_consumed';
+            }
+        }
+    }
+
     public function work_flow_suggested_sales_order(Request $request)
     {
         //return $request->input();
@@ -182,6 +217,7 @@ class Work_flow_controller extends Controller
             'sku_type' => $request->input('sku_type'),
             'total_amount' => $request->input('total_amount'),
             'agent_id' => $request->input('agent_id'),
+            'status' => 'New',
         ]);
 
         $sales_order_save->save();
@@ -213,6 +249,7 @@ class Work_flow_controller extends Controller
             'sku_type' => $request->input('sku_type'),
             'total_amount' => $request->input('total_amount'),
             'agent_id' => $request->input('agent_id'),
+            'status' => 'New',
         ]);
 
         $sales_order_save->save();

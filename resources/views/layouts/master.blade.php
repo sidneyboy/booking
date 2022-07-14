@@ -379,6 +379,15 @@
                 </a>
               </li>
 
+              <li class="nav-item">
+                <a href="{{ url('collection') }}"  class="nav-link {{ $active == 'collection' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    Collection
+                  </p>
+                </a>
+              </li>
+
              
 
             </ul>

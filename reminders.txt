@@ -1,2 +1,6 @@
 add sku_type_column sa sales register nga exported
 apil sa database sa main system
+
+add allowed_number_of_sales_order in main system apil nana sa pag export sa customer profile
+
+dapat mag add japon og filter dadto sa invoice upload kong pila ra iyang max allowable sales order ni customer

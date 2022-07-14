@@ -1,5 +1,5 @@
 Customer ID,Prinjcipal ID,exportcode,totalamount,dr,delivered date,Status,SkuType
-1,3,export_code_3,50000,DR-PFC-0001,2022-07-05,Paid,Butal
+1,2,export_code_4,50000,DR-GCI-0001,2022-07-05,Delivered,Butal
 956,50,10.45,BUTAL,,,,
 957,100,10.45,BUTAL,,,,
 958,150,10.45,BUTAL,,,,
