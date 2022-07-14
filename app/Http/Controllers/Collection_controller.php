@@ -15,6 +15,6 @@ class Collection_controller extends Controller
         return view('collection', [
             'sales_register_customer' => $sales_register_customer,
         ])->with('active', 'collection')
-            ->with('agent_user', $agent_user);
+            ->with('agent_user', $agent_user); asdasd
     }
 }
