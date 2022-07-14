@@ -56,8 +56,11 @@ Route::post('/work_flow_final_summary', [App\Http\Controllers\Work_flow_controll
 Route::post('/work_flow_no_inventory', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory'])->name('work_flow_no_inventory');
 Route::post('/work_flow_no_inventory_proceed_to_final_summary', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory_proceed_to_final_summary'])->name('work_flow_no_inventory_proceed_to_final_summary');
 Route::post('/work_flow_no_inventory_save', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory_save'])->name('work_flow_no_inventory_save');
+Route::post('/work_flow_inventory_save', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_inventory_save'])->name('work_flow_inventory_save');
 
 
+
+Route::get('/collection', [App\Http\Controllers\Collection_controller::class, 'index'])->name('collection');
 
 
 

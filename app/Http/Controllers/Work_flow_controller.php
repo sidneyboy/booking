@@ -200,4 +200,35 @@ class Work_flow_controller extends Controller
 
         return 'saved';
     }
+
+    public function work_flow_inventory_save(Request $request)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+        //return $request->input();
+        $sales_order_save = new Sales_order([
+            'customer_id' => $request->input('customer_id'),
+            'principal_id' => $request->input('principal_id'),
+            'mode_of_transaction' => $request->input('mode_of_transaction'),
+            'sku_type' => $request->input('sku_type'),
+            'total_amount' => $request->input('total_amount'),
+            'agent_id' => $request->input('agent_id'),
+        ]);
+
+        $sales_order_save->save();
+
+        foreach ($request->input('inventory_id') as $key => $data) {
+            $sales_order_details_save = new Sales_order_details([
+                'sales_order_id' => $sales_order_save->id,
+                'inventory_id' => $data,
+                'quantity' => $request->input('sales_order_quantity')[$data],
+                'unit_price' => $request->input('unit_price')[$data],
+                'sku_type' => $request->input('sku_type'),
+            ]);
+
+            $sales_order_details_save->save();
+        }
+
+        // return 'saved';
+    }
 }
