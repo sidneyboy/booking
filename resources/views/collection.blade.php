@@ -30,7 +30,8 @@
                 <form id="collection_generate_customer_payables">
                     <div class="form-group">
                         <label>Customer</label>
-                        <select name="customer_id" id="customer_id" required style="width:100%" class="form-control select2">
+                        <select name="customer_id" id="customer_id" required style="width:100%"
+                            class="form-control select2">
                             <option value="" default>Select Customer</option>
                             @foreach ($customer as $data)
                                 <option value="{{ $data->id }}">{{ $data->store_name }}</option>
@@ -50,9 +51,9 @@
         </div>
         <!-- /.card -->
         <!-- Default box -->
-        {{-- <div class="card">
+        <div class="card">
             <div class="card-header">
-                <h3 class="card-title" style="font-weight: bold;">SUGGESTED SALES ORDER</h3>
+                <h3 class="card-title" style="font-weight: bold;">COLLECTION SUMMARY</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
                         title="Collapse">
@@ -63,14 +64,14 @@
                 </div>
             </div>
             <div class="card-body">
-                <div id="work_flow_suggested_sales_order_page"></div>
+                <div id="collection_generate_final_summary_page"></div>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
 
             </div>
             <!-- /.card-footer-->
-        </div> --}}
+        </div>
         <!-- /.card -->
 
         <!-- Default box -->

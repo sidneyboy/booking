@@ -22,17 +22,44 @@ class Collection_controller extends Controller
 
     public function collection_generate_customer_payables(Request $request)
     {
-        $sales_register = Sales_register::select('dr', 'date_delivered', 'principal_id', 'status', 'total_amount','sku_type')->where('customer_id', $request->input('customer_id'))
+        $sales_register = Sales_register::select('id', 'dr', 'date_delivered', 'principal_id', 'status', 'total_amount', 'sku_type')->where('customer_id', $request->input('customer_id'))
             ->where('status', '!=', 'paid')
             ->get();
 
-        $sales_order = Sales_order::select('total_amount','principal_id','sku_type','status')->where('customer_id', $request->input('customer_id'))
+        $sales_order = Sales_order::select('id', 'total_amount', 'principal_id', 'sku_type', 'status')->where('customer_id', $request->input('customer_id'))
             ->where('status', '!=', 'paid')
             ->get();
 
         return view('collection_generate_customer_payables', [
             'sales_register' => $sales_register,
             'sales_order' => $sales_order,
+        ])->with('customer_id', $request->input('customer_id'));
+    }
+
+    public function collection_generate_final_summary(Request $request)
+    {
+        $sales_register_amount_paid = array_filter($request->input('sales_register_amount_paid'));
+
+
+        return view('collection_generate_final_summary', [
+            'sales_register_amount_paid' => str_replace(',', '', $sales_register_amount_paid),
+            'sales_register_dr' => $request->input('sales_register_dr'),
+            'sales_register_principal' => $request->input('sales_register_principal'),
+            'sales_register_sku_type' => $request->input('sales_register_sku_type'),
+            'sales_register_total_amount' => $request->input('sales_register_total_amount'),
+            'sales_register_mode_of_payment' => $request->input('sales_register_mode_of_payment'),
+            'sales_register_remarks' => $request->input('sales_register_remarks'),
+
         ]);
+    }
+
+    public function collection_save(Request $request)
+    {
+        foreach ($request->input('sales_register_id') as $data) {
+            Sales_register::where('id', $data)
+                ->update(['status' => 'paid']);
+        }
+
+        return 'saved';
     }
 }

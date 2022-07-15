@@ -81,8 +81,6 @@ class Work_flow_controller extends Controller
             $sales_register_count = Sales_order::where('customer_id', $request->input('customer'))
                 ->count();
 
-            //return $sales_order_count + $sales_register_count;
-
             if ($sales_order_count + $sales_register_count != 0) {
                 return 'maximum_allowed_sales_order_consumed';
             } else {
@@ -96,7 +94,7 @@ class Work_flow_controller extends Controller
             $sales_register_count = Sales_order::where('customer_id', $request->input('customer'))
                 ->count();
 
-            if ($sales_order_count + $sales_register_count <= $customer_allowed_number_of_sales_order->allowed_number_of_sales_order) {
+            if ($sales_order_count + $sales_register_count < $customer_allowed_number_of_sales_order->allowed_number_of_sales_order) {
                 return 'proceed';
             } else {
                 return 'maximum_allowed_sales_order_consumed';

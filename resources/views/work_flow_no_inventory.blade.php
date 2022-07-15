@@ -9,7 +9,7 @@
                 <tr>
                     <th colspan="3">
                         <select name="mode_of_transaction" class="form-control select2" required style="width:100%">
-                            <option value="" default>Select Mode of Transaction</option>
+                            <option value="" default>Select Mode of Payment</option>
                             <option value="COD">COD</option>
                             <option value="PDC">PDC</option>
                             <option value="VALE">VALE</option>
