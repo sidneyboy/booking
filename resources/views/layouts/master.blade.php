@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="{{ asset('/adminLte/plugins/toastr/toastr.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/adminLte/plugins/datatables-bs4/css/dataTables.bootstrap4.css') }}">
     <link rel="stylesheet" href="{{ asset('/adminLte/dist/css/adminlte.min.css') }}">
-
+    <script type="text/javascript" src="{{ asset('adminLte/html2canvas.js') }}"></script>
    
     <!-- Google Font: Source Sans Pro -->
     <link href="{{ asset('/adminLte/fonts_google.css') }}" rel="stylesheet">
@@ -457,9 +457,8 @@
     <script src="{{ asset('adminLte/dist/js/demo.js') }}"></script>
     <script src="{{ asset('adminLte/sweet_alert.js') }}"></script>
     
-    <script type="text/javascript" src="{{ asset('jquery.signature.min.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('jquery.signature.css') }}">
 
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
     <script>
    

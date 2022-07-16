@@ -30,6 +30,11 @@ class Sales_register extends Model
       return $this->belongsTo('App\Models\Principal', 'principal_id');
     }
 
+    public function customer()
+    {
+      return $this->belongsTo('App\Models\Customer', 'customer_id');
+    }
+
     public function sales_register_details_for_inventory_filter()
     {
       return $this->hasMany('App\Models\Sales_register_details', 'sales_register_id')->select('inventory_id');

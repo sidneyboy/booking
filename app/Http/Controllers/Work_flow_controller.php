@@ -201,8 +201,7 @@ class Work_flow_controller extends Controller
             ->with('customer_principal_price', $customer_principal_price)
             ->with('sku_type', $request->input('sku_type'))
             ->with('agent_user', $agent_user)
-            ->with('date', $date)
-            ->with('mode_of_transaction', $request->input('mode_of_transaction'));
+            ->with('date', $date);
     }
 
     public function work_flow_no_inventory_save(Request $request)
@@ -239,6 +238,7 @@ class Work_flow_controller extends Controller
 
     public function work_flow_inventory_save(Request $request)
     {
+        //return $request->input();
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
         //return $request->input();

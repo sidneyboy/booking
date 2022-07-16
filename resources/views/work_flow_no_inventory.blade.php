@@ -7,16 +7,6 @@
                     <th colspan="3">New Sales Order</th>
                 </tr>
                 <tr>
-                    <th colspan="3">
-                        <select name="mode_of_transaction" class="form-control select2" required style="width:100%">
-                            <option value="" default>Select Mode of Payment</option>
-                            <option value="COD">COD</option>
-                            <option value="PDC">PDC</option>
-                            <option value="VALE">VALE</option>
-                        </select>
-                    </th>
-                </tr>
-                <tr>
                     <th>Desc</th>
                     <th>Qty</th>
                 </tr>

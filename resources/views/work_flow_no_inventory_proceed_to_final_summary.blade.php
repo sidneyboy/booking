@@ -20,6 +20,9 @@
                 <tr>
                     <th style="text-align: center;" colspan="3">{{ $date }}</th>
                 </tr>
+                <tr>
+                    <th style="text-align: center;text-transform:uppercase" colspan="3">{{ $customer_principal_price->customer->mode_of_transaction }}</th>
+                </tr>
             </thead>
         </table>
         <table class="table table-borderless table-sm"
@@ -89,7 +92,7 @@
     <input type="hidden" name="principal_id" value="{{ $principal_id }}">
     <input type="hidden" name="customer_id" value="{{ $customer_id }}">
     <input type="hidden" name="sku_type" value="{{ $sku_type }}">
-    <input type="hidden" name="mode_of_transaction" value="{{ $mode_of_transaction }}">
+    <input type="hidden" name="mode_of_transaction" value="{{ $customer_principal_price->customer->mode_of_transaction }}">
 
 
     <div class="row">

@@ -38,14 +38,10 @@
                         <td>{{ $data->sku_type }}</td>
                         <td>{{ $data->status }}</td>
                         <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
-                        <td>
-                            <select name="sales_register_mode_of_payment[{{ $data->id }}]" style="width:150px"
-                                required class="form-control select2">
-                                <option value="" default>Select</option>
-                                <option value="NO PAYMENT">No Payment</option>
-                                <option value="PDC">PDC</option>
-                                <option value="Cash">Cash</option>
-                            </select>
+                        <td style="text-transform: uppercase">
+                            {{ $data->customer->mode_of_transaction }}
+                            <input type="hidden" name="sales_register_mode_of_transaction[{{ $data->id }}]"
+                                value="{{ $data->customer->mode_of_transaction }}">
                         </td>
                         <td>
                             <input type="text"
@@ -67,11 +63,16 @@
                                 value="0" required>
                         </td>
                         <td>
-                            <input type="hidden" name="sales_register_dr[{{ $data->id }}]" value="{{ $data->dr }}">
-                            <input type="hidden" value="{{ $data->total_amount }}" name="sales_register_total_amount[{{ $data->id }}]">
-                            <input type="hidden" value="{{ $data->sku_type }}" name="sales_register_sku_type[{{ $data->id }}]">
-                            <input type="hidden" value="{{ $data->principal_id }}" name="sales_register_principal_id[{{ $data->id }}]">
-                            <input type="hidden" value="{{ $data->principal->principal }}" name="sales_register_principal[{{ $data->id }}]">
+                            <input type="hidden" name="sales_register_dr[{{ $data->id }}]"
+                                value="{{ $data->dr }}">
+                            <input type="hidden" value="{{ $data->total_amount }}"
+                                name="sales_register_total_amount[{{ $data->id }}]">
+                            <input type="hidden" value="{{ $data->sku_type }}"
+                                name="sales_register_sku_type[{{ $data->id }}]">
+                            <input type="hidden" value="{{ $data->principal_id }}"
+                                name="sales_register_principal_id[{{ $data->id }}]">
+                            <input type="hidden" value="{{ $data->principal->principal }}"
+                                name="sales_register_principal[{{ $data->id }}]">
                             <input type="text" style="width:150px;"
                                 name="sales_register_remarks[{{ $data->id }}]" class="form-control">
                         </td>
@@ -85,15 +86,10 @@
                         <td>{{ $data->sku_type }}</td>
                         <td>{{ $data->status }}</td>
                         <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
-                       
-                        <td>
-                            <select name="sales_order_mode_of_payment[{{ $data->id }}]" style="width:150px"
-                                required class="form-control select2">
-                                <option value="" default>Select</option>
-                                <option value="no_payment">No Payment</option>
-                                <option value="pdc">PDC</option>
-                                <option value="Cash">Cash</option>
-                            </select>
+                        <td style="text-transform: uppercase">
+                            {{ $data->customer->mode_of_transaction }}
+                            <input type="hidden" name="sales_order_mode_of_transaction[{{ $data->id }}]"
+                                value="{{ $data->customer->mode_of_transaction }}">
                         </td>
                         <td>
                             <input type="text"
@@ -115,9 +111,16 @@
                                 value="0" required>
                         </td>
                         <td>
-                            <input type="hidden" value="{{ $data->principal_id }}" name="sales_order_principal_id[{{ $data->id }}]">
+                            <input type="hidden" value="{{ $data->principal_id }}"
+                                name="sales_order_principal_id[{{ $data->id }}]">
                             <input type="text" style="width:150px" name="sales_order_remarks[{{ $data->id }}]"
                                 class="form-control">
+                            <input type="hidden" value="{{ $data->total_amount }}"
+                                name="sales_order_total_amount[{{ $data->id }}]">
+                            <input type="hidden" value="{{ $data->sku_type }}"
+                                name="sales_order_sku_type[{{ $data->id }}]">
+                            <input type="hidden" value="{{ $data->principal->principal }}"
+                                name="sales_order_principal[{{ $data->id }}]">
                         </td>
                     </tr>
                 @endforeach

@@ -23,4 +23,9 @@ class Sales_order extends Model
     {
         return $this->belongsTo('App\Models\Principal', 'principal_id');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo('App\Models\Customer', 'customer_id');
+    }
 }

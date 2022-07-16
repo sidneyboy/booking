@@ -1,50 +1,26 @@
 <style>
-    .kbw-signature {
-        width: 400px;
+    .wrapper {
+        position: relative;
         height: 200px;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 
-    #sig canvas {
-        width: 100% !important;
-        height: auto;
+    .signature-pad {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 200px;
+        background-color: white;
     }
 </style>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <form id="work_flow_inventory_save">
     <div id="export_table_as_image" style="background-color:antiquewhite">
-        <table class="table table-borderless table-sm"
-            style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
+        <table class="table table-borderless table-sm" style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
             <thead>
                 <tr>
                     <th style="text-align: center;" colspan="3">JULMAR COMMERCIAL INC.</th>
@@ -68,6 +44,7 @@
                     <th style="text-align: center;text-transform:uppercase" colspan="3">
                         {{ $customer_principal_price->customer->mode_of_transaction }}</th>
                 </tr>
+            
             </thead>
         </table>
         <table class="table table-bordered table-sm" style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
@@ -129,6 +106,14 @@
                     <th colspan="3">Total</th>
                     <th style="text-align: right">{{ number_format(array_sum($sum_total), 2, '.', ',') }}</th>
                 </tr>
+                <tr>
+                    <th colspan="4">
+                        <div class="wrapper">
+                            <canvas id="signature-pad" style="border:dotted;width:100%;height:150px;"
+                                class="signature-pad"></canvas>
+                        </div>
+                    </th>
+                </tr>
             </tfoot>
         </table>
     </div>
@@ -141,104 +126,33 @@
         value="{{ $customer_principal_price->customer->mode_of_transaction }}">
 
 
-
-
-
-        <div class="col-md-12">
-            <label class="" for="">Signature:</label>
-            <br />
-            <div id="sig" style="width:100%;"></div>
-            <br />
-        
-            <textarea id="signature64" name="signature" style="display: none"></textarea>
-            {{-- <div class="col-12">
-                <button class="btn btn-sm btn-warning float-right" id="clear">&#x232B;Clear Signature</button>
-            </div> --}}
-        </div><br />
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="row">
         <div class="col-md-12">
-            <button class="btn btn-info btn-block" id="convert">Export as Image</button>
+           
         </div>
         <div class="col-md-12">
             <br />
-            <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button>
+            {{-- <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button> --}}
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 </form>
+
+<button class="btn btn-info btn-block" id="convert">Export as Image</button>
+
 
 <div style="" id="result"></div>
 
+<script src="{{ asset('js/signature_pad.umd.js') }}"></script>
+<script src="{{ asset('js/app2.js') }}"></script>
 <script>
-    var sig = $('#sig').signature({
-        syncField: '#signature64',
-        syncFormat: 'PNG'
-    });
-    $('#clear').click(function(e) {
-        e.preventDefault();
-        sig.signature('clear');
-        $("#signature64").val('');
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
 
     $("#convert").on('click', (function(e) {
         e.preventDefault();
+        //alert('asdasd');
         //$('.loading').show();
         var resultDiv = document.getElementById("result");
         html2canvas(document.getElementById("export_table_as_image"), {
@@ -253,6 +167,11 @@
             }
         });
     }));
+
+
+
+
+
 
 
     $("#work_flow_inventory_save").on('submit', (function(e) {
@@ -271,4 +190,85 @@
             },
         });
     }));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var canvas = document.getElementById('signature-pad');
+    // Adjust canvas coordinate space taking into account pixel ratio,
+    // to make it look crisp on mobile devices.
+    // This also causes canvas to be cleared.
+    function resizeCanvas() {
+        // When zoomed out to less than 100%, for some very strange reason,
+        // some browsers report devicePixelRatio as less than 1
+        // and only part of the canvas is cleared then.
+        var ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+    }
+    window.onresize = resizeCanvas;
+    resizeCanvas();
+    var signaturePad = new SignaturePad(canvas, {
+        backgroundColor: 'rgb(255, 255, 255)' // necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+    });
+    document.getElementById('save-png').addEventListener('click', function() {
+        if (signaturePad.isEmpty()) {
+            return alert("Please provide a signature first.");
+        }
+        var data = signaturePad.toDataURL('image/png');
+        console.log(data);
+        window.open(data);
+    });
+    document.getElementById('save-jpeg').addEventListener('click', function() {
+        if (signaturePad.isEmpty()) {
+            return alert("Please provide a signature first.");
+        }
+        var data = signaturePad.toDataURL('image/jpeg');
+        console.log(data);
+        window.open(data);
+    });
+    document.getElementById('save-svg').addEventListener('click', function() {
+        if (signaturePad.isEmpty()) {
+            return alert("Please provide a signature first.");
+        }
+        var data = signaturePad.toDataURL('image/svg+xml');
+        console.log(data);
+        console.log(atob(data.split(',')[1]));
+        window.open(data);
+    });
+    document.getElementById('clear').addEventListener('click', function() {
+        signaturePad.clear();
+    });
+    document.getElementById('draw').addEventListener('click', function() {
+        var ctx = canvas.getContext('2d');
+        console.log(ctx.globalCompositeOperation);
+        ctx.globalCompositeOperation = 'source-over'; // default value
+    });
+    document.getElementById('erase').addEventListener('click', function() {
+        var ctx = canvas.getContext('2d');
+        ctx.globalCompositeOperation = 'destination-out';
+    });
+
 </script>
