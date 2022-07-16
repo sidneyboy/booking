@@ -37,6 +37,8 @@ Route::get('/customer_principal_code_upload', [App\Http\Controllers\Customer_con
 Route::post('/customer_principal_code_upload_process', [App\Http\Controllers\Customer_controller::class, 'customer_principal_code_upload_process'])->name('customer_principal_code_upload_process');
 Route::get('/customer_principal_price_upload', [App\Http\Controllers\Customer_controller::class, 'customer_principal_price_upload'])->name('customer_principal_price_upload');
 Route::post('/customer_principal_price_upload_process', [App\Http\Controllers\Customer_controller::class, 'customer_principal_price_upload_process'])->name('customer_principal_price_upload_process');
+Route::get('/customer_principal_discount_upload', [App\Http\Controllers\Customer_controller::class, 'customer_principal_discount_upload'])->name('customer_principal_discount_upload');
+Route::post('/customer_principal_discount_process', [App\Http\Controllers\Customer_controller::class, 'customer_principal_discount_process'])->name('customer_principal_discount_process');
 
 
 

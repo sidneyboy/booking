@@ -13,16 +13,6 @@
         <table class="table table-bordered table-sm" id="table_suggested_so">
             <thead>
                 <tr>
-                    <th colspan="9">
-                        <select name="mode_of_transaction" class="form-control" required style="width:100%">
-                            <option value="" default>Select Mode of Payment</option>
-                            <option value="COD">COD</option>
-                            <option value="PDC">PDC</option>
-                            <option value="VALE">VALE</option>
-                        </select>
-                    </th>
-                </tr>
-                <tr>
                     <th>Desc</th>
                     <th>Delivered Inventory</th>
                     <th>Current Inventory</th>

@@ -293,7 +293,7 @@
           <!-- Sidebar user (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-              <img src="{{ asset("/adminLte/dist/img/user2-160x160.jpg") }}" class="img-circle elevation-2" alt="User Image">
+              <img src="{{ asset('images/'. $agent_user->agent_image) }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
               <a href="#" class="d-block" style="text-transform: uppercase;">{{ $agent_user->agent_name }}</a>
@@ -348,6 +348,14 @@
                   <i class="nav-icon fas fa-th"></i>
                   <p>
                     Principal Price Upload
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('customer_principal_discount_upload') }}"  class="nav-link {{ $active == 'customer_principal_discount_upload' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    Principal Discount Upload
                   </p>
                 </a>
               </li>
@@ -448,7 +456,10 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('adminLte/dist/js/demo.js') }}"></script>
     <script src="{{ asset('adminLte/sweet_alert.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('adminLte/html2canvas.js') }}"></script>
+    
+    <script type="text/javascript" src="{{ asset('jquery.signature.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('jquery.signature.css') }}">
+
 
     <script>
    

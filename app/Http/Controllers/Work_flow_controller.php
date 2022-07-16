@@ -43,6 +43,8 @@ class Work_flow_controller extends Controller
                 $registered_inventory[] = $data->inventory_id;
             }
 
+            //return $registered_inventory;
+
             $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
                 ->where('principal_id', $request->input('principal'))
                 ->where('sku_type', $request->input('sku_type'))
@@ -140,6 +142,7 @@ class Work_flow_controller extends Controller
             'description',
             'sku_code',
             'id',
+            'uom',
             'price_1',
             'price_2',
             'price_3',
@@ -160,7 +163,6 @@ class Work_flow_controller extends Controller
             ->with('principal_id', $request->input('principal_id'))
             ->with('customer_id', $request->input('customer_id'))
             ->with('agent_user', $agent_user)
-            ->with('mode_of_transaction', $request->input('mode_of_transaction'))
             ->with('sku_type', $request->input('sku_type'))
             ->with('date', $date);
     }

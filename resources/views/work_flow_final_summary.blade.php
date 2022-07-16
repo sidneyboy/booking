@@ -1,6 +1,50 @@
+<style>
+    .kbw-signature {
+        width: 400px;
+        height: 200px;
+    }
+
+    #sig canvas {
+        width: 100% !important;
+        height: auto;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <form id="work_flow_inventory_save">
     <div id="export_table_as_image" style="background-color:antiquewhite">
-        <table class="table table-borderless table-sm" style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
+        <table class="table table-borderless table-sm"
+            style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
             <thead>
                 <tr>
                     <th style="text-align: center;" colspan="3">JULMAR COMMERCIAL INC.</th>
@@ -20,6 +64,10 @@
                 <tr>
                     <th style="text-align: center;" colspan="3">{{ $date }}</th>
                 </tr>
+                <tr>
+                    <th style="text-align: center;text-transform:uppercase" colspan="3">
+                        {{ $customer_principal_price->customer->mode_of_transaction }}</th>
+                </tr>
             </thead>
         </table>
         <table class="table table-bordered table-sm" style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
@@ -34,7 +82,7 @@
             <tbody>
                 @foreach ($inventory_data as $data)
                     <tr>
-                        <th>{{ $data->description }}</th>
+                        <th>{{ $data->description }} {{ $data->uom }}</th>
                         <th style="text-align: right">{{ $sales_order_final_quantity[$data->id] }}</th>
                         <th style="text-align: right">
                             @if ($customer_principal_price->price_level == 'price_1')
@@ -89,7 +137,51 @@
     <input type="hidden" name="principal_id" value="{{ $principal_id }}">
     <input type="hidden" name="customer_id" value="{{ $customer_id }}">
     <input type="hidden" name="sku_type" value="{{ $sku_type }}">
-    <input type="hidden" name="mode_of_transaction" value="{{ $mode_of_transaction }}">
+    <input type="hidden" name="mode_of_transaction"
+        value="{{ $customer_principal_price->customer->mode_of_transaction }}">
+
+
+
+
+
+        <div class="col-md-12">
+            <label class="" for="">Signature:</label>
+            <br />
+            <div id="sig" style="width:100%;"></div>
+            <br />
+        
+            <textarea id="signature64" name="signature" style="display: none"></textarea>
+            {{-- <div class="col-12">
+                <button class="btn btn-sm btn-warning float-right" id="clear">&#x232B;Clear Signature</button>
+            </div> --}}
+        </div><br />
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     <div class="row">
@@ -101,11 +193,50 @@
             <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </form>
 
 <div style="" id="result"></div>
 
 <script>
+    var sig = $('#sig').signature({
+        syncField: '#signature64',
+        syncFormat: 'PNG'
+    });
+    $('#clear').click(function(e) {
+        e.preventDefault();
+        sig.signature('clear');
+        $("#signature64").val('');
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     $("#convert").on('click', (function(e) {
         e.preventDefault();
         //$('.loading').show();

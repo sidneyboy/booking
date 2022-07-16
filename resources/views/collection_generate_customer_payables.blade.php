@@ -44,6 +44,7 @@
                                 <option value="" default>Select</option>
                                 <option value="NO PAYMENT">No Payment</option>
                                 <option value="PDC">PDC</option>
+                                <option value="Cash">Cash</option>
                             </select>
                         </td>
                         <td>
@@ -82,14 +83,16 @@
                         <td>N/A</td>
                         <td>{{ $data->principal->principal }}</td>
                         <td>{{ $data->sku_type }}</td>
-                        <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
                         <td>{{ $data->status }}</td>
+                        <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
+                       
                         <td>
                             <select name="sales_order_mode_of_payment[{{ $data->id }}]" style="width:150px"
                                 required class="form-control select2">
                                 <option value="" default>Select</option>
                                 <option value="no_payment">No Payment</option>
                                 <option value="pdc">PDC</option>
+                                <option value="Cash">Cash</option>
                             </select>
                         </td>
                         <td>
