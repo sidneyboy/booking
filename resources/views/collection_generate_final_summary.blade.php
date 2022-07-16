@@ -65,6 +65,7 @@
                         @endphp
                     </td>
                     <td>{{ $sales_order_remarks[$key] }}</td>
+                     <input type="hidden" value="{{ $key }}" name="sales_order_id[]">
                 @endforeach
             </tbody>
         </table>

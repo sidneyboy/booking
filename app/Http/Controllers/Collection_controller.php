@@ -72,6 +72,11 @@ class Collection_controller extends Controller
                 ->update(['status' => 'paid']);
         }
 
+        foreach ($request->input('sales_order_id') as $data) {
+            Sales_order::where('id', $data)
+                ->update(['status' => 'paid']);
+        }
+
         return 'saved';
     }
 }
