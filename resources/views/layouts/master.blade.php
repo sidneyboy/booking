@@ -379,6 +379,15 @@
               </li>
 
               <li class="nav-item">
+                <a href="{{ url('new_customer') }}"  class="nav-link {{ $active == 'new_customer' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    New Customer
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
                 <a href="{{ url('work_flow') }}"  class="nav-link {{ $active == 'work_flow' ? 'active' : '' }}">
                   <i class="nav-icon fas fa-th"></i>
                   <p>
@@ -415,7 +424,7 @@
         <div class="float-right d-none d-sm-block">
           <b>Version</b> 3.0.2
         </div>
-        <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+        <strong>Copyright &copy; 2022 Julmar Commercial Inc All rights
         reserved.
       </footer>
       <!-- Control Sidebar -->

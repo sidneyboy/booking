@@ -6,6 +6,7 @@ use App\Models\Agent_user;
 use App\Models\Customer_principal_code;
 use App\Models\Customer_principal_price;
 use App\Models\Customer;
+use App\Models\Location;
 use App\Models\Audit_trail;
 use App\Models\Customer_principal_discount;
 use Illuminate\Http\Request;
@@ -237,5 +238,32 @@ class Customer_controller extends Controller
         } else {
             return 'incorrect_file';
         }
+    }
+
+    public function new_customer()
+    {
+        $agent_user = Agent_user::first();
+        $location = location::select('id','location')->get();
+        return view('new_customer',[
+            'location' => $location,
+        ])->with('active', 'new_customer')
+            ->with('agent_user', $agent_user);
+    }
+
+    public function new_customer_generate_csv(Request $request)
+    {
+        //return $request->input();
+        $location_data = explode('-',$request->input('location'));
+        $location_id = $location_data[0];
+        $location = $location_data[1];
+        return view('new_customer_generate_csv')
+                ->with('store_name',$request->input('store_name'))
+                ->with('contact_person',$request->input('contact_person'))
+                ->with('contact_number',$request->input('contact_number'))
+                ->with('location_id',$request->input('location_id'))
+                ->with('detailed_address',$request->input('detailed_address'))
+                ->with('agent_name',$request->input('agent_name'))
+                ->with('location',$location)
+                ->with('location_id',$location_id);
     }
 }
