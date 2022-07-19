@@ -16,4 +16,10 @@ class Sales_order_details extends Model
         'unit_price',
         'sku_type',
     ];
+
+    
+    public function inventory()
+    {
+        return $this->belongsTo('App\Models\Inventory', 'inventory_id');
+    }
 }

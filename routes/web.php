@@ -75,5 +75,5 @@ Route::post('/new_customer_generate_csv', [App\Http\Controllers\Customer_control
 
 
 
-
+Route::get('/sales_order_export', [App\Http\Controllers\Sales_order_export_controller::class, 'index'])->name('sales_order_export');
 

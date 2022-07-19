@@ -388,6 +388,15 @@
               </li>
 
               <li class="nav-item">
+                <a href="{{ url('sales_order_export') }}"  class="nav-link {{ $active == 'sales_order_export' ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                    SO Export
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
                 <a href="{{ url('work_flow') }}"  class="nav-link {{ $active == 'work_flow' ? 'active' : '' }}">
                   <i class="nav-icon fas fa-th"></i>
                   <p>

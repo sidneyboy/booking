@@ -217,6 +217,7 @@ class Work_flow_controller extends Controller
             'total_amount' => $request->input('total_amount'),
             'agent_id' => $request->input('agent_id'),
             'status' => 'New',
+            'exported' => 'not_yet_exported',
         ]);
 
         $sales_order_save->save();
@@ -250,6 +251,7 @@ class Work_flow_controller extends Controller
             'total_amount' => $request->input('total_amount'),
             'agent_id' => $request->input('agent_id'),
             'status' => 'New',
+            'exported' => 'not_yet_exported',
         ]);
 
         $sales_order_save->save();
@@ -266,6 +268,6 @@ class Work_flow_controller extends Controller
             $sales_order_details_save->save();
         }
 
-        // return 'saved';
+        return 'saved';
     }
 }

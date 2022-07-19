@@ -17,7 +17,14 @@ class Sales_order extends Model
         'total_amount',
         'agent_id',
         'status',
+        'exported',
     ];
+
+    
+    public function sales_order_details()
+    {
+        return $this->hasMany('App\Models\Sales_order_details', 'sales_order_id');
+    }
 
     public function principal()
     {
@@ -27,5 +34,10 @@ class Sales_order extends Model
     public function customer()
     {
         return $this->belongsTo('App\Models\Customer', 'customer_id');
+    }
+
+    public function agent()
+    {
+        return $this->belongsTo('App\Models\Agent_user', 'agent_id','id');
     }
 }

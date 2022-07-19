@@ -44,7 +44,7 @@
                     <th style="text-align: center;text-transform:uppercase" colspan="3">
                         {{ $customer_principal_price->customer->mode_of_transaction }}</th>
                 </tr>
-            
+
             </thead>
         </table>
         <table class="table table-bordered table-sm" style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
@@ -126,15 +126,17 @@
         value="{{ $customer_principal_price->customer->mode_of_transaction }}">
 
 
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-12">
-           
+
         </div>
         <div class="col-md-12">
             <br />
-            {{-- <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button> --}}
+            
         </div>
-    </div>
+    </div> --}}
+    <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button>
+    <br />
 </form>
 
 <button class="btn btn-info btn-block" id="convert">Export as Image</button>
@@ -145,11 +147,6 @@
 <script src="{{ asset('js/signature_pad.umd.js') }}"></script>
 <script src="{{ asset('js/app2.js') }}"></script>
 <script>
-    
-
-
-
-
     $("#convert").on('click', (function(e) {
         e.preventDefault();
         //alert('asdasd');
@@ -271,4 +268,5 @@
         ctx.globalCompositeOperation = 'destination-out';
     });
 
+    
 </script>
