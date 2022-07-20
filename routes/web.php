@@ -69,6 +69,10 @@ Route::post('/collection_generate_final_summary', [App\Http\Controllers\Collecti
 Route::post('/collection_save', [App\Http\Controllers\Collection_controller::class, 'collection_save'])->name('collection_save');
 
 
+
+
+Route::get('/collection_export', [App\Http\Controllers\Collection_controller::class, 'collection_export'])->name('collection_export');
+
 Route::get('/new_customer', [App\Http\Controllers\Customer_controller::class, 'new_customer'])->name('new_customer');
 Route::post('/new_customer_generate_csv', [App\Http\Controllers\Customer_controller::class, 'new_customer_generate_csv'])->name('new_customer_generate_csv');
 

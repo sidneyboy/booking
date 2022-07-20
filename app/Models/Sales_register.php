@@ -17,7 +17,8 @@ class Sales_register extends Model
         'date_delivered',
         'sku_type',
         'principal_id',
-        'status'
+        'status',
+        'amount_paid'
     ];
 
     public function sales_register_details()

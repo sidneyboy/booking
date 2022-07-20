@@ -6,6 +6,8 @@ use App\Models\Agent_user;
 use App\Models\Sales_register;
 use App\Models\Sales_order;
 use App\Models\Customer;
+use App\Models\Collection;
+use App\Models\Collection_details;
 use Illuminate\Http\Request;
 
 class Collection_controller extends Controller
@@ -22,12 +24,12 @@ class Collection_controller extends Controller
 
     public function collection_generate_customer_payables(Request $request)
     {
-        $sales_register = Sales_register::select('id', 'dr', 'date_delivered', 'principal_id', 'status', 'total_amount', 'sku_type','customer_id')
+        $sales_register = Sales_register::select('id', 'dr', 'date_delivered', 'principal_id', 'status', 'total_amount', 'sku_type', 'customer_id','amount_paid')
             ->where('customer_id', $request->input('customer_id'))
             ->where('status', '!=', 'paid')
             ->get();
 
-        $sales_order = Sales_order::select('id', 'total_amount', 'principal_id', 'sku_type', 'status','customer_id')
+        $sales_order = Sales_order::select('id', 'total_amount', 'principal_id', 'sku_type', 'status', 'customer_id','amount_paid')
             ->where('customer_id', $request->input('customer_id'))
             ->where('status', '!=', 'paid')
             ->get();
@@ -51,7 +53,9 @@ class Collection_controller extends Controller
             'sales_register_total_amount' => $request->input('sales_register_total_amount'),
             'sales_register_remarks' => $request->input('sales_register_remarks'),
             'sales_register_mode_of_transaction' => $request->input('sales_register_mode_of_transaction'),
-            
+            'sales_register_store_name' => $request->input('sales_register_store_name'),
+            'sales_register_balance' => $request->input('sales_register_balance'),
+
 
 
             'sales_order_amount_paid' => str_replace(',', '', $sales_order_amount_paid),
@@ -61,22 +65,113 @@ class Collection_controller extends Controller
             'sales_order_total_amount' => $request->input('sales_order_total_amount'),
             'sales_order_remarks' => $request->input('sales_order_remarks'),
             'sales_order_mode_of_transaction' => $request->input('sales_order_mode_of_transaction'),
+            'sales_order_store_name' => $request->input('sales_order_store_name'),
+            'sales_order_balance' => $request->input('sales_order_balance'),
+
+            'customer_id' => $request->input('customer_id'),
 
         ]);
     }
 
     public function collection_save(Request $request)
     {
-        foreach ($request->input('sales_register_id') as $data) {
-            Sales_register::where('id', $data)
-                ->update(['status' => 'paid']);
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d H:i:s');
+
+        foreach ($request->input('sales_order_id') as $key => $data) {
+            $sales_order_collection_saved = new Collection([
+                'customer_id' => $request->input('customer_id'),
+                'principal' => $request->input('sales_order_principal')[$data],
+                'total_amount' => $request->input('sales_order_total_amount')[$data],
+                'amount_paid' => $request->input('sales_order_amount_paid')[$data],
+                'mode_of_transaction' => $request->input('sales_order_mode_of_transaction')[$data],
+                'dr' => 'No Invoice Yet',
+                'sku_type' => $request->input('sales_order_sku_type')[$data],
+                'balance' => $request->input('sales_order_balance')[$data],
+            ]);
+
+            $sales_order_collection_saved->save();
+
+            $file = $request->file('sales_order_image')[$data];
+            $filename = $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+
+            $sales_order_collection_details_saved = new Collection_details([
+                'collection_id' => $sales_order_collection_saved->id,
+                'image' => $filename,
+            ]);
+
+            $sales_order_collection_details_saved->save();
+
+            if ($request->input('sales_order_balance')[$data] != 0) {
+                Sales_order::where('id', $data)
+                    ->update([
+                        'status' => 'partial',
+                        'amount_paid' => $request->input('sales_order_amount_paid')[$data],
+                        'updated_at' => $date,
+                    ]);
+            } else {
+                Sales_order::where('id', $data)
+                    ->update([
+                        'status' => 'paid',
+                        'amount_paid' => $request->input('sales_order_amount_paid')[$data],
+                        'updated_at' => $date,
+                    ]);
+            }
         }
 
-        foreach ($request->input('sales_order_id') as $data) {
-            Sales_order::where('id', $data)
-                ->update(['status' => 'paid']);
+        foreach ($request->input('sales_register_id') as $key => $data) {
+            $sales_register_collection_saved = new Collection([
+                'customer_id' => $request->input('customer_id'),
+                'principal' => $request->input('sales_register_principal')[$data],
+                'total_amount' => $request->input('sales_register_total_amount')[$data],
+                'amount_paid' => $request->input('sales_register_payment_data')[$data],
+                'mode_of_transaction' => $request->input('sales_register_mode_of_transaction')[$data],
+                'dr' => 'No Invoice Yet',
+                'sku_type' => $request->input('sales_register_sku_type')[$data],
+                'balance' => $request->input('sales_register_balance')[$data],
+            ]);
+
+            $sales_register_collection_saved->save();
+
+            $file = $request->file('sales_register_image')[$data];
+            $filename = $file->getClientOriginalName();
+            $file->move(public_path('images'), $filename);
+
+            $sales_register_collection_details_saved = new Collection_details([
+                'collection_id' => $sales_register_collection_saved->id,
+                'image' => $filename,
+            ]);
+
+            $sales_register_collection_details_saved->save();
+
+            if ($request->input('sales_register_balance')[$data] != 0) {
+                Sales_register::where('id', $data)
+                    ->update([
+                        'status' => 'partial',
+                        'amount_paid' => $request->input('sales_register_payment_data')[$data],
+                        'updated_at' => $date,
+                    ]);
+            } else {
+                Sales_register::where('id', $data)
+                    ->update([
+                        'status' => 'paid',
+                        'amount_paid' => $request->input('sales_register_payment_data')[$data],
+                        'updated_at' => $date,
+                    ]);
+            }
         }
 
         return 'saved';
+    }
+
+    public function collection_export()
+    {
+        $agent_user = Agent_user::first();
+        $collection = Collection::where('exported','!=','exported')->get();
+        return view('collection_export', [
+            'collection' => $collection,
+        ])->with('active', 'collection')
+            ->with('agent_user', $agent_user);
     }
 }

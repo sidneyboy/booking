@@ -120,15 +120,6 @@
         value="{{ $customer_principal_price->customer->mode_of_transaction }}">
 
 
-    {{-- <div class="row">
-        <div class="col-md-12">
-            <button class="btn btn-info btn-block" id="convert">Export as Image</button>
-        </div>
-        <div class="col-md-12">
-            <br />
-            <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button>
-        </div>
-    </div> --}}
     <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button>
     <br />
 </form>

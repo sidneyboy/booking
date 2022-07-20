@@ -18,30 +18,42 @@
         <table class="table table-bordered table-sm" id="accounts_payable">
             <thead>
                 <tr>
+                    <th>Store Name</th>
                     <th>DR</th>
                     <th>Date Delivered</th>
                     <th>Principal</th>
                     <th>Sku Type</th>
                     <th>Status</th>
-                    <th>Amount</th>
                     <th>Mode of Payment</th>
+                    <th>Amount</th>
                     <th>Amount Paid</th>
+                    <th>Balance</th>
+                    <th>Collection</th>
                     <th>Remarks</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($sales_register as $data)
                     <tr>
+                        <td>{{ $data->customer->store_name }}</td>
                         <td>{{ $data->dr }}</td>
                         <td>{{ $data->date_delivered }}</td>
                         <td>{{ $data->principal->principal }}</td>
                         <td>{{ $data->sku_type }}</td>
                         <td>{{ $data->status }}</td>
-                        <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
                         <td style="text-transform: uppercase">
                             {{ $data->customer->mode_of_transaction }}
                             <input type="hidden" name="sales_register_mode_of_transaction[{{ $data->id }}]"
                                 value="{{ $data->customer->mode_of_transaction }}">
+                        </td>
+                        <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
+                        <td style="text-align: right">{{ number_format($data->amount_paid, 2, '.', ',') }}</td>
+                        <td style="text-align: right">
+                            @php
+                                $sales_register_balance = $data->total_amount - $data->amount_paid;
+                                echo number_format($sales_register_balance, 2, '.', ',');
+                            @endphp
+                            <input type="hidden" value="{{ $sales_register_balance }}" name="sales_register_balance[{{ $data->id }}]">
                         </td>
                         <td>
                             <input type="text"
@@ -63,6 +75,8 @@
                                 value="0" required>
                         </td>
                         <td>
+                            <input type="hidden" name="" id="sales_register_store_name[{{ $data->id }}}]"
+                                value="{{ $data->customer->store_name }}">
                             <input type="hidden" name="sales_register_dr[{{ $data->id }}]"
                                 value="{{ $data->dr }}">
                             <input type="hidden" value="{{ $data->total_amount }}"
@@ -80,16 +94,25 @@
                 @endforeach
                 @foreach ($sales_order as $data)
                     <tr>
+                        <td>{{ $data->customer->store_name }}</td>
                         <td>No Invoice Yet</td>
                         <td>N/A</td>
                         <td>{{ $data->principal->principal }}</td>
                         <td>{{ $data->sku_type }}</td>
                         <td>{{ $data->status }}</td>
-                        <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
                         <td style="text-transform: uppercase">
                             {{ $data->customer->mode_of_transaction }}
                             <input type="hidden" name="sales_order_mode_of_transaction[{{ $data->id }}]"
                                 value="{{ $data->customer->mode_of_transaction }}">
+                        </td>
+                        <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
+                        <td style="text-align: right">{{ number_format($data->amount_paid, 2, '.', ',') }}</td>
+                        <td style="text-align: right">
+                            @php
+                                $sales_order_balance = $data->total_amount - $data->amount_paid;
+                                echo number_format($sales_order_balance, 2, '.', ',');
+                            @endphp
+                            <input type="hidden" name="sales_order_balance[{{ $data->id }}]" value="{{ $sales_order_balance }}">
                         </td>
                         <td>
                             <input type="text"
@@ -111,6 +134,8 @@
                                 value="0" required>
                         </td>
                         <td>
+                            <input type="hidden" name="" id="sales_order_store_name[{{ $data->id }}]"
+                                value="{{ $data->customer->store_name }}">
                             <input type="hidden" value="{{ $data->principal_id }}"
                                 name="sales_order_principal_id[{{ $data->id }}]">
                             <input type="text" style="width:150px" name="sales_order_remarks[{{ $data->id }}]"

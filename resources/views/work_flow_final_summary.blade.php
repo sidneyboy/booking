@@ -125,16 +125,6 @@
     <input type="hidden" name="mode_of_transaction"
         value="{{ $customer_principal_price->customer->mode_of_transaction }}">
 
-
-    {{-- <div class="row">
-        <div class="col-md-12">
-
-        </div>
-        <div class="col-md-12">
-            <br />
-            
-        </div>
-    </div> --}}
     <button type="submit" class="btn btn-block btn-success">Submit Sales Order</button>
     <br />
 </form>

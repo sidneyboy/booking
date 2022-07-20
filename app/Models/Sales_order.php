@@ -18,6 +18,7 @@ class Sales_order extends Model
         'agent_id',
         'status',
         'exported',
+        'amount_paid',
     ];
 
     
