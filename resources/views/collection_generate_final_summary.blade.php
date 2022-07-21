@@ -26,7 +26,6 @@
                     <th>Payment</th>
                     <th>Balance</th>
                     <th>Remarks</th>
-                    <th>Image</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,10 +45,11 @@
                                 echo number_format($balance, 2, '.', ',');
                             @endphp
                         </td>
-                        <td>{{ $sales_register_remarks[$key] }}</td>
                         <td>
-                            <input type="file" style="width:150px;" name="sales_register_image[{{ $key }}]"
-                                class="form-control" placeholder="Choose image" id="image" required>
+                            {{ $sales_register_remarks[$key] }}
+
+                            <input type="hidden" value="{{ $sales_register_remarks[$key] }}"
+                                name="sales_register_remarks[{{ $key }}]">
                             <input type="hidden" value="{{ $sales_register_principal[$key] }}"
                                 name="sales_register_principal[{{ $key }}]">
                             <input type="hidden" value="{{ $sales_register_total_amount[$key] }}"
@@ -86,11 +86,10 @@
                                 echo number_format($balance, 2, '.', ',');
                             @endphp
                         </td>
-                        <td>{{ $sales_order_remarks[$key] }}</td>
-                        <input type="hidden" value="{{ $key }}" name="sales_order_id[]">
                         <td>
-                            <input style="width:150px;" type="file" name="sales_order_image[{{ $key }}]"
-                                class="form-control" placeholder="Choose image" id="image" required>
+                            {{ $sales_order_remarks[$key] }}
+                            <input type="hidden" value="{{ $sales_order_remarks[$key] }}"
+                                name="sales_order_remarks[{{ $key }}]">
                             <input type="hidden" value="{{ $sales_order_principal[$key] }}"
                                 name="sales_order_principal[{{ $key }}]">
                             <input type="hidden" value="{{ $sales_order_total_amount[$key] }}"
@@ -105,7 +104,9 @@
                                 name="sales_order_sku_type[{{ $key }}]">
                             <input type="hidden" value="{{ $balance }}"
                                 name="sales_order_balance[{{ $key }}]">
+                            <input type="hidden" value="{{ $key }}" name="sales_order_id[]">
                         </td>
+
                     </tr>
                 @endforeach
 
@@ -138,7 +139,7 @@
                         'success'
                     );
 
-                    window.location.href = "/work_flow";
+                    window.location.href = "/collection_export";
                 } else {
                     Swal.fire(
                         'Uploaded file must be an image',

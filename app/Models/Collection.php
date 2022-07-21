@@ -19,6 +19,7 @@ class Collection extends Model
         'sku_type',
         'balance',
         'exported',
+        'remarks',
     ];
 
     public function customer()

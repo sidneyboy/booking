@@ -46,7 +46,7 @@
                                 <th>Total Amount</th>
                                 <th>Amount Paid</th>
                                 <th>Balance</th>
-                                <th>Image</th>
+                                <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,9 +57,10 @@
                                     <td>{{ $data->mode_of_transaction }}</td>
                                     <td>{{ $data->dr }}</td>
                                     <td>{{ $data->sku_type }}</td>
-                                    <td>{{ $data->total_amount }}</td>
-                                    <td>{{ $data->amount_paid }}</td>
-                                    <td>{{ $data->balance }}</td>
+                                    <td style="text-align: right">{{ $data->total_amount }}</td>
+                                    <td style="text-align: right">{{ $data->amount_paid }}</td>
+                                    <td style="text-align: right">{{ $data->balance }}</td>
+                                    <td>{{ $data->remarks }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
