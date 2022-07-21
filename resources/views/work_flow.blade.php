@@ -67,7 +67,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title" style="font-weight: bold;">SUGGESTED SALES ORDER</h3>
+                <h3 class="card-title" style="font-weight: bold;">SUGGESTED SALES ORDER AND BO FOR PCM</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
                         title="Collapse">

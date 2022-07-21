@@ -10,6 +10,8 @@ use App\Models\Customer_principal_price;
 use App\Models\Sales_register;
 use App\Models\Sales_order_details;
 use App\Models\Sales_order;
+use App\Models\Bad_order;
+use App\Models\Bad_order_details;
 use Illuminate\Http\Request;
 
 class Work_flow_controller extends Controller
@@ -121,6 +123,7 @@ class Work_flow_controller extends Controller
             'new_sales_order_inventory_id' => $request->input('new_sales_order_inventory_id'),
             'new_sales_order_inventory_quantity' => $new_sales_order_inventory_quantity,
             'new_sales_order_inventory_description' => $request->input('new_sales_order_inventory_description'),
+            'current_inventory_unit_price' => $request->input('current_inventory_unit_price'),
         ])->with('date_delivered', $request->input('date_delivered'))
             ->with('principal_id', $request->input('principal_id'))
             ->with('customer_id', $request->input('customer_id'))
@@ -132,10 +135,32 @@ class Work_flow_controller extends Controller
     {
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
+        $time = date('h:i:s a');
+        $date_receipt = date('Y-m');
+
         $customer_principal_price = Customer_principal_price::select('price_level', 'customer_id', 'principal_id')
             ->where('customer_id', $request->input('customer_id'))
             ->where('principal_id', $request->input('principal_id'))
             ->first();
+
+        $agent_user = Agent_user::select('agent_name','agent_id')->first();
+
+        $bad_order_data = Bad_order::select('pcm_number')->latest()->first();
+
+        if (!is_null($bad_order_data)) {
+            $var_explode = explode('-', $bad_order_data->delivery_receipt);
+            $year_and_month = $var_explode[2] . "-" . $var_explode[3];
+            $series = $var_explode[4];
+
+
+            if ($date_receipt != $year_and_month) {
+                $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+            } else {
+                $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt . "-" . str_pad($series + 1, 4, 0, STR_PAD_LEFT);
+            }
+        } else {
+             $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+        }
 
         $inventory_data = Inventory::select(
             'sku_type',
@@ -153,12 +178,20 @@ class Work_flow_controller extends Controller
 
         $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
 
+        
 
         return view('work_flow_final_summary', [
             'sales_order_final_inventory_description' => $request->input('sales_order_final_inventory_description'),
             'sales_order_final_inventory_id' => $request->input('sales_order_final_inventory_id'),
             'sales_order_final_quantity' => $request->input('sales_order_final_quantity'),
             'inventory_data' => $inventory_data,
+            'pcm_number' => strtoupper($pcm_number),
+
+            
+            'current_inventory_description' => $request->input('current_inventory_description'),
+            'current_inventory_unit_price' => $request->input('current_inventory_unit_price'),
+            'current_bo' => $request->input('current_bo'),
+            'current_bo_inventory_id' => $request->input('current_bo_inventory_id'),
         ])->with('customer_principal_price', $customer_principal_price)
             ->with('principal_id', $request->input('principal_id'))
             ->with('customer_id', $request->input('customer_id'))

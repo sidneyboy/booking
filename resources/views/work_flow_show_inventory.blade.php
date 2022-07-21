@@ -22,6 +22,7 @@
                             <input type="hidden" name="current_inventory_id[]" value="{{ $data->inventory_id }}">
                             <input type="hidden" name="current_inventory_description[{{ $data->inventory_id }}]"
                                 value="{{ $data->inventory->description }}">
+                            <input type="hidden" name="current_inventory_unit_price[{{ $data->inventory_id }}]" value="{{ $data->unit_price }}">
                         </td>
                         <td>
                             <input style="width:100px;" name="current_bo[{{ $data->inventory_id }}]" type="number" min="0" value="0" required class="form-control">
