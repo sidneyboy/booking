@@ -20,6 +20,7 @@ class Collection extends Model
         'balance',
         'exported',
         'remarks',
+        'total_bo',
     ];
 
     public function customer()

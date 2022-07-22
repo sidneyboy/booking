@@ -56,6 +56,7 @@
                                 echo number_format($sales_register_balance, 2, '.', ',');
                             @endphp
                             <input type="hidden" value="{{ $sales_register_balance }}" name="sales_register_balance[{{ $data->id }}]">
+                            <input type="hidden" value="{{ $data->bad_order->total_bo }}" name="sales_register_total_bo[{{ $data->id }}]">
                         </td>
                         <td>
                             <input type="text"

@@ -51,6 +51,8 @@
 
                                 <input type="hidden" value="{{ $sales_register_remarks[$key] }}"
                                     name="sales_register_remarks[{{ $key }}]">
+                                <input type="text" value="{{ $sales_register_total_bo[$key] }}"
+                                    name="sales_register_total_bo[{{ $key }}]">
                                 <input type="hidden" value="{{ $sales_register_principal[$key] }}"
                                     name="sales_register_principal[{{ $key }}]">
                                 <input type="hidden" value="{{ $sales_register_total_amount[$key] }}"
@@ -134,8 +136,7 @@
             </table>
         </div>
     @elseif($checker == 'both')
-        asdasd
-        {{-- <div class="table table-responsive">
+        <div class="table table-responsive">
             <table class="table table-bordered table-sm" id="accounts_payable">
                 <thead>
                     <tr>
@@ -233,7 +234,7 @@
 
                 </tbody>
             </table>
-        </div> --}}
+        </div>
     @endif
 
     <br />
