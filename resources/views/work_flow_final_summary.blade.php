@@ -27,7 +27,10 @@
                         <th colspan="4">This will serve as un-official PCM</th>
                     </tr>
                     <tr>
-                        <th colspan="4">{{ $pcm_number }}</th>
+                        <th colspan="4">
+                            {{ $pcm_number }}
+                            <input type="hidden" value="{{ $pcm_number }}" name="pcm_number">
+                        </th>
                     </tr>
                     <tr>
                         <th>Desc</th>
@@ -39,17 +42,22 @@
                 <tbody>
                     @foreach ($current_bo_inventory_id as $bo_data)
                         <tr>
-                            <td>{{ $current_inventory_description[$bo_data] }} - {{  $sku_type }}</td>
+                            <td>{{ $current_inventory_description[$bo_data] }} - {{ $sku_type }}</td>
                             <td style="text-align: right">{{ $current_bo[$bo_data] }}</td>
-                            <td style="text-align: right">{{ number_format($current_inventory_unit_price[$bo_data], 2, ',', '.') }}</td>
+                            <td style="text-align: right">
+                                {{ number_format($current_inventory_unit_price[$bo_data], 2, ',', '.') }}</td>
                             <td style="text-align: right">
                                 @php
                                     $bo_sub_total = $current_inventory_unit_price[$bo_data] * $current_bo[$bo_data];
                                     echo number_format($bo_sub_total, 2, ',', '.');
                                     $bo_total[] = $bo_sub_total;
                                 @endphp
+                                <input type="hidden" value="{{ $bo_data }}" name="current_bo_inventory_id[]">
 
-                                <input type="hidden" value="{{ $current_inventory_unit_price[$bo_data] }}" name="current_inventory_unit_price">                                
+                                <input type="hidden" value="{{ $current_inventory_unit_price[$bo_data] }}"
+                                    name="current_bo_unit_price[{{ $bo_data }}]">
+                                <input type="hidden" value="{{ $current_bo[$bo_data] }}"
+                                    name="current_bo_quantity[{{ $bo_data }}]">
                             </td>
                         </tr>
                     @endforeach
@@ -57,14 +65,18 @@
                 <tfoot>
                     <tr>
                         <th colspan="3" style="text-align: center">Total</th>
-                        <th style="text-align: right">{{ number_format(array_sum($bo_total), 2, ',', '.') }}</th>
+                        <th style="text-align: right">
+                            {{ number_format(array_sum($bo_total), 2, ',', '.') }}
+                            <input type="hidden" value="{{ array_sum($bo_total) }}" name="total_bo_amount">
+                        </th>
                     </tr>
                 </tfoot>
             </table>
         @endif
-        <br /><br />  <br /><br />  <br /><br />  <br /><br />  <br /><br />
-            
-        <table class="table table-borderless table-sm" style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
+        <br /><br /> <br />
+
+        <table class="table table-borderless table-sm"
+            style="font-size: 17px;font-family: Arial, Helvetica, sans-serif;">
             <thead>
                 <tr>
                     <th style="text-align: center;" colspan="3">JULMAR COMMERCIAL INC.</th>
@@ -166,6 +178,7 @@
     <input type="hidden" name="principal_id" value="{{ $principal_id }}">
     <input type="hidden" name="customer_id" value="{{ $customer_id }}">
     <input type="hidden" name="sku_type" value="{{ $sku_type }}">
+    <input type="hidden" name="sales_register_id" value="{{ $sales_register_id }}">
     <input type="hidden" name="mode_of_transaction"
         value="{{ $customer_principal_price->customer->mode_of_transaction }}">
 
@@ -301,6 +314,4 @@
         var ctx = canvas.getContext('2d');
         ctx.globalCompositeOperation = 'destination-out';
     });
-
-    
 </script>

@@ -15,5 +15,6 @@ class Bad_order extends Model
         'agent_id',
         'customer_id',
         'principal_id',
+        'sales_register_id',
     ];
 }

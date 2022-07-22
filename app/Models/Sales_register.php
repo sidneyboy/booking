@@ -31,6 +31,11 @@ class Sales_register extends Model
       return $this->belongsTo('App\Models\Principal', 'principal_id');
     }
 
+    public function bad_order()
+    {
+      return $this->belongsTo('App\Models\Bad_order', 'id','sales_register_id');
+    }
+
     public function customer()
     {
       return $this->belongsTo('App\Models\Customer', 'customer_id');

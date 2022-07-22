@@ -68,6 +68,7 @@
     <input type="hidden" value="{{ $principal_id }}" name="principal_id">
     <input type="hidden" value="{{ $sku_type }}" name="sku_type">
     <input type="hidden" value="{{ $sales_register->date_delivered }}" name="date_delivered">
+    <input type="hidden" value="{{ $sales_register->id }}" name="sales_register_id">
     <button class="btn btn-block btn-info" type="submit">PROCEED</button>
 </form>
 

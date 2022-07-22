@@ -143,6 +143,7 @@
     <input type="hidden" value="{{ $customer_id }}" name="customer_id">
     <input type="hidden" value="{{ $principal_id }}" name="principal_id">
     <input type="hidden" value="{{ $sku_type }}" name="sku_type">
+    <input type="hidden" value="{{ $sales_register_id }}" name="sales_register_id">
     <button type="submit" class="btn btn-block btn-info">PROCEED TO FINAL SUMMARY</button>
 </form>
 

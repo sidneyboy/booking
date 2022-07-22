@@ -27,6 +27,7 @@
                     <th>Mode of Payment</th>
                     <th>Amount</th>
                     <th>Amount Paid</th>
+                    <th>Current Bo</th>
                     <th>Balance</th>
                     <th>Collection</th>
                     <th>Remarks</th>
@@ -48,9 +49,10 @@
                         </td>
                         <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
                         <td style="text-align: right">{{ number_format($data->amount_paid, 2, '.', ',') }}</td>
+                        <td style="text-align: right">{{ number_format($data->bad_order->total_bo, 2, '.', ',') }}</td>
                         <td style="text-align: right">
                             @php
-                                $sales_register_balance = $data->total_amount - $data->amount_paid;
+                                $sales_register_balance = $data->total_amount - $data->amount_paid - $data->bad_order->total_bo;
                                 echo number_format($sales_register_balance, 2, '.', ',');
                             @endphp
                             <input type="hidden" value="{{ $sales_register_balance }}" name="sales_register_balance[{{ $data->id }}]">
@@ -107,6 +109,7 @@
                         </td>
                         <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
                         <td style="text-align: right">{{ number_format($data->amount_paid, 2, '.', ',') }}</td>
+                        <td style="text-align: right">0.00</td>
                         <td style="text-align: right">
                             @php
                                 $sales_order_balance = $data->total_amount - $data->amount_paid;

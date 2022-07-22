@@ -10,8 +10,9 @@ class Bad_order_details extends Model
     use HasFactory;
 
     protected $fillable = [
+        'bad_order_id',
         'inventory_id',
-        'customer_id',
+        'quantity',
         'unit_price',
     ];
 }
