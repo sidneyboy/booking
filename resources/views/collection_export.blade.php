@@ -45,6 +45,7 @@
                                 <th>Sku_type</th>
                                 <th>Total Amount</th>
                                 <th>Amount Paid</th>
+                                <th>BO</th>
                                 <th>Balance</th>
                                 <th>Remarks</th>
                             </tr>
@@ -59,6 +60,7 @@
                                     <td>{{ $data->sku_type }}</td>
                                     <td style="text-align: right">{{ $data->total_amount }}</td>
                                     <td style="text-align: right">{{ $data->amount_paid }}</td>
+                                    <td style="text-align: right">{{ $data->total_bo }}</td>
                                     <td style="text-align: right">{{ $data->balance }}</td>
                                     <td>{{ $data->remarks }}</td>
                                 </tr>

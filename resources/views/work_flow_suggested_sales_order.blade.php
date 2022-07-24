@@ -25,11 +25,11 @@
                         <tr>
                             <td>{{ $current_inventory_description[$bo_data] }} - {{  $sku_type }}</td>
                             <td style="text-align: right">{{ $current_bo[$bo_data] }}</td>
-                            <td style="text-align: right">{{ number_format($current_inventory_unit_price[$bo_data], 2, ',', '.') }}</td>
+                            <td style="text-align: right">{{ number_format($current_inventory_unit_price[$bo_data], 2, '.', ',') }}</td>
                             <td style="text-align: right">
                                 @php
                                     $bo_sub_total = $current_inventory_unit_price[$bo_data] * $current_bo[$bo_data];
-                                    echo number_format($bo_sub_total, 2, ',', '.');
+                                    echo number_format($bo_sub_total, 2, '.', ',');
                                     $bo_total[] = $bo_sub_total;
                                 @endphp
                                  <input type="hidden" value="{{ $bo_data }}" name="current_bo_inventory_id[]">
@@ -43,7 +43,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="3" style="text-align: center">Total</th>
-                        <th style="text-align: right">{{ number_format(array_sum($bo_total), 2, ',', '.') }}</th>
+                        <th style="text-align: right">{{ number_format(array_sum($bo_total), 2, '.', ',') }}</th>
                     </tr>
                 </tfoot>
             </table>

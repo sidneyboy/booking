@@ -290,6 +290,7 @@ class Work_flow_controller extends Controller
                 'customer_id' => $request->input('customer_id'),
                 'principal_id' => $request->input('principal_id'),
                 'sales_register_id' => $request->input('sales_register_id'),
+                'amount_paid' => 0,
             ]);
 
             $bad_order_save->save();
@@ -315,6 +316,7 @@ class Work_flow_controller extends Controller
             'agent_id' => $request->input('agent_id'),
             'status' => 'New',
             'exported' => 'not_yet_exported',
+            'amount_paid' => 0,
         ]);
 
         $sales_order_save->save();

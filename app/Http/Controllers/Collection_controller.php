@@ -159,7 +159,7 @@ class Collection_controller extends Controller
                     'balance' => $request->input('sales_order_balance')[$data],
                     'exported' => '',
                     'remarks' => $request->input('sales_order_remarks')[$data],
-                    'total_bo' => $request->input('sales_register_total_bo')[$data],
+                    'total_bo' => 0,
                 ]);
 
                 $sales_order_collection_saved->save();
@@ -204,12 +204,12 @@ class Collection_controller extends Controller
                         'total_amount' => $request->input('sales_register_total_amount')[$data],
                         'amount_paid' => $request->input('sales_register_payment_data')[$data],
                         'mode_of_transaction' => $request->input('sales_register_mode_of_transaction')[$data],
-                        'dr' => 'No Invoice Yet',
+                        'dr' => $request->input('sales_register_dr')[$data],
                         'sku_type' => $request->input('sales_register_sku_type')[$data],
                         'balance' => $request->input('sales_register_balance')[$data],
                         'remarks' => $request->input('sales_register_remarks')[$data],
                         'exported' => '',
-                        'total_bo' => 0,
+                        'total_bo' => $request->input('sales_register_total_bo')[$data],
                     ]);
 
                     $sales_register_collection_saved->save();

@@ -174,8 +174,10 @@
                                     name="sales_register_remarks[{{ $key }}]">
                                 <input type="hidden" value="{{ $sales_register_principal[$key] }}"
                                     name="sales_register_principal[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_total_amount[$key] }}"
+                                <input type="text" value="{{ $sales_register_total_amount[$key] }}"
                                     name="sales_register_total_amount[{{ $key }}]">
+                                <input type="text" value="{{ $sales_register_total_bo[$key] }}"
+                                    name="sales_register_total_bo[{{ $key }}]">
                                 <input type="hidden" value="{{ $sales_register_balance[$key] }}"
                                     name="sales_register_balance[{{ $key }}]">
                                 <input type="hidden" value="{{ $sales_register_payment_data }}"
