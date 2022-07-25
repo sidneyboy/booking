@@ -151,7 +151,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($sales_register_amount_paid as $key => $sales_register_payment_data)
+                    @foreach ($sales_register_cash as $key => $sales_register_payment_data)
                         <tr>
                             <td>{{ $sales_register_dr[$key] }}</td>
                             <td>{{ $sales_register_principal[$key] }}</td>
@@ -194,7 +194,7 @@
                         </tr>
                         <input type="hidden" value="{{ $key }}" name="sales_register_id[]">
                     @endforeach
-                    @foreach ($sales_order_amount_paid as $key => $sales_order_amount_paid)
+                    {{-- @foreach ($sales_order_amount_paid as $key => $sales_order_amount_paid)
                         <tr>
                             <td>No Invoice Yet</td>
                             <td>{{ $sales_order_principal[$key] }}</td>
@@ -232,7 +232,7 @@
                             </td>
 
                         </tr>
-                    @endforeach
+                    @endforeach --}}
 
                 </tbody>
             </table>

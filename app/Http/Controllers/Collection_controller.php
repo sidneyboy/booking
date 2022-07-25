@@ -106,32 +106,46 @@ class Collection_controller extends Controller
         // }
 
 
-        $sales_register_amount_paid = array_filter($request->input('sales_register_amount_paid'));
-        $sales_order_amount_paid = array_filter($request->input('sales_order_amount_paid'));
+        $sales_register_cash = array_filter($request->input('sales_register_cash'));
+        $sales_order_cash = array_filter($request->input('sales_order_cash'));
+        
 
         return view('collection_generate_final_summary', [
-            'sales_register_amount_paid' => str_replace(',', '', $sales_register_amount_paid),
+            'sales_register_cash' => str_replace(',', '', $sales_register_cash),
             'sales_register_dr' => $request->input('sales_register_dr'),
             'sales_register_principal' => $request->input('sales_register_principal'),
             'sales_register_sku_type' => $request->input('sales_register_sku_type'),
-            'sales_register_total_amount' => $request->input('sales_register_total_amount'),
             'sales_register_remarks' => $request->input('sales_register_remarks'),
             'sales_register_mode_of_transaction' => $request->input('sales_register_mode_of_transaction'),
             'sales_register_store_name' => $request->input('sales_register_store_name'),
             'sales_register_balance' => $request->input('sales_register_balance'),
             'sales_register_total_bo' => $request->input('sales_register_total_bo'),
+            'sales_register_cash_add_refer' => $request->input('sales_register_cash_add_refer'),
+            'sales_register_cheque' => $request->input('sales_register_cheque'),
+            'sales_register_cheque_add_refer' => $request->input('sales_register_cheque_add_refer'),
+            'sales_register_cheque_less_refer' => $request->input('sales_register_cheque_less_refer'),
+            'sales_register_specify' => $request->input('sales_register_specify'),
 
 
-
-            'sales_order_amount_paid' => str_replace(',', '', $sales_order_amount_paid),
+            'sales_order_cash' => str_replace(',', '', $sales_order_cash),
             'sales_order_dr' => $request->input('sales_order_dr'),
             'sales_order_principal' => $request->input('sales_order_principal'),
             'sales_order_sku_type' => $request->input('sales_order_sku_type'),
-            'sales_order_total_amount' => $request->input('sales_order_total_amount'),
             'sales_order_remarks' => $request->input('sales_order_remarks'),
             'sales_order_mode_of_transaction' => $request->input('sales_order_mode_of_transaction'),
             'sales_order_store_name' => $request->input('sales_order_store_name'),
             'sales_order_balance' => $request->input('sales_order_balance'),
+
+            'sales_order_cash_add_refer' => $request->input('sales_order_cash_add_refer'),
+            'sales_order_cheque' => $request->input('sales_order_cheque'),
+            'sales_order_cheque_add_refer' => $request->input('sales_order_cheque_add_refer'),
+            'sales_order_cheque_less_refer' => $request->input('sales_order_cheque_less_refer'),
+            'sales_order_specify' => $request->input('sales_order_specify'),
+
+
+
+
+
             'customer_id' => $request->input('customer_id'),
             'checker' => 'both',
         ]);

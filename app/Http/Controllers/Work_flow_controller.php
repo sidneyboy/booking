@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Principal;
 use App\Models\Inventory;
 use App\Models\Customer_principal_price;
+use App\Models\Customer_principal_discount;
 use App\Models\Sales_register;
 use App\Models\Sales_order_details;
 use App\Models\Sales_order;
@@ -140,6 +141,8 @@ class Work_flow_controller extends Controller
             ->where('principal_id', $request->input('principal_id'))
             ->first();
 
+        $customer_principal_discount = Customer_principal_discount::where('customer_id', $request->input('customer_id'))->where('principal_id', $request->input('principal_id'))->get();
+
         $agent_user = Agent_user::select('agent_name', 'agent_id')->first();
 
         $bad_order_data = Bad_order::select('pcm_number')->latest()->first();
@@ -174,7 +177,6 @@ class Work_flow_controller extends Controller
         )->whereIn('id', $request->input('sales_order_final_inventory_id'))
             ->get();
 
-
         $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
 
 
@@ -184,6 +186,7 @@ class Work_flow_controller extends Controller
             'sales_order_final_inventory_id' => $request->input('sales_order_final_inventory_id'),
             'sales_order_final_quantity' => $request->input('sales_order_final_quantity'),
             'inventory_data' => $inventory_data,
+            'customer_principal_discount' => $customer_principal_discount,
             'pcm_number' => strtoupper($pcm_number),
 
 
@@ -208,6 +211,8 @@ class Work_flow_controller extends Controller
             ->where('customer_id', $request->input('customer_id'))
             ->where('principal_id', $request->input('principal_id'))
             ->first();
+
+        $customer_principal_discount = Customer_principal_discount::where('customer_id', $request->input('customer_id'))->where('principal_id', $request->input('principal_id'))->get();
 
         $new_sales_order_inventory_quantity = array_filter($request->input('new_sales_order_inventory_quantity'));
 
@@ -234,6 +239,7 @@ class Work_flow_controller extends Controller
             ->with('customer_principal_price', $customer_principal_price)
             ->with('sku_type', $request->input('sku_type'))
             ->with('agent_user', $agent_user)
+            ->with('customer_principal_discount', $customer_principal_discount)
             ->with('date', $date);
     }
 
@@ -276,9 +282,6 @@ class Work_flow_controller extends Controller
         //return $request->input();
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
-
-
-        //return $request->input();
 
         $pcm_number = $request->input('pcm_number');
 

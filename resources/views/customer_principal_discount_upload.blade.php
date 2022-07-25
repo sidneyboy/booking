@@ -74,7 +74,7 @@
                        Swal.fire({
                          position: 'top-end',
                          icon: 'success',
-                         title: 'UPLOAD SUCCESS. REDIRECTING TO CUSTOMER PRINCIPAL CODE!',
+                         title: 'UPLOAD SUCCESS. REDIRECTING TO WORKFLOW!',
                          showConfirmButton: false,
                          timer: 1500
                        })

@@ -184,6 +184,7 @@ class Customer_controller extends Controller
             ->with('agent_user', $agent_user);
     }
 
+
     public function customer_principal_discount_process(Request $request)
     {
 
@@ -204,37 +205,17 @@ class Customer_controller extends Controller
         $counter = count($csv);
         $agent_user = Agent_user::select('agent_id')->first();
 
-        if ($csv[1][4] == $agent_user->agent_id) {
-            if ($csv[0][5] != 'customer_principal_discount') {
-                return 'incorrect_file';
-            } else {
-                for ($i = 1; $i < $counter; $i++) {
-                    $customer = Customer_principal_discount::select('customer_id')
-                        ->where('customer_id', $csv[$i][0])
-                        ->where('principal_id', $csv[$i][1])
-                        ->first();
-
-
-                    if ($customer) {
-                        Customer_principal_discount::where('customer_id', $csv[$i][0])
-                            ->where('principal_id', $csv[$i][1])
-                            ->update([
-                                'discount_name' => $csv[$i][2],
-                                'discount_rate' => $csv[$i][3],
-                            ]);
-                    } else {
-                        $customer_saved = new Customer_principal_discount([
-                            'customer_id' => $csv[$i][0],
-                            'principal_id' => $csv[$i][1],
-                            'discount_name' => $csv[$i][2],
-                            'discount_rate' => $csv[$i][3],
-                        ]);
-                        $customer_saved->save();
-                    }
-
-                    return 'saved';
-                }
+        if ($csv[0][4] == 'principal_discount') {
+            for ($i = 1; $i < $counter; $i++) {
+                $customer_saved = new Customer_principal_discount([
+                    'customer_id' => $csv[$i][0],
+                    'principal_id' => $csv[$i][1],
+                    'discount_name' => $csv[$i][2],
+                    'discount_rate' => $csv[$i][3],
+                ]);
+                $customer_saved->save();
             }
+            return 'saved';
         } else {
             return 'incorrect_file';
         }
@@ -243,8 +224,8 @@ class Customer_controller extends Controller
     public function new_customer()
     {
         $agent_user = Agent_user::first();
-        $location = location::select('id','location')->get();
-        return view('new_customer',[
+        $location = location::select('id', 'location')->get();
+        return view('new_customer', [
             'location' => $location,
         ])->with('active', 'new_customer')
             ->with('agent_user', $agent_user);
@@ -253,17 +234,17 @@ class Customer_controller extends Controller
     public function new_customer_generate_csv(Request $request)
     {
         //return $request->input();
-        $location_data = explode('-',$request->input('location'));
+        $location_data = explode('-', $request->input('location'));
         $location_id = $location_data[0];
         $location = $location_data[1];
         return view('new_customer_generate_csv')
-                ->with('store_name',$request->input('store_name'))
-                ->with('contact_person',$request->input('contact_person'))
-                ->with('contact_number',$request->input('contact_number'))
-                ->with('location_id',$request->input('location_id'))
-                ->with('detailed_address',$request->input('detailed_address'))
-                ->with('agent_name',$request->input('agent_name'))
-                ->with('location',$location)
-                ->with('location_id',$location_id);
+            ->with('store_name', $request->input('store_name'))
+            ->with('contact_person', $request->input('contact_person'))
+            ->with('contact_number', $request->input('contact_number'))
+            ->with('location_id', $request->input('location_id'))
+            ->with('detailed_address', $request->input('detailed_address'))
+            ->with('agent_name', $request->input('agent_name'))
+            ->with('location', $location)
+            ->with('location_id', $location_id);
     }
 }

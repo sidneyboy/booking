@@ -29,4 +29,9 @@ class Customer extends Model
     {
       return $this->hasMany('App\Models\Customer_principal_code', 'customer_id');
     }
+
+    public function customer_principal_discount()
+    {
+      return $this->hasMany('App\Models\Customer_principal_discount', 'customer_id');
+    }
 }

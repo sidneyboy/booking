@@ -50,9 +50,9 @@
             <thead>
                 <tr>
                     <th>Desc</th>
-                    <th>Qty</th>
-                    <th>U/P</th>
-                    <th>Sub Total</th>
+                    <th style="text-align:right;">Qty</th>
+                    <th style="text-align:right;">U/P</th>
+                    <th style="text-align:right;">Sub Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,9 +100,35 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="3">Total</th>
+                    <th colspan="3" style="text-align: right">Total</th>
                     <th style="text-align: right">{{ number_format(array_sum($sum_total), 2, '.', ',') }}</th>
                 </tr>
+                @php
+                    $total = array_sum($sum_total);
+                    $discount_holder = [];
+                    $discount_value_holder = $total;
+                @endphp
+                @foreach ($customer_principal_discount as $data_discount)
+                    <tr>
+                        <th colspan="2"></th>
+                        <th style="text-align: right">{{ $data_discount->discount_name }}</th>
+                        <th style="text-align: right">
+                            @php
+                                $discount_value_holder_dummy = $discount_value_holder;
+                                $less_percentage_by = $data_discount->discount_rate / 100;
+
+                                $discount_rate_answer = $discount_value_holder * $less_percentage_by;
+                                $discount_value_holder = $discount_value_holder - $discount_value_holder_dummy * $less_percentage_by;
+                                $discount_holder[] = $discount_value_holder;
+                                echo number_format($discount_value_holder, 2, '.', ',')
+                            @endphp
+                        </th>
+                    </tr>
+                @endforeach
+                    <tr>
+                        <th colspan="3" style="text-align: right">Final Total</th>
+                        <th style="text-align: right;text-decoration: overline">{{ number_format(end($discount_holder), 2, '.', ',') }}</th>
+                    </tr>
             </tfoot>
         </table>
     </div>
@@ -112,7 +138,7 @@
     </div>
 
     <input type="hidden" name="agent_id" value="{{ $agent_user->agent_id }}">
-    <input type="hidden" name="total_amount" value="{{ array_sum($sum_total) }}">
+    <input type="hidden" name="total_amount" value="{{ end($discount_holder) }}">
     <input type="hidden" name="principal_id" value="{{ $principal_id }}">
     <input type="hidden" name="customer_id" value="{{ $customer_id }}">
     <input type="hidden" name="sku_type" value="{{ $sku_type }}">
