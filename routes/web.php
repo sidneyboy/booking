@@ -65,8 +65,13 @@ Route::post('/work_flow_check_customer_sales_order_status', [App\Http\Controller
 
 Route::get('/collection', [App\Http\Controllers\Collection_controller::class, 'index'])->name('collection');
 Route::post('/collection_generate_customer_payables', [App\Http\Controllers\Collection_controller::class, 'collection_generate_customer_payables'])->name('collection_generate_customer_payables');
+Route::post('/collection_generate_generate_number_of_transactions', [App\Http\Controllers\Collection_controller::class, 'collection_generate_generate_number_of_transactions'])->name('collection_generate_generate_number_of_transactions');
+
+
 Route::post('/collection_generate_final_summary', [App\Http\Controllers\Collection_controller::class, 'collection_generate_final_summary'])->name('collection_generate_final_summary');
 Route::post('/collection_save', [App\Http\Controllers\Collection_controller::class, 'collection_save'])->name('collection_save');
+
+
 
 
 

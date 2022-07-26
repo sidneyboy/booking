@@ -1,250 +1,148 @@
 <style>
-    #accounts_payable th:first-child,
-    #accounts_payable td:first-child {
+    #final_summary td:first-child {
         position: sticky;
         left: 0px;
         background-color: antiquewhite;
     }
 
-    /* #accounts_payable th:nth-child(3),
-    #accounts_payable td:nth-child(3) {
+    /* #final_summary th:nth-child(3),
+    #final_summary td:nth-child(3) {
         position: sticky;
         left: 0px;
         background-color: antiquewhite;
     } */
 </style>
-<form id="collection_save" enctype="multipart/form-data">
-    @if ($checker == 'sales_register')
-        <div class="table table-responsive">
-            <table class="table table-bordered table-sm" id="accounts_payable">
-                <thead>
-                    <tr>
-                        <th>DR</th>
-                        <th>Principal</th>
-                        <th>Sku Type</th>
-                        <th>Mode of Transaction</th>
-                        <th>Balance</th>
-                        <th>Payment</th>
-                        <th>Balance</th>
-                        <th>Remarks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($sales_register_amount_paid as $key => $sales_register_payment_data)
+<form id="#">
+    <div class="table table-responsive">
+        <table class="table table-bordered table-sm" id="final_summary">
+            <thead>
+                <tr>
+                    <td rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        DR
+                    </td>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Store Name
+                    </th>
+                    {{-- <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Date Delivered
+                    </th> --}}
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Principal
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Sku Type
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Mode of Payment
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Amount
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Amount Paid
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Current Bo
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Balance
+                    </th>
+
+
+
+                    <th colspan="2" width="500px;" style="text-align: center;font-weight:bold;">
+                        Cash Collection
+                    </th>
+                    <th colspan="2" width="500px;" style="text-align: center;font-weight:bold;">
+                        Cheque Collection
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Less: Refer
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Specify
+                    </th>
+                    <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        Remarks
+                    </th>
+                </tr>
+                <tr>
+                    <th style=" width:73px">
+                        <p style="text-align:center"><span style="font-size:11pt"><strong><span
+                                        style="font-size:12.0pt">CASH</span></strong></span></p>
+                    </th>
+                    <th style=" width:74px">
+                        <p style="text-align:center"><span style="font-size:11pt"><strong><span
+                                        style="font-size:12.0pt">ADD: REFER</span></strong></span></p>
+                    </th>
+                    <th style=" width:79px">
+                        <p style="text-align:center"><span style="font-size:11pt"><strong><span
+                                        style="font-size:12.0pt">CHEQUE</span></strong></span></p>
+                    </th>
+                    <th style=" width:70px">
+                        <p style="text-align:center"><span style="font-size:11pt"><strong><span
+                                        style="font-size:12.0pt">ADD: REFER</span></strong></span></p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($sales_register_dr as $data)
+                    @if ($sales_register_number_of_transactions < 1)
                         <tr>
-                            <td>{{ $sales_register_dr[$key] }}</td>
-                            <td>{{ $sales_register_principal[$key] }}</td>
-                            <td>{{ $sales_register_sku_type[$key] }}</td>
-                            <td style="text-transform: uppercase">{{ $sales_register_mode_of_transaction[$key] }}</td>
-                            <td style="text-align:right">
-                                {{ number_format($sales_register_balance[$key], 2, '.', ',') }}</td>
-                            <td style="text-align:right">
-                                {{ number_format($sales_register_payment_data, 2, '.', ',') }}</td>
-                            <td style="text-align:right">
-                                @php
-                                    $balance = $sales_register_balance[$key] - $sales_register_payment_data;
-                                    echo number_format($balance, 2, '.', ',');
-                                @endphp
-                            </td>
-                            <td>
-                                {{ $sales_register_remarks[$key] }}
-
-                                <input type="hidden" value="{{ $sales_register_remarks[$key] }}"
-                                    name="sales_register_remarks[{{ $key }}]">
-                                <input type="text" value="{{ $sales_register_total_bo[$key] }}"
-                                    name="sales_register_total_bo[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_principal[$key] }}"
-                                    name="sales_register_principal[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_total_amount[$key] }}"
-                                    name="sales_register_total_amount[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_balance[$key] }}"
-                                    name="sales_register_balance[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_payment_data }}"
-                                    name="sales_register_payment_data[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_mode_of_transaction[$key] }}"
-                                    name="sales_register_mode_of_transaction[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_dr[$key] }}"
-                                    name="sales_register_dr[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_sku_type[$key] }}"
-                                    name="sales_register_sku_type[{{ $key }}]">
-                                <input type="hidden" value="{{ $balance }}"
-                                    name="sales_register_balance[{{ $key }}]">
-                            </td>
+                            <td>{{ $data }}</td>
                         </tr>
-                        <input type="hidden" value="{{ $key }}" name="sales_register_id[]">
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    @elseif ($checker == 'sales_order')
-        <div class="table table-responsive">
-            <table class="table table-bordered table-sm" id="accounts_payable">
-                <thead>
-                    <tr>
-                        <th>DR</th>
-                        <th>Principal</th>
-                        <th>Sku Type</th>
-                        <th>Mode of Transaction</th>
-                        <th>Balance</th>
-                        <th>Payment</th>
-                        <th>Balance</th>
-                        <th>Remarks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($sales_order_amount_paid as $key => $sales_order_amount_paid)
+                    @else
+                        
                         <tr>
-                            <td>No Invoice Yet</td>
-                            <td>{{ $sales_order_principal[$key] }}</td>
-                            <td>{{ $sales_order_sku_type[$key] }}</td>
-                            <td style="text-transform: uppercase">{{ $sales_order_mode_of_transaction[$key] }}</td>
-                            <td style="text-align:right">
-                                {{ number_format($sales_order_balance[$key], 2, '.', ',') }}</td>
-                            <td style="text-align:right">
-                                {{ number_format($sales_order_amount_paid, 2, '.', ',') }}</td>
-                            <td style="text-align:right">
-                                @php
-                                    $balance = $sales_order_balance[$key] - $sales_order_amount_paid;
-                                    echo number_format($balance, 2, '.', ',');
-                                @endphp
-                            </td>
-                            <td>
-                                {{ $sales_order_remarks[$key] }}
-                                <input type="hidden" value="{{ $sales_order_remarks[$key] }}"
-                                    name="sales_order_remarks[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_principal[$key] }}"
-                                    name="sales_order_principal[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_total_amount[$key] }}"
-                                    name="sales_order_total_amount[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_amount_paid }}"
-                                    name="sales_order_amount_paid[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_balance[$key] }}"
-                                    name="sales_order_balance[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_mode_of_transaction[$key] }}"
-                                    name="sales_order_mode_of_transaction[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_sku_type[$key] }}"
-                                    name="sales_order_sku_type[{{ $key }}]">
-                                <input type="hidden" value="{{ $balance }}"
-                                    name="sales_order_balance[{{ $key }}]">
-                                <input type="hidden" value="{{ $key }}" name="sales_order_id[]">
-                            </td>
-
+                            <td>{{ $data }}</td>
+                            <td>{{ $sales_register_store_name[$data] }}</td>
+                            <td>{{ $sales_register_principal[$data] }}</td>
+                            <td>{{ $sales_register_sku_type[$data] }}</td>
+                            <td>{{ $sales_register_mode_of_transaction[$data] }}</td>
+                            <td>{{ $sales_register_total_amount[$data] }}</td>
+                            <td>{{ $sales_register_amount_paid[$data] }}</td>
+                            <td>{{ $sales_register_total_bo[$data] }}</td>
+                            <td>{{ $sales_register_balance[$data] }}</td>
+                            <td>{{ $sales_register_cash[$data] }}</td>
+                            <td>{{ $sales_register_cash_add_refer[$data] }}</td>
+                            <td>{{ $sales_register_cheque[$data] }}</td>
+                            <td>{{ $sales_register_cheque_add_refer[$data] }}</td>
+                            <td>{{ $sales_register_less_refer[$data] }}</td>
+                            <td>{{ $sales_register_specify[$data] }}</td>
+                            <td>{{ $sales_register_remarks[$data] }}</td>
                         </tr>
-                    @endforeach
-
-                </tbody>
-            </table>
-        </div>
-    @elseif($checker == 'both')
-        <div class="table table-responsive">
-            <table class="table table-bordered table-sm" id="accounts_payable">
-                <thead>
-                    <tr>
-                        <th>DR</th>
-                        <th>Principal</th>
-                        <th>Sku Type</th>
-                        <th>Mode of Transaction</th>
-                        <th>Balance</th>
-                        <th>Payment</th>
-                        <th>Balance</th>
-                        <th>Remarks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($sales_register_cash as $key => $sales_register_payment_data)
-                        <tr>
-                            <td>{{ $sales_register_dr[$key] }}</td>
-                            <td>{{ $sales_register_principal[$key] }}</td>
-                            <td>{{ $sales_register_sku_type[$key] }}</td>
-                            <td style="text-transform: uppercase">{{ $sales_register_mode_of_transaction[$key] }}</td>
-                            <td style="text-align:right">
-                                {{ number_format($sales_register_balance[$key], 2, '.', ',') }}</td>
-                            <td style="text-align:right">
-                                {{ number_format($sales_register_payment_data, 2, '.', ',') }}</td>
-                            <td style="text-align:right">
-                                @php
-                                    $balance = $sales_register_balance[$key] - $sales_register_payment_data;
-                                    echo number_format($balance, 2, '.', ',');
-                                @endphp
-                            </td>
-                            <td>
-                                {{ $sales_register_remarks[$key] }}
-
-                                <input type="hidden" value="{{ $sales_register_remarks[$key] }}"
-                                    name="sales_register_remarks[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_principal[$key] }}"
-                                    name="sales_register_principal[{{ $key }}]">
-                                <input type="text" value="{{ $sales_register_total_amount[$key] }}"
-                                    name="sales_register_total_amount[{{ $key }}]">
-                                <input type="text" value="{{ $sales_register_total_bo[$key] }}"
-                                    name="sales_register_total_bo[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_balance[$key] }}"
-                                    name="sales_register_balance[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_payment_data }}"
-                                    name="sales_register_payment_data[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_mode_of_transaction[$key] }}"
-                                    name="sales_register_mode_of_transaction[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_dr[$key] }}"
-                                    name="sales_register_dr[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_register_sku_type[$key] }}"
-                                    name="sales_register_sku_type[{{ $key }}]">
-                                <input type="hidden" value="{{ $balance }}"
-                                    name="sales_register_balance[{{ $key }}]">
-                            </td>
-                        </tr>
-                        <input type="hidden" value="{{ $key }}" name="sales_register_id[]">
-                    @endforeach
-                    {{-- @foreach ($sales_order_amount_paid as $key => $sales_order_amount_paid)
-                        <tr>
-                            <td>No Invoice Yet</td>
-                            <td>{{ $sales_order_principal[$key] }}</td>
-                            <td>{{ $sales_order_sku_type[$key] }}</td>
-                            <td style="text-transform: uppercase">{{ $sales_order_mode_of_transaction[$key] }}</td>
-                            <td style="text-align:right">
-                                {{ number_format($sales_order_balance[$key], 2, '.', ',') }}</td>
-                            <td style="text-align:right">
-                                {{ number_format($sales_order_amount_paid, 2, '.', ',') }}</td>
-                            <td style="text-align:right">
-                                @php
-                                    $balance = $sales_order_balance[$key] - $sales_order_amount_paid;
-                                    echo number_format($balance, 2, '.', ',');
-                                @endphp
-                            </td>
-                            <td>
-                                {{ $sales_order_remarks[$key] }}
-                                <input type="hidden" value="{{ $sales_order_remarks[$key] }}"
-                                    name="sales_order_remarks[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_principal[$key] }}"
-                                    name="sales_order_principal[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_total_amount[$key] }}"
-                                    name="sales_order_total_amount[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_amount_paid }}"
-                                    name="sales_order_amount_paid[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_balance[$key] }}"
-                                    name="sales_order_balance[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_mode_of_transaction[$key] }}"
-                                    name="sales_order_mode_of_transaction[{{ $key }}]">
-                                <input type="hidden" value="{{ $sales_order_sku_type[$key] }}"
-                                    name="sales_order_sku_type[{{ $key }}]">
-                                <input type="hidden" value="{{ $balance }}"
-                                    name="sales_order_balance[{{ $key }}]">
-                                <input type="hidden" value="{{ $key }}" name="sales_order_id[]">
-                            </td>
-
-                        </tr>
-                    @endforeach --}}
-
-                </tbody>
-            </table>
-        </div>
-    @endif
-
-    <br />
-    <input type="hidden" value="{{ $customer_id }}" name="customer_id">
-    <button type="submit" class="btn btn-block btn-success">SUBMIT</button>
+                        @php
+                            $final_sales_register_number_of_transactions = $sales_register_number_of_transactions - 1;
+                        @endphp
+                        @for ($i = 0; $i < $final_sales_register_number_of_transactions; $i++)
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    {{ $sales_register_cash_add_refer[$i] }}
+                                </td>
+                                <td></td>
+                                <td>{{ $sales_register_cheque_add_refer[$i] }}</td>
+                                <td>{{ $sales_register_less_refer[$i] }}</td>
+                                <td>{{ $sales_register_specify[$i] }}</td>
+                                <td>{{ $sales_register_remarks[$i] }}</td>
+                            </tr>
+                        @endfor
+                    @endif
+                @endforeach
+            </tbody>
+        </table>
 </form>
 
-<script>
+{{-- <script>
     $("#collection_save").on('submit', (function(e) {
         e.preventDefault();
         //$('.loading').show();
@@ -275,4 +173,4 @@
             },
         });
     }));
-</script>
+</script> --}}

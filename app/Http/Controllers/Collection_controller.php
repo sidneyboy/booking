@@ -40,78 +40,12 @@ class Collection_controller extends Controller
         ])->with('customer_id', $request->input('customer_id'));
     }
 
-    public function collection_generate_final_summary(Request $request)
+    public function collection_generate_generate_number_of_transactions(Request $request)
     {
+     
+       
 
-        // if (array_sum($request->input('sales_register_amount_paid')) != 0) {
-        //     $sales_register_amount_paid = array_filter($request->input('sales_register_amount_paid'));
-        //     return view('collection_generate_final_summary', [
-        //         'sales_register_amount_paid' => str_replace(',', '', $sales_register_amount_paid),
-        //         'sales_register_dr' => $request->input('sales_register_dr'),
-        //         'sales_register_principal' => $request->input('sales_register_principal'),
-        //         'sales_register_sku_type' => $request->input('sales_register_sku_type'),
-        //         'sales_register_total_amount' => $request->input('sales_register_total_amount'),
-        //         'sales_register_remarks' => $request->input('sales_register_remarks'),
-        //         'sales_register_mode_of_transaction' => $request->input('sales_register_mode_of_transaction'),
-        //         'sales_register_store_name' => $request->input('sales_register_store_name'),
-        //         'sales_register_balance' => $request->input('sales_register_balance'),
-        //         'customer_id' => $request->input('customer_id'),
-        //         'checker' => 'sales_register',
-        //     ]);
-        // } elseif (array_sum($request->input('sales_order_amount_paid')) != 0) {
-        //     $sales_order_amount_paid = array_filter($request->input('sales_order_amount_paid'));
-        //     return view('collection_generate_final_summary', [
-        //         'sales_order_amount_paid' => str_replace(',', '', $sales_order_amount_paid),
-        //         'sales_order_dr' => $request->input('sales_order_dr'),
-        //         'sales_order_principal' => $request->input('sales_order_principal'),
-        //         'sales_order_sku_type' => $request->input('sales_order_sku_type'),
-        //         'sales_order_total_amount' => $request->input('sales_order_total_amount'),
-        //         'sales_order_remarks' => $request->input('sales_order_remarks'),
-        //         'sales_order_mode_of_transaction' => $request->input('sales_order_mode_of_transaction'),
-        //         'sales_order_store_name' => $request->input('sales_order_store_name'),
-        //         'sales_order_balance' => $request->input('sales_order_balance'),
-        //         'customer_id' => $request->input('customer_id'),
-        //         'checker' => 'sales_order',
-        //     ]);
-        // } else if (array_sum($request->input('sales_order_amount_paid')) != 0 and array_sum($request->input('sales_register_amount_paid')) != 0) {
-        //     $sales_register_amount_paid = array_filter($request->input('sales_register_amount_paid'));
-        //     $sales_order_amount_paid = array_filter($request->input('sales_order_amount_paid'));
-
-        //     return view('collection_generate_final_summary', [
-        //         'sales_register_amount_paid' => str_replace(',', '', $sales_register_amount_paid),
-        //         'sales_register_dr' => $request->input('sales_register_dr'),
-        //         'sales_register_principal' => $request->input('sales_register_principal'),
-        //         'sales_register_sku_type' => $request->input('sales_register_sku_type'),
-        //         'sales_register_total_amount' => $request->input('sales_register_total_amount'),
-        //         'sales_register_remarks' => $request->input('sales_register_remarks'),
-        //         'sales_register_mode_of_transaction' => $request->input('sales_register_mode_of_transaction'),
-        //         'sales_register_store_name' => $request->input('sales_register_store_name'),
-        //         'sales_register_balance' => $request->input('sales_register_balance'),
-
-
-
-
-        //         'sales_order_amount_paid' => str_replace(',', '', $sales_order_amount_paid),
-        //         'sales_order_dr' => $request->input('sales_order_dr'),
-        //         'sales_order_principal' => $request->input('sales_order_principal'),
-        //         'sales_order_sku_type' => $request->input('sales_order_sku_type'),
-        //         'sales_order_total_amount' => $request->input('sales_order_total_amount'),
-        //         'sales_order_remarks' => $request->input('sales_order_remarks'),
-        //         'sales_order_mode_of_transaction' => $request->input('sales_order_mode_of_transaction'),
-        //         'sales_order_store_name' => $request->input('sales_order_store_name'),
-        //         'sales_order_balance' => $request->input('sales_order_balance'),
-        //         'customer_id' => $request->input('customer_id'),
-        //         'checker' => 'both',
-        //     ]);
-        // }
-
-
-        $sales_register_cash = array_filter($request->input('sales_register_cash'));
-        $sales_order_cash = array_filter($request->input('sales_order_cash'));
-        
-
-        return view('collection_generate_final_summary', [
-            'sales_register_cash' => str_replace(',', '', $sales_register_cash),
+        return view('collection_generate_generate_number_of_transactions',[
             'sales_register_dr' => $request->input('sales_register_dr'),
             'sales_register_principal' => $request->input('sales_register_principal'),
             'sales_register_sku_type' => $request->input('sales_register_sku_type'),
@@ -120,14 +54,14 @@ class Collection_controller extends Controller
             'sales_register_store_name' => $request->input('sales_register_store_name'),
             'sales_register_balance' => $request->input('sales_register_balance'),
             'sales_register_total_bo' => $request->input('sales_register_total_bo'),
-            'sales_register_cash_add_refer' => $request->input('sales_register_cash_add_refer'),
-            'sales_register_cheque' => $request->input('sales_register_cheque'),
-            'sales_register_cheque_add_refer' => $request->input('sales_register_cheque_add_refer'),
-            'sales_register_cheque_less_refer' => $request->input('sales_register_cheque_less_refer'),
-            'sales_register_specify' => $request->input('sales_register_specify'),
+            'sales_register_number_of_transactions' => $request->input('sales_register_number_of_transactions'),
+            'sales_register_total_amount' => $request->input('sales_register_total_amount'),
+            'sales_register_amount_paid' => $request->input('sales_register_amount_paid'),
+            'sales_register_id' => $request->input('sales_register_id'),
+            
+            
 
 
-            'sales_order_cash' => str_replace(',', '', $sales_order_cash),
             'sales_order_dr' => $request->input('sales_order_dr'),
             'sales_order_principal' => $request->input('sales_order_principal'),
             'sales_order_sku_type' => $request->input('sales_order_sku_type'),
@@ -135,19 +69,40 @@ class Collection_controller extends Controller
             'sales_order_mode_of_transaction' => $request->input('sales_order_mode_of_transaction'),
             'sales_order_store_name' => $request->input('sales_order_store_name'),
             'sales_order_balance' => $request->input('sales_order_balance'),
-
-            'sales_order_cash_add_refer' => $request->input('sales_order_cash_add_refer'),
-            'sales_order_cheque' => $request->input('sales_order_cheque'),
-            'sales_order_cheque_add_refer' => $request->input('sales_order_cheque_add_refer'),
-            'sales_order_cheque_less_refer' => $request->input('sales_order_cheque_less_refer'),
-            'sales_order_specify' => $request->input('sales_order_specify'),
-
-
-
-
+            'sales_order_number_of_transactions' => $request->input('sales_order_number_of_transactions'),
 
             'customer_id' => $request->input('customer_id'),
-            'checker' => 'both',
+        ]);
+    }
+
+    public function collection_generate_final_summary(Request $request)
+    {
+
+
+        //return $request->input();
+
+        
+
+        return view('collection_generate_final_summary', [
+            'customer_id' => $request->input('customer_id'),
+            'sales_register_amount_paid' => $request->input('sales_register_amount_paid'),
+            'sales_register_cash' => $request->input('sales_register_cash'),
+            'sales_register_cash_add_refer' => $request->input('sales_register_cash_add_refer'),
+            'sales_register_cheque' => $request->input('sales_register_cheque'),
+            'sales_register_cheque_add_refer' => $request->input('sales_register_cheque_add_refer'),
+            'sales_register_less_refer' => $request->input('sales_register_less_refer'),
+            'sales_register_dr' => $request->input('sales_register_dr'),
+            'sales_register_id' => $request->input('sales_register_id'),
+            'sales_register_mode_of_transaction' => $request->input('sales_register_mode_of_transaction'),
+            'sales_register_principal' => $request->input('sales_register_principal'),
+            'sales_register_remarks' => $request->input('sales_register_remarks'),
+            'sales_register_sku_type' => $request->input('sales_register_sku_type'),
+            'sales_register_specify' => $request->input('sales_register_specify'),
+            'sales_register_store_name' => $request->input('sales_register_store_name'),
+            'sales_register_total_amount' => $request->input('sales_register_total_amount'),
+            'sales_register_total_bo' => $request->input('sales_register_total_bo'),
+            'sales_register_number_of_transactions' => $request->input('sales_register_number_of_transactions'),
+            'sales_register_balance' => $request->input('sales_register_balance'),
         ]);
     }
 
