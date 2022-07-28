@@ -12,5 +12,13 @@ class Collection_details extends Model
     protected $fillable = [
         'collection_id',
         'image',
+       'cash',
+       'cash_add_refer',
+       'cheque',
+       'cheque_add_refer',
+       'less_refer',
+       'specify',
+       'remarks',
+       'balance',
     ];
 }

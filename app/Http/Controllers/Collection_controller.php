@@ -42,10 +42,11 @@ class Collection_controller extends Controller
 
     public function collection_generate_generate_number_of_transactions(Request $request)
     {
-     
-       
+        //return $request->input();
 
-        return view('collection_generate_generate_number_of_transactions',[
+
+
+        return view('collection_generate_generate_number_of_transactions', [
             'sales_register_dr' => $request->input('sales_register_dr'),
             'sales_register_principal' => $request->input('sales_register_principal'),
             'sales_register_sku_type' => $request->input('sales_register_sku_type'),
@@ -58,8 +59,8 @@ class Collection_controller extends Controller
             'sales_register_total_amount' => $request->input('sales_register_total_amount'),
             'sales_register_amount_paid' => $request->input('sales_register_amount_paid'),
             'sales_register_id' => $request->input('sales_register_id'),
-            
-            
+           
+
 
 
             'sales_order_dr' => $request->input('sales_order_dr'),
@@ -78,31 +79,37 @@ class Collection_controller extends Controller
     public function collection_generate_final_summary(Request $request)
     {
 
-
         //return $request->input();
-
-        
 
         return view('collection_generate_final_summary', [
             'customer_id' => $request->input('customer_id'),
             'sales_register_amount_paid' => $request->input('sales_register_amount_paid'),
-            'sales_register_cash' => $request->input('sales_register_cash'),
-            'sales_register_cash_add_refer' => $request->input('sales_register_cash_add_refer'),
-            'sales_register_cheque' => $request->input('sales_register_cheque'),
-            'sales_register_cheque_add_refer' => $request->input('sales_register_cheque_add_refer'),
-            'sales_register_less_refer' => $request->input('sales_register_less_refer'),
+            'sales_register_cash' => str_replace(',', '', $request->input('sales_register_cash')),
+            'sales_register_cash_add_refer' => str_replace(',', '', $request->input('sales_register_cash_add_refer')),
+            'sales_register_cheque' => str_replace(',', '', $request->input('sales_register_cheque')),
+            'sales_register_cheque_add_refer' => str_replace(',', '', $request->input('sales_register_cheque_add_refer')),
+            'sales_register_less_refer' => str_replace(',', '', $request->input('sales_register_less_refer')),
+            'lower_sales_register_cash' => str_replace(',', '', $request->input('lower_sales_register_cash')),
+            'lower_sales_register_cash_add_refer' => str_replace(',', '', $request->input('lower_sales_register_cash_add_refer')),
+            'lower_sales_register_cheque' => str_replace(',', '', $request->input('lower_sales_register_cheque')),
+            'lower_sales_register_cheque_add_refer' => str_replace(',', '', $request->input('lower_sales_register_cheque_add_refer')),
+            'lower_sales_register_less_refer' => str_replace(',', '', $request->input('lower_sales_register_less_refer')),
             'sales_register_dr' => $request->input('sales_register_dr'),
             'sales_register_id' => $request->input('sales_register_id'),
             'sales_register_mode_of_transaction' => $request->input('sales_register_mode_of_transaction'),
             'sales_register_principal' => $request->input('sales_register_principal'),
             'sales_register_remarks' => $request->input('sales_register_remarks'),
+            'lower_sales_register_remarks' => $request->input('lower_sales_register_remarks'),
             'sales_register_sku_type' => $request->input('sales_register_sku_type'),
             'sales_register_specify' => $request->input('sales_register_specify'),
+            'lower_sales_register_specify' => $request->input('lower_sales_register_specify'),
             'sales_register_store_name' => $request->input('sales_register_store_name'),
             'sales_register_total_amount' => $request->input('sales_register_total_amount'),
             'sales_register_total_bo' => $request->input('sales_register_total_bo'),
             'sales_register_number_of_transactions' => $request->input('sales_register_number_of_transactions'),
             'sales_register_balance' => $request->input('sales_register_balance'),
+            'sales_register_or_number' => $request->input('sales_register_or_number'),
+
         ]);
     }
 
@@ -111,104 +118,61 @@ class Collection_controller extends Controller
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d H:i:s');
 
-
-        $sales_order_id = $request->input('sales_order_id');
-        $sales_register_id = $request->input('sales_register_id');
-
-        if (isset($sales_order_id)) {
-            foreach ($request->input('sales_order_id') as $key => $data) {
-                $sales_order_collection_saved = new Collection([
+        //return $request->input();
+        foreach ($request->input('sales_register_dr') as $key => $data) {
+            if ($request->input('sales_register_number_of_transactions')[$data] < 1) {
+                # code...
+            } else {
+                $sales_register_collection_saved = new Collection([
+                    'or_number' => $request->input('sales_register_or_number')[$data],
                     'customer_id' => $request->input('customer_id'),
-                    'principal' => $request->input('sales_order_principal')[$data],
-                    'total_amount' => $request->input('sales_order_total_amount')[$data],
-                    'amount_paid' => $request->input('sales_order_amount_paid')[$data],
-                    'mode_of_transaction' => $request->input('sales_order_mode_of_transaction')[$data],
-                    'dr' => 'No Invoice Yet',
-                    'sku_type' => $request->input('sales_order_sku_type')[$data],
-                    'balance' => $request->input('sales_order_balance')[$data],
+                    'principal' => $request->input('sales_register_principal')[$data],
+                    'total_amount' => $request->input('sales_register_total_amount')[$data],
+                    'amount_paid' => $request->input('sales_register_amount_paid')[$data],
+                    'mode_of_transaction' => $request->input('sales_register_mode_of_transaction')[$data],
+                    'dr' => $data,
+                    'sku_type' => $request->input('sales_register_sku_type')[$data],
+                    'balance' => 0,
+                    'remarks' => '',
                     'exported' => '',
-                    'remarks' => $request->input('sales_order_remarks')[$data],
-                    'total_bo' => 0,
+                    'total_bo' => $request->input('sales_register_total_bo')[$data],
                 ]);
 
-                $sales_order_collection_saved->save();
+                $sales_register_collection_saved->save();
 
-                // $file = $request->file('sales_order_image')[$data];
-                // $filename = $file->getClientOriginalName();
-                // $file->move(public_path('images'), $filename);
+                $sales_register_collection_details_saved = new Collection_details([
+                    'collection_id' => $sales_register_collection_saved->id,
+                    'image' => '',
+                    'cash' => $request->input('sales_register_cash')[$data],
+                    'cash_add_refer' => $request->input('sales_register_cash_add_refer')[$data],
+                    'cheque' => $request->input('sales_register_cheque')[$data],
+                    'cheque_add_refer' => $request->input('sales_register_cheque_add_refer')[$data],
+                    'less_refer' => $request->input('sales_register_less_refer')[$data],
+                    'specify' => $request->input('sales_register_specify')[$data],
+                    'remarks' => $request->input('sales_register_remarks')[$data],
+                    'balance' => $request->input('sales_register_updated_balance')[$data],
+                ]);
 
-                // $sales_order_collection_details_saved = new Collection_details([
-                //     'collection_id' => $sales_order_collection_saved->id,
-                //     'image' => $filename,
-                // ]);
-
-                // $sales_order_collection_details_saved->save();
-
-                if ($request->input('sales_order_balance')[$data] != 0) {
-                    Sales_order::where('id', $data)
-                        ->update([
-                            'status' => 'partial',
-                            'amount_paid' => $request->input('sales_order_amount_paid')[$data],
-                            'updated_at' => $date,
-                        ]);
-                } else {
-                    Sales_order::where('id', $data)
-                        ->update([
-                            'status' => 'paid',
-                            'amount_paid' => $request->input('sales_order_amount_paid')[$data],
-                            'updated_at' => $date,
-                        ]);
-                }
-            }
-        }
+                $sales_register_collection_details_saved->save();
 
 
+                $final_sales_register_number_of_transactions = $request->input('sales_register_number_of_transactions')[$data] - 1;
 
-        if (isset($sales_register_id)) {
-            if (count($request->input('sales_register_id')) != 0) {
-                foreach ($request->input('sales_register_id') as $key => $data) {
-                    $sales_register_collection_saved = new Collection([
-                        'customer_id' => $request->input('customer_id'),
-                        'principal' => $request->input('sales_register_principal')[$data],
-                        'total_amount' => $request->input('sales_register_total_amount')[$data],
-                        'amount_paid' => $request->input('sales_register_payment_data')[$data],
-                        'mode_of_transaction' => $request->input('sales_register_mode_of_transaction')[$data],
-                        'dr' => $request->input('sales_register_dr')[$data],
-                        'sku_type' => $request->input('sales_register_sku_type')[$data],
-                        'balance' => $request->input('sales_register_balance')[$data],
-                        'remarks' => $request->input('sales_register_remarks')[$data],
-                        'exported' => '',
-                        'total_bo' => $request->input('sales_register_total_bo')[$data],
+                for ($i = 0; $i < $final_sales_register_number_of_transactions; $i++) {
+                    $sales_register_collection_details_saved = new Collection_details([
+                        'collection_id' => $sales_register_collection_saved->id,
+                        'image' => '',
+                        'cash' => 0,
+                        'cash_add_refer' => $request->input('lower_sales_register_cash_add_refer')[$data ."-". $i],
+                        'cheque' => 0,
+                        'cheque_add_refer' => $request->input('lower_sales_register_cheque_add_refer')[$data ."-". $i],
+                        'less_refer' => $request->input('lower_sales_register_less_refer')[$data ."-". $i],
+                        'specify' => $request->input('lower_sales_register_specify')[$data ."-". $i],
+                        'remarks' => $request->input('lower_sales_register_remarks')[$data ."-". $i],
+                        'balance' => $request->input('lower_sales_register_updated_balance')[$data ."-". $i],
                     ]);
 
-                    $sales_register_collection_saved->save();
-
-                    // $file = $request->file('sales_register_image')[$data];
-                    // $filename = $file->getClientOriginalName();
-                    // $file->move(public_path('images'), $filename);
-
-                    // $sales_register_collection_details_saved = new Collection_details([
-                    //     'collection_id' => $sales_register_collection_saved->id,
-                    //     'image' => $filename,
-                    // ]);
-
-                    // $sales_register_collection_details_saved->save();
-
-                    if ($request->input('sales_register_balance')[$data] != 0) {
-                        Sales_register::where('id', $data)
-                            ->update([
-                                'status' => 'partial',
-                                'amount_paid' => $request->input('sales_register_payment_data')[$data],
-                                'updated_at' => $date,
-                            ]);
-                    } else {
-                        Sales_register::where('id', $data)
-                            ->update([
-                                'status' => 'paid',
-                                'amount_paid' => $request->input('sales_register_payment_data')[$data],
-                                'updated_at' => $date,
-                            ]);
-                    }
+                    $sales_register_collection_details_saved->save();
                 }
             }
         }
@@ -218,11 +182,14 @@ class Collection_controller extends Controller
 
     public function collection_export()
     {
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d H:i:s');
         $agent_user = Agent_user::first();
         $collection = Collection::where('exported', '!=', 'exported')->get();
         return view('collection_export', [
             'collection' => $collection,
         ])->with('active', 'collection_export')
-            ->with('agent_user', $agent_user);
+            ->with('agent_user', $agent_user)
+            ->with('date', $date);
     }
 }

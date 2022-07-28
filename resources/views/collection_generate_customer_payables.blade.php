@@ -48,21 +48,32 @@
                         </td>
                         <td style="text-align: right">{{ number_format($data->total_amount, 2, '.', ',') }}</td>
                         <td style="text-align: right">{{ number_format($data->amount_paid, 2, '.', ',') }}</td>
-                        <td style="text-align: right">{{ number_format($data->bad_order->total_bo, 2, '.', ',') }}</td>
+                        <td style="text-align: right">
+                            @if($data->bad_order)
+                                {{ number_format($data->bad_order->total_bo, 2, '.', ',') }}
+                                @php
+                                    $total_bo = $data->bad_order->total_bo;
+                                @endphp
+                            @else 
+                                @php
+                                    $total_bo = 0;
+                                @endphp
+                            @endif
+                        </td>
                         <td style="text-align: right">
                             @php
-                                $sales_register_balance = $data->total_amount - $data->amount_paid - $data->bad_order->total_bo;
+                                $sales_register_balance = $data->total_amount - $data->amount_paid - $total_bo;
                                 echo number_format($sales_register_balance, 2, '.', ',');
                             @endphp
                             <input type="hidden" value="{{ $sales_register_balance }}" name="sales_register_balance[{{ $data->id }}]">
-                            <input type="hidden" value="{{ $data->bad_order->total_bo }}"
+                            <input type="hidden" value="{{ $total_bo}}"
                                 name="sales_register_total_bo[{{ $data->id }}]">
                         </td>
 
                         <td>
 
                             <input type="number" min="0" style="width:150px;"
-                                name="sales_register_number_of_transactions" class="form-control">
+                                name="sales_register_number_of_transactions[{{ $data->id }}]" class="form-control">
 
 
                             <input type="hidden" name="sales_register_store_name[{{ $data->id }}]"

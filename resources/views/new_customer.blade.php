@@ -29,6 +29,9 @@
             <div class="card-body">
                 <form id="new_customer_generate_csv">
                     <div class="form-group">
+                        <label>Schedule Day</label>
+                        <input type="text" class="form-control" name="schedule_day" value="{{ $schedule_day }}" required>
+
                         <label>Store Name</label>
                         <input type="text" class="form-control" name="store_name" required>
 
@@ -48,6 +51,10 @@
 
                         <label>Detailed Addres</label>
                         <input type="text" class="form-control" name="detailed_address" required>
+
+                        <label>Coordinates</label>
+                        <input type="text" class="form-control" name="coordinates" required>
+
 
                         <input type="hidden" value="{{ $agent_user->agent_name }}" name="agent_name">
                     </div>

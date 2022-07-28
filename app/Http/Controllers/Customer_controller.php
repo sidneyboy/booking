@@ -223,12 +223,18 @@ class Customer_controller extends Controller
 
     public function new_customer()
     {
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+
+        $schedule_day = date('l', strtotime($date));
+
         $agent_user = Agent_user::first();
         $location = location::select('id', 'location')->get();
         return view('new_customer', [
             'location' => $location,
         ])->with('active', 'new_customer')
-            ->with('agent_user', $agent_user);
+            ->with('agent_user', $agent_user)
+            ->with('schedule_day', $schedule_day);
     }
 
     public function new_customer_generate_csv(Request $request)
@@ -239,6 +245,8 @@ class Customer_controller extends Controller
         $location = $location_data[1];
         return view('new_customer_generate_csv')
             ->with('store_name', $request->input('store_name'))
+            ->with('schedule_day', $request->input('schedule_day'))
+            ->with('coordinates', $request->input('coordinates'))
             ->with('contact_person', $request->input('contact_person'))
             ->with('contact_number', $request->input('contact_number'))
             ->with('location_id', $request->input('location_id'))

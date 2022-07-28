@@ -36,6 +36,7 @@ class Sales_register_controller extends Controller
         }
 
 
+        //
         //return $csv;
         $counter = count($csv);
 
@@ -50,6 +51,7 @@ class Sales_register_controller extends Controller
                 'date_delivered' => $csv[1][5],
                 'status' => $csv[1][6],
                 'sku_type' => $csv[1][7],
+                'amount_paid' => '0',
             ]);
             $sales_register_saved->save();
             $sales_register_saved_last_id = $sales_register_saved->id;

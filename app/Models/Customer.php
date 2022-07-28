@@ -18,6 +18,9 @@ class Customer extends Model
         'special_account',
         'mode_of_transaction',
         'status',
+        'schedule_day',
+        'longitude',
+        'latitude',
     ];
 
     public function customer_principal_price()

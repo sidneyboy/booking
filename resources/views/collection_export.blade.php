@@ -2,7 +2,6 @@
 
 @section('title', 'COLLECTION EXPORT')
 <style>
-    #collection_export th:first-child,
     #collection_export td:first-child {
         position: sticky;
         left: 0px;
@@ -35,35 +34,126 @@
             </div>
             <div class="card-body">
                 <div class="table table-responsive">
-                    <table class="table table-bordered table-sm" id="collection_export">
+                    <table class="table table-bordered table-sm" id="export_table">
                         <thead>
                             <tr>
-                                <th>Store Name</th>
-                                <th>Principal</th>
-                                <th>Mode of Transaction</th>
-                                <th>DR</th>
-                                <th>Sku_type</th>
-                                <th>Total Amount</th>
-                                <th>Amount Paid</th>
-                                <th>BO</th>
-                                <th>Balance</th>
-                                <th>Remarks</th>
+                                <td>SALESMAN</td>
+                                <td>{{ $agent_user->agent_name }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
+                            <tr>
+                                <td rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    OR No
+                                </td>
+                                <td rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    DR
+                                </td>
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Store Name
+                                </th>
+                              
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Principal
+                                </th>
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Sku Type
+                                </th>
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Mode of Payment
+                                </th>
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Amount
+                                </th>
+
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Current Bo
+                                </th>
+                                <th style=" width:73px">
+                                    <p style="text-align:center"><span style="font-size:11pt"><strong><span
+                                                    style="font-size:12.0pt">CASH</span></strong></span></p>
+                                </th>
+                                <th style=" width:74px">
+                                    <p style="text-align:center"><span style="font-size:11pt"><strong><span
+                                                    style="font-size:12.0pt">ADD: REFER</span></strong></span></p>
+                                </th>
+                                <th style=" width:79px">
+                                    <p style="text-align:center"><span style="font-size:11pt"><strong><span
+                                                    style="font-size:12.0pt">CHEQUE</span></strong></span></p>
+                                </th>
+                                <th style=" width:70px">
+                                    <p style="text-align:center"><span style="font-size:11pt"><strong><span
+                                                    style="font-size:12.0pt">ADD: REFER</span></strong></span></p>
+                                </th>
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Less: Refer
+                                </th>
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Balance
+                                </th>
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Specify
+                                </th>
+                                <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                                    Remarks
+                                </th>
+                            </tr>
+
                         </thead>
                         <tbody>
                             @foreach ($collection as $data)
                                 <tr>
+                                    <td>{{ $data->or_number }}</td>
+                                    <td>{{ $data->dr }}</td>
                                     <td>{{ $data->customer->store_name }}</td>
                                     <td>{{ $data->principal }}</td>
-                                    <td>{{ $data->mode_of_transaction }}</td>
-                                    <td>{{ $data->dr }}</td>
                                     <td>{{ $data->sku_type }}</td>
-                                    <td style="text-align: right">{{ $data->total_amount }}</td>
-                                    <td style="text-align: right">{{ $data->amount_paid }}</td>
-                                    <td style="text-align: right">{{ $data->total_bo }}</td>
-                                    <td style="text-align: right">{{ $data->balance }}</td>
-                                    <td>{{ $data->remarks }}</td>
+                                    <td>{{ $data->mode_of_transaction }}</td>
+                                    <td>{{ $data->total_amount }}</td>
+                                    <td>{{ $data->total_bo }}</td>
+                                    <td>{{ $data->collection_details_first->cash }}</td>
+                                    <td>{{ $data->collection_details_first->cash_add_refer }}</td>
+                                    <td>{{ $data->collection_details_first->cheque }}</td>
+                                    <td>{{ $data->collection_details_first->cheque_add_refer }}</td>
+                                    <td>{{ $data->collection_details_first->less_refer }}</td>
+                                    <td>{{ $data->collection_details_first->balance }}</td>
+                                    <td>{{ $data->collection_details_first->specify }}</td>
+                                    <td>{{ $data->collection_details_first->remarks }}</td>
                                 </tr>
+                                @foreach ($data->collection_details as $details)
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>{{ $details->cash_add_refer }}</td>
+                                        <td></td>
+                                        <td>{{ $details->cheque_add_refer }}</td>
+
+                                        <td>{{ $details->less_refer }}</td>
+                                        <td>{{ $details->balance }}</td>
+                                        <td>{{ $details->specify }}</td>
+                                        <td>{{ $details->remarks }}</td>
+
+                                    </tr>
+                                @endforeach
                             @endforeach
                         </tbody>
                     </table>
@@ -71,7 +161,8 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-
+                <button onclick="exportTableToCSV('{{ $agent_user->agent_name }} Sales Order {{ $date }}.csv')"
+                    class="btn btn-success btn-block btn-sm">Export Sales Order</button>
             </div>
             <!-- /.card-footer-->
         </div>
@@ -89,6 +180,52 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        function downloadCSV(csv, filename) {
+            var csvFile;
+            var downloadLink;
+
+            // CSV file
+            csvFile = new Blob([csv], {
+                type: "text/csv"
+            });
+
+            // Download link
+            downloadLink = document.createElement("a");
+
+            // File name
+            downloadLink.download = filename;
+
+            // Create a link to the file
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+
+            // Hide download link
+            downloadLink.style.display = "none";
+
+            // Add the link to DOM
+            document.body.appendChild(downloadLink);
+
+            // Click download link
+            downloadLink.click();
+        }
+
+        function exportTableToCSV(filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("#export_table tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = [],
+                    cols = rows[i].querySelectorAll("td, th");
+
+                for (var j = 0; j < cols.length; j++)
+                    row.push(cols[j].innerText);
+
+                csv.push(row.join(","));
+            }
+
+            // Download CSV file
+            downloadCSV(csv.join("\n"), filename);
+        }
     </script>
     </body>
 

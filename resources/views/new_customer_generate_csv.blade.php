@@ -16,24 +16,30 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
             </tr>
             <tr>
+                <th>Scheduled Day</th>
                 <th>Store Name</th>
                 <th>Contact Person</th>
                 <th>Contact Number</th>
                 <th>Location</th>
                 <th>Location ID</th>
                 <th>Detailed Address</th>
+                <th>Coordinates</th>
             </tr>
         </thead>
         <tbody>
             <tr>
+                <td>{{ $schedule_day }}</td>
                 <td>{{ $store_name }}</td>
                 <td>{{ $contact_person }}</td>
                 <td>{{ $contact_number }}</td>
                 <td>{{ $location }}</td>
                 <th>{{ $location_id }}</th>
                 <td>{{ $detailed_address }}</td>
+                <td>{{ $coordinates }}</td>
             </tr>
         </tbody>
     </table>

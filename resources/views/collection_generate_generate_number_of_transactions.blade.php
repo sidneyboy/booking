@@ -4,6 +4,9 @@
             <thead>
                 <tr>
                     <td rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
+                        OR No
+                    </td>
+                    <td rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
                         DR
                     </td>
                     <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
@@ -53,6 +56,7 @@
                     </th>
                 </tr>
                 <tr>
+                    
                     <th style=" width:73px">
                         <p style="text-align:center"><span style="font-size:11pt"><strong><span
                                         style="font-size:12.0pt">CASH</span></strong></span></p>
@@ -73,8 +77,11 @@
             </thead>
             <tbody>
                 @foreach ($sales_register_id as $data)
-                    @if ($sales_register_number_of_transactions < 1)
+                    @if ($sales_register_number_of_transactions[$data] < 2)
                         <tr>
+                            <td>
+                                <input type="text" name="sales_register_or_number[{{ $data }}]" class="form-control" required>
+                            </td>
                             <td>{{ $sales_register_dr[$data] }}</td>
                             <td>{{ $sales_register_store_name[$data] }}</td>
                             <td>{{ $sales_register_principal[$data] }}</td>
@@ -88,37 +95,37 @@
 
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+            width: 150px;
+            height: calc(2.25rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            box-shadow: inset 0 0 0 transparent;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cash" class="currency-default" value="0" required>
                             </td>
                             <td>
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+            width: 150px;
+            height: calc(2.25rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            box-shadow: inset 0 0 0 transparent;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cash_add_refer" class="currency-default" value="0"
                                     required>
                             </td>
@@ -126,56 +133,56 @@
 
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+            width: 150px;
+            height: calc(2.25rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            box-shadow: inset 0 0 0 transparent;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cheque" class="currency-default" value="0" required>
                             </td>
                             <td>
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+            width: 150px;
+            height: calc(2.25rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            box-shadow: inset 0 0 0 transparent;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cheque_add_refer" class="currency-default" value="0"
                                     required>
                             </td>
                             <td>
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+            width: 150px;
+            height: calc(2.25rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            box-shadow: inset 0 0 0 transparent;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cheque_less_refer" class="currency-default" value="0"
                                     required>
                             </td>
@@ -186,13 +193,18 @@
                             <td>
                                 <input type="text" name="sales_register_remarks" style="width: 150px;"
                                     class="form-control">
+
+                                <input type="hidden"
+                                    name="sales_register_number_of_transactions[{{ $sales_register_dr[$data] }}]"
+                                    value="{{ $sales_register_number_of_transactions[$data] }}">
                             </td>
                         </tr>
                     @else
                         @php
-                            $final_sales_register_number_of_transactions = $sales_register_number_of_transactions - 1;
+                            $final_sales_register_number_of_transactions = $sales_register_number_of_transactions[$data] - 1;
                         @endphp
                         <tr>
+                            <td> <input type="text" name="sales_register_or_number[{{ $sales_register_dr[$data] }}]" style="width:150px;" class="form-control" required></td>
                             <td>{{ $sales_register_dr[$data] }}</td>
                             <td>{{ $sales_register_store_name[$data] }}</td>
                             <td>{{ $sales_register_principal[$data] }}</td>
@@ -206,38 +218,38 @@
 
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+                            width: 150px;
+                            height: calc(2.25rem + 2px);
+                            padding: 0.375rem 0.75rem;
+                            font-size: 1rem;
+                            font-weight: 400;
+                            line-height: 1.5;
+                            color: #495057;
+                            background-color: #fff;
+                            background-clip: padding-box;
+                            border: 1px solid #ced4da;
+                            border-radius: 0.25rem;
+                            box-shadow: inset 0 0 0 transparent;
+                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cash[{{ $sales_register_dr[$data] }}]"
                                     class="currency-default" value="0" required>
                             </td>
                             <td>
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+                            width: 150px;
+                            height: calc(2.25rem + 2px);
+                            padding: 0.375rem 0.75rem;
+                            font-size: 1rem;
+                            font-weight: 400;
+                            line-height: 1.5;
+                            color: #495057;
+                            background-color: #fff;
+                            background-clip: padding-box;
+                            border: 1px solid #ced4da;
+                            border-radius: 0.25rem;
+                            box-shadow: inset 0 0 0 transparent;
+                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cash_add_refer[{{ $sales_register_dr[$data] }}]"
                                     class="currency-default" value="0" required>
                             </td>
@@ -245,57 +257,57 @@
 
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+                            width: 150px;
+                            height: calc(2.25rem + 2px);
+                            padding: 0.375rem 0.75rem;
+                            font-size: 1rem;
+                            font-weight: 400;
+                            line-height: 1.5;
+                            color: #495057;
+                            background-color: #fff;
+                            background-clip: padding-box;
+                            border: 1px solid #ced4da;
+                            border-radius: 0.25rem;
+                            box-shadow: inset 0 0 0 transparent;
+                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cheque[{{ $sales_register_dr[$data] }}]"
                                     class="currency-default" value="0" required>
                             </td>
                             <td>
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+                            width: 150px;
+                            height: calc(2.25rem + 2px);
+                            padding: 0.375rem 0.75rem;
+                            font-size: 1rem;
+                            font-weight: 400;
+                            line-height: 1.5;
+                            color: #495057;
+                            background-color: #fff;
+                            background-clip: padding-box;
+                            border: 1px solid #ced4da;
+                            border-radius: 0.25rem;
+                            box-shadow: inset 0 0 0 transparent;
+                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_cheque_add_refer[{{ $sales_register_dr[$data] }}]"
                                     class="currency-default" value="0" required>
                             </td>
                             <td>
                                 <input type="text"
                                     style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+                            width: 150px;
+                            height: calc(2.25rem + 2px);
+                            padding: 0.375rem 0.75rem;
+                            font-size: 1rem;
+                            font-weight: 400;
+                            line-height: 1.5;
+                            color: #495057;
+                            background-color: #fff;
+                            background-clip: padding-box;
+                            border: 1px solid #ced4da;
+                            border-radius: 0.25rem;
+                            box-shadow: inset 0 0 0 transparent;
+                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
                                     name="sales_register_less_refer[{{ $sales_register_dr[$data] }}]"
                                     class="currency-default" value="0" required>
                             </td>
@@ -332,6 +344,9 @@
                                     value="{{ $sales_register_dr[$data] }}">
                                 <input type="hidden" name="sales_register_id[]"
                                     value="{{ $sales_register_dr[$data] }}">
+                                <input type="hidden"
+                                    name="sales_register_number_of_transactions[{{ $sales_register_dr[$data] }}]"
+                                    value="{{ $sales_register_number_of_transactions[$data] }}">
                             </td>
                         </tr>
                         @for ($i = 0; $i < $final_sales_register_number_of_transactions; $i++)
@@ -345,26 +360,25 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td>
-
-                                </td>
+                                <td></td>
+                                <td></td>
                                 <td>
                                     <input type="text"
                                         style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
-                                        name="sales_register_cash_add_refer[{{ $i }}]"
+                            width: 150px;
+                            height: calc(2.25rem + 2px);
+                            padding: 0.375rem 0.75rem;
+                            font-size: 1rem;
+                            font-weight: 400;
+                            line-height: 1.5;
+                            color: #495057;
+                            background-color: #fff;
+                            background-clip: padding-box;
+                            border: 1px solid #ced4da;
+                            border-radius: 0.25rem;
+                            box-shadow: inset 0 0 0 transparent;
+                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+                                        name="lower_sales_register_cash_add_refer[{{ $sales_register_dr[$data] ."-". $i }}]"
                                         class="currency-default" value="0" required>
                                 </td>
                                 <td>
@@ -374,47 +388,47 @@
                                 <td>
                                     <input type="text"
                                         style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
-                                        name="sales_register_cheque_add_refer[{{ $i }}]"
+                            width: 150px;
+                            height: calc(2.25rem + 2px);
+                            padding: 0.375rem 0.75rem;
+                            font-size: 1rem;
+                            font-weight: 400;
+                            line-height: 1.5;
+                            color: #495057;
+                            background-color: #fff;
+                            background-clip: padding-box;
+                            border: 1px solid #ced4da;
+                            border-radius: 0.25rem;
+                            box-shadow: inset 0 0 0 transparent;
+                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+                                        name="lower_sales_register_cheque_add_refer[{{ $sales_register_dr[$data] ."-". $i }}]"
                                         class="currency-default" value="0" required>
                                 </td>
                                 <td>
                                     <input type="text"
                                         style="text-align: right;    display: block;
-                                    width: 150px;
-                                    height: calc(2.25rem + 2px);
-                                    padding: 0.375rem 0.75rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #495057;
-                                    background-color: #fff;
-                                    background-clip: padding-box;
-                                    border: 1px solid #ced4da;
-                                    border-radius: 0.25rem;
-                                    box-shadow: inset 0 0 0 transparent;
-                                    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
-                                        name="sales_register_less_refer[{{ $i }}]"
+                            width: 150px;
+                            height: calc(2.25rem + 2px);
+                            padding: 0.375rem 0.75rem;
+                            font-size: 1rem;
+                            font-weight: 400;
+                            line-height: 1.5;
+                            color: #495057;
+                            background-color: #fff;
+                            background-clip: padding-box;
+                            border: 1px solid #ced4da;
+                            border-radius: 0.25rem;
+                            box-shadow: inset 0 0 0 transparent;
+                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;"
+                                        name="lower_sales_register_less_refer[{{ $sales_register_dr[$data] ."-". $i }}]"
                                         class="currency-default" value="0" required>
                                 </td>
                                 <td>
-                                    <input type="text" name="sales_register_specify[{{ $i }}]"
+                                    <input type="text" name="lower_sales_register_specify[{{ $sales_register_dr[$data] ."-". $i }}]"
                                         style="width: 150px;" class="form-control">
                                 </td>
                                 <td>
-                                    <input type="text" name="sales_register_remarks[{{ $i }}]"
+                                    <input type="text" name="lower_sales_register_remarks[{{ $sales_register_dr[$data] ."-". $i }}]"
                                         style="width: 150px;" class="form-control">
                                 </td>
                             </tr>
@@ -425,8 +439,8 @@
         </table>
     </div>
     <input type="hidden" value="{{ $customer_id }}" name="customer_id">
-    <input type="hidden" value="{{ $sales_register_number_of_transactions }}"
-        name="sales_register_number_of_transactions">
+    {{-- <input type="hidden" value="{{ $sales_register_number_of_transactions }}"
+        name="sales_register_number_of_transactions"> --}}
 
 
     <button type="submit" class="btn btn-info btn-block">PROCEED</button>

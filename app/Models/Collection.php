@@ -21,10 +21,21 @@ class Collection extends Model
         'exported',
         'remarks',
         'total_bo',
+        'or_number',
     ];
 
     public function customer()
     {
         return $this->belongsTo('App\Models\Customer', 'customer_id');
+    }
+
+    public function collection_details_first()
+    {
+        return $this->hasOne('App\Models\Collection_details', 'collection_id')->orderBy('id')->limit(1);
+    }
+
+    public function collection_details()
+    {
+        return $this->hasMany('App\Models\Collection_details', 'collection_id')->skip(1)->take(PHP_INT_MAX);
     }
 }
