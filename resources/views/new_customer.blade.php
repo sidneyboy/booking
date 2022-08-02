@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="new_customer_generate_csv">
+                <form id="customer_export_saved">
                     <div class="form-group">
                         <label>Schedule Day</label>
                         <input type="text" class="form-control" name="schedule_day" value="{{ $schedule_day }}" required>
@@ -65,7 +65,7 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                    <div id="new_customer_generate_csv_page"></div>
+                    <div id="customer_export_saved_page"></div>
             </div>
             <!-- /.card-footer-->
         </div>
@@ -84,11 +84,11 @@
             }
         });
 
-        $("#new_customer_generate_csv").on('submit', (function(e) {
+        $("#customer_export_saved").on('submit', (function(e) {
             e.preventDefault();
             //$('.loading').show();
             $.ajax({
-                url: "new_customer_generate_csv",
+                url: "customer_export_saved",
                 type: "POST",
                 data: new FormData(this),
                 contentType: false,
@@ -96,27 +96,27 @@
                 processData: false,
                 success: function(data) {
                     console.log(data);
-                    $('#new_customer_generate_csv_page').html(data)
-                    // if (data == 'saved') {
-                    //     Swal.fire({
-                    //         position: 'top-end',
-                    //         icon: 'success',
-                    //         title: 'Location Data Uploaded',
-                    //         showConfirmButton: false,
-                    //         timer: 1500
-                    //     })
+                    // $('#customer_export_saved_page').html(data)
+                    if (data == 'saved') {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Location Data Uploaded',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
 
-                    //     $('.loading').hide();
-                    //     // location.reload();
-                    //     window.location.href = "/principal_upload";
-                    // } else {
-                    //     Swal.fire(
-                    //         'Something went wrong!',
-                    //         data,
-                    //         'error'
-                    //     )
-                    //     $('.loading').hide();
-                    // }
+                        $('.loading').hide();
+                        // location.reload();
+                        window.location.href = "/new_customer_generate_csv";
+                    } else {
+                        Swal.fire(
+                            'Something went wrong!',
+                            data,
+                            'error'
+                        )
+                        $('.loading').hide();
+                    }
                 },
             });
         }));

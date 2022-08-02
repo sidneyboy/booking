@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Audit_trail;
 use App\Models\Customer_principal_discount;
+use App\Models\Customer_export;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -237,22 +238,44 @@ class Customer_controller extends Controller
             ->with('schedule_day', $schedule_day);
     }
 
+    public function customer_export_saved(Request $request)
+    {
+        $explode = explode('-',$request->input('location'));
+        $location_id = $explode[0];
+        $location = $explode[1];
+
+        $customer_export_saved = new Customer_export([
+            'schedule_day' => $request->input('schedule_day'),
+            'store_name' => $request->input('store_name'),
+            'contact_person' => $request->input('contact_person'),
+            'contact_number' => $request->input('contact_number'),
+            'location' => $location,
+            'location_id' => $location_id,
+            'detailed_address' => $request->input('detailed_address'),
+            'coordinates' => $request->input('coordinates'),
+            'exported' => 'not_yet',
+        ]);
+
+        $customer_export_saved->save();
+
+        return 'saved';
+    }
+
     public function new_customer_generate_csv(Request $request)
     {
+        //return 'asdasd';
         //return $request->input();
-        $location_data = explode('-', $request->input('location'));
-        $location_id = $location_data[0];
-        $location = $location_data[1];
-        return view('new_customer_generate_csv')
-            ->with('store_name', $request->input('store_name'))
-            ->with('schedule_day', $request->input('schedule_day'))
-            ->with('coordinates', $request->input('coordinates'))
-            ->with('contact_person', $request->input('contact_person'))
-            ->with('contact_number', $request->input('contact_number'))
-            ->with('location_id', $request->input('location_id'))
-            ->with('detailed_address', $request->input('detailed_address'))
-            ->with('agent_name', $request->input('agent_name'))
-            ->with('location', $location)
-            ->with('location_id', $location_id);
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Ymd');
+        $time = date('His');
+
+        $agent_user = Agent_user::first();
+        $customer_export = Customer_export::where('exported','!=','exported')->get();
+        return view('new_customer_generate_csv',[
+            'customer_export' => $customer_export,
+            'agent_user' => $agent_user,
+        ])->with('date', $date)
+            ->with('time', $time)
+            ->with('active', 'new_customer_generate_csv');
     }
 }

@@ -417,6 +417,15 @@
                                     </p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ url('new_customer_generate_csv') }}"
+                                    class="nav-link {{ $active == 'new_customer_generate_csv' ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p>
+                                        Customer Export
+                                    </p>
+                                </a>
+                            </li>
 
                             <li class="nav-item">
                                 <a href="{{ url('sales_order_export') }}"
