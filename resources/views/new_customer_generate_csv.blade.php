@@ -34,57 +34,66 @@
                 </div>
             </div>
             <div class="card-body">
-                
-                <div class="table table-responsive">
-                    <table class="table table-bordered table-sm" id="new_customer">
-                        <thead>
-                            <tr>
-                                <th>New Customer</th>
-                                <th>{{ $agent_user->agent_name ."-". $date ."". $time }}</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <th>Scheduled Day</th>
-                                <th>Store Name</th>
-                                <th>Contact Person</th>
-                                <th>Contact Number</th>
-                                <th>Location</th>
-                                <th>Location ID</th>
-                                <th>Detailed Address</th>
-                                <th>Coordinates</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($customer_export as $exported)
+                <form id="customer_export">
+                    <div class="table table-responsive">
+                        <table class="table table-bordered table-sm" id="new_customer">
+                            <thead>
                                 <tr>
-                                    <td>{{ $exported->schedule_day }}</td>
-                                    <td>{{ $exported->store_name }}</td>
-                                    <td>{{ $exported->contact_person }}</td>
-                                    <td>{{ $exported->contact_number }}</td>
-                                    <td>{{ $exported->location_id }}</td>
-                                    <td>{{ $exported->location }}</td>
-                                    <td>{{ $exported->detailed_address }}</td>
-                                    <td>{{ $exported->coordinates }}</td>
+                                    <th>New Customer</th>
+                                    <th>{{ $agent_user->agent_name . '-' . $date . '' . $time }}</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <th>KOB</th>
+                                    <th>Scheduled Day</th>
+                                    <th>Store Name</th>
+                                    <th>Contact Person</th>
+                                    <th>Contact Number</th>
+                                    <th>Location ID</th>
+                                    <th>Location </th>
+                                    <th>Detailed Address</th>
+                                    <th>Coordinates</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($customer_export as $exported)
+                                    <tr>
+                                        <td>{{ $exported->kob }}</td>
+                                        <td>{{ $exported->schedule_day }}</td>
+                                        <td>{{ $exported->store_name }}</td>
+                                        <td>{{ $exported->contact_person }}</td>
+                                        <td>{{ $exported->contact_number }}</td>
+                                        <td>{{ $exported->location_id }}</td>
+                                        <td>{{ $exported->location }}</td>
+                                        <td>{{ $exported->detailed_address }}</td>
+                                        <td>
+                                            {{ $exported->coordinates }}
+                                            <input type="hidden" value="{{ $exported->id }}" name="customer_export_id[]">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
 
 
-                </div>
+                    </div>
 
-                <button class="btn btn-block btn-success"
-                    onclick="exportTableToCSV('{{ $agent_user->agent_name }} New Customer.csv')">EXPORT
-                    DATA</button>
+                  
+
+                    <button class="btn btn-block btn-success" type="submit">EXPORT DATA</button>
+                </form>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-
+                <button onclick="exportTableToCSV('{{ $agent_user->agent_name }} New Customer.csv')"
+                    style="display: none" id="button_export">EXPORT
+                    DATA</button>
             </div>
             <!-- /.card-footer-->
         </div>
@@ -103,53 +112,95 @@
             }
         });
 
+      
         function downloadCSV(csv, filename) {
-              var csvFile;
-              var downloadLink;
-      
-              // CSV file
-              csvFile = new Blob([csv], {
-                  type: "text/csv"
-              });
-      
-              // Download link
-              downloadLink = document.createElement("a");
-      
-              // File name
-              downloadLink.download = filename;
-      
-              // Create a link to the file
-              downloadLink.href = window.URL.createObjectURL(csvFile);
-      
-              // Hide download link
-              downloadLink.style.display = "none";
-      
-              // Add the link to DOM
-              document.body.appendChild(downloadLink);
-      
-              // Click download link
-              downloadLink.click();
-          }
-      
-          function exportTableToCSV(filename) {
-              $('.loading').show();
-              var csv = [];
-              var rows = document.querySelectorAll("#new_customer tr");
-      
-              for (var i = 0; i < rows.length; i++) {
-                  var row = [],
-                      cols = rows[i].querySelectorAll("td, th");
-      
-                  for (var j = 0; j < cols.length; j++)
-                      row.push(cols[j].innerText);
-      
-                  csv.push(row.join(","));
-              }
-      
-              // Download CSV file
-              downloadCSV(csv.join("\n"), filename);
-              window.location.replace("{{ route('work_flow') }}");
-          }
+            var csvFile;
+            var downloadLink;
+
+            // CSV file
+            csvFile = new Blob([csv], {
+                type: "text/csv"
+            });
+
+            // Download link
+            downloadLink = document.createElement("a");
+
+            // File name
+            downloadLink.download = filename;
+
+            // Create a link to the file
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+
+            // Hide download link
+            downloadLink.style.display = "none";
+
+            // Add the link to DOM
+            document.body.appendChild(downloadLink);
+
+            // Click download link
+            downloadLink.click();
+        }
+
+        function exportTableToCSV(filename) {
+            //$('.loading').show();
+            var csv = [];
+            var rows = document.querySelectorAll("#new_customer tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = [],
+                    cols = rows[i].querySelectorAll("td, th");
+
+                for (var j = 0; j < cols.length; j++)
+                    row.push(cols[j].innerText);
+
+                csv.push(row.join(","));
+            }
+
+            // Download CSV file
+            downloadCSV(csv.join("\n"), filename);
+        }
+
+        $("#customer_export").on('submit', (function(e) {
+            e.preventDefault();
+            //$('.loading').show();
+            $.ajax({
+                url: "customer_export",
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    console.log(data);
+
+                    $('#button_export').click();
+
+                    // if (data == 'saved') {
+                    //     Swal.fire({
+                    //         position: 'top-end',
+                    //         icon: 'success',
+                    //         title: 'Location Data Uploaded',
+                    //         showConfirmButton: false,
+                    //         timer: 1500
+                    //     })
+
+                    //     $('.loading').hide();
+                    //     // location.reload();
+                    //     window.location.href = "/principal_upload";
+                    // } else {
+                    //     Swal.fire(
+                    //         'Something went wrong!',
+                    //         data,
+                    //         'error'
+                    //     )
+                    //     $('.loading').hide();
+                    // }
+                },
+            });
+        }));
+
+
+       
     </script>
     </body>
 

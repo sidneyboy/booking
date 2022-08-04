@@ -34,66 +34,77 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="table table-responsive" id="export_table">
-                    @foreach ($sales_order as $data)
-                        <table class="table table-bordered table-sm table_sales_order_export">
-                            <thead>
-                                <tr>
-                                    <th>Customer ID</th>
-                                    <th>Store Name</th>
-                                    <th>Principal ID</th>
-                                    <th>Principal</th>
-                                    <th>Agent ID</th>
-                                    <th>Agent</th>
-                                    <th>Mode of Transaction</th>
-                                    <th>Sku Type</th>
-                                    <th>Total Amount</th>
-                                </tr>
-                                <tr>
-                                    <td>{{ $data->customer_id }}</td>
-                                    <td>{{ $data->customer->store_name }}</td>
-                                    <td>{{ $data->principal_id }}</td>
-                                    <td>{{ $data->principal->principal }}</td>
-                                    <td>{{ $data->agent_id }}</td>
-                                    <td>{{ $data->agent->agent_name }}</td>
-                                    <td style="text-transform:uppercase">{{ $data->mode_of_transaction }}</td>
-                                    <td style="text-transform:uppercase">{{ $data->sku_type }}</td>
-                                    <td>{{ $data->total_amount }}</td>
-                                </tr>
-                                <tr>
-
-                                    <th>Code</th>
-                                    <th>Sku ID</th>
-                                    <th>Desc</th>
-                                    <th>Unit of Measurement</th>
-                                    <th>Qty</th>
-                                    <th>U/P</th>
-                                    <th>Sub Total</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data->sales_order_details as $details)
+                <form id="sales_order_export_process">
+                    <div class="table table-responsive" id="export_table">
+                        @foreach ($sales_order as $data)
+                            <table class="table table-bordered table-sm table_sales_order_export">
+                                <thead>
                                     <tr>
-                                        <td>{{ $details->inventory->sku_code }}</td>
-                                        <td>{{ $details->inventory_id }}</td>
-                                        <td>{{ $details->inventory->description }}</td>
-                                        <td>{{ $details->inventory->uom }}</td>
-                                        <td>{{ $details->quantity }}</td>
-                                        <td>{{ $details->unit_price }}</td>
-                                        <td>{{ $details->unit_price * $details->quantity }}</td>
+                                        <th>Customer ID</th>
+                                        <th>Store Name</th>
+                                        <th>Principal ID</th>
+                                        <th>Principal</th>
+                                        <th>Agent ID</th>
+                                        <th>Agent</th>
+                                        <th>Mode of Transaction</th>
+                                        <th>Sku Type</th>
+                                        <th>Total Amount</th>
+                                        <th>SO</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @endforeach
+                                    <tr>
+                                        <td>{{ $data->customer_id }}</td>
+                                        <td>{{ $data->customer->store_name }}</td>
+                                        <td>{{ $data->principal_id }}</td>
+                                        <td>{{ $data->principal->principal }}</td>
+                                        <td>{{ $data->agent_id }}</td>
+                                        <td>{{ $data->agent->agent_name }}</td>
+                                        <td style="text-transform:uppercase">{{ $data->mode_of_transaction }}</td>
+                                        <td style="text-transform:uppercase">{{ $data->sku_type }}</td>
+                                        <td>{{ $data->total_amount }}</td>
+                                        <td>
+                                            {{ $data->sales_order_number }}
+                                            <input type="hidden" name="sales_order_id[]" value="{{ $data->id }}">
+                                        </td>
+                                    </tr>
+                                    <tr>
 
-                </div>
+                                        <th>Code</th>
+                                        <th>Sku ID</th>
+                                        <th>Desc</th>
+                                        <th>Unit of Measurement</th>
+                                        <th>Qty</th>
+                                        <th>U/P</th>
+                                        <th>Sub Total</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data->sales_order_details as $details)
+                                        <tr>
+                                            <td>{{ $details->inventory->sku_code }}</td>
+                                            <td>{{ $details->inventory_id }}</td>
+                                            <td>{{ $details->inventory->description }}</td>
+                                            <td>{{ $details->inventory->uom }}</td>
+                                            <td>{{ $details->quantity }}</td>
+                                            <td>{{ $details->unit_price }}</td>
+                                            <td>{{ $details->unit_price * $details->quantity }}</td>
+                                            <td></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endforeach
+
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">EXPORT SALES ORDER</button>
+                </form>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                    <button onclick="exportTableToCSV('{{ $agent_user->agent_name }} Sales Order {{ $date }}.csv')" class="btn btn-success btn-block btn-sm">Export Sales Order</button>
+                <button id="trigger" onclick="exportTableToCSV('{{ $agent_user->agent_name }} Sales Order {{ $date }}.csv')"
+                    class="btn btn-success btn-block btn-sm" style="display: none">Export Sales Order</button>
             </div>
             <!-- /.card-footer-->
         </div>
@@ -157,6 +168,43 @@
             // Download CSV file
             downloadCSV(csv.join("\n"), filename);
         }
+
+        $("#sales_order_export_process").on('submit', (function(e) {
+            e.preventDefault();
+            //$('.loading').show();
+            $.ajax({
+                url: "sales_order_export_process",
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data) {
+                    console.log(data);
+                    if (data == 'saved') {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Sales Order Exported',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+
+                        $('.loading').hide();
+                        // location.reload();
+                        $('#trigger').click();
+                        window.location.href = "/work_flow";
+                    } else {
+                        Swal.fire(
+                            'Something went wrong!',
+                            data,
+                            'error'
+                        )
+                        $('.loading').hide();
+                    }
+                },
+            });
+        }));
     </script>
     </body>
 

@@ -31,6 +31,22 @@
                     <div class="form-group">
                         <label>Schedule Day</label>
                         <input type="text" class="form-control" name="schedule_day" value="{{ $schedule_day }}" required>
+                        
+                        <label>KOB</label>
+                        <select name="kob" class="form-control select2" required>
+                            <option value="" default>Select</option>
+                            <option value="SSS">SSS</option>
+                            <option value="GRO">GRO</option>
+                            <option value="SM">SM</option>
+                            <option value="DS">DS</option>
+                            <option value="PMS">PMS</option>
+                            <option value="CNV">CNV</option>
+                            <option value="HWA">HWA</option>
+                            <option value="WS">WS</option>
+                            <option value="HLS">HLS</option>
+                            <option value="TER">TER</option>
+                            <option value="INST">INST</option>
+                        </select>
 
                         <label>Store Name</label>
                         <input type="text" class="form-control" name="store_name" required>

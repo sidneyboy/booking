@@ -19,5 +19,6 @@ class Customer_export extends Model
         'detailed_address',
         'coordinates',
         'exported',
+        'kob',
     ];
 }

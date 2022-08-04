@@ -19,6 +19,7 @@ class Sales_order extends Model
         'status',
         'exported',
         'amount_paid',
+        'sales_order_number',
     ];
 
     

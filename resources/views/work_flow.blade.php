@@ -27,35 +27,43 @@
                 </div>
             </div>
             <div class="card-body">
-                <form id="work_flow_show_inventory">
-                    <div class="form-group">
-                        <label>Customer</label>
-                        <select name="customer" id="customer" class="form-control select2" required style="width:100%;">
-                            <option value="" default>Select</option>
-                            @foreach ($customer as $data)
-                                <option value="{{ $data->id }}">{{ $data->store_name }}</option>
-                            @endforeach
-                        </select>
+                @if ($sales_order_check == 0)
+                    <form id="work_flow_show_inventory">
+                        <div class="form-group">
+                            <label>Customer</label>
+                            <select name="customer" id="customer" class="form-control select2" required
+                                style="width:100%;">
+                                <option value="" default>Select</option>
+                                @foreach ($customer as $data)
+                                    <option value="{{ $data->id }}">{{ $data->store_name }}</option>
+                                @endforeach
+                            </select>
 
-                        <label>Principal</label>
-                        <select name="principal" id="principal" class="form-control select2" required style="width:100%;">
-                            <option value="" default>Select</option>
-                            @foreach ($principal as $data)
-                                <option value="{{ $data->id }}">{{ $data->principal }}</option>
-                            @endforeach
-                        </select>
+                            <label>Principal</label>
+                            <select name="principal" id="principal" class="form-control select2" required
+                                style="width:100%;">
+                                <option value="" default>Select</option>
+                                @foreach ($principal as $data)
+                                    <option value="{{ $data->id }}">{{ $data->principal }}</option>
+                                @endforeach
+                            </select>
 
-                        <label>Type</label>
-                        <select name="sku_type" id="sku_type" class="form-control select2" required style="width:100%;">
-                            <option value="" default>Select</option>
-                            <option value="BUTAL">BUTAL</option>
-                            <option value="CASE">CASE</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-info btn-block" id="proceed" style="display: none">PROCEED</button>
-                    </div>
-                </form>
+                            <label>Type</label>
+                            <select name="sku_type" id="sku_type" class="form-control select2" required
+                                style="width:100%;">
+                                <option value="" default>Select</option>
+                                <option value="BUTAL">BUTAL</option>
+                                <option value="CASE">CASE</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info btn-block" id="proceed"
+                                style="display: none">PROCEED</button>
+                        </div>
+                    </form>
+                @else
+                    CANNOT TRANSACT PLEASE EXPORT THE PREVIOUS SO AND SEND TO ENCODER THANK YOU.
+                @endif
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
@@ -142,7 +150,7 @@
                         );
 
                         $('#proceed').hide();
-                    }else{
+                    } else {
                         $('#proceed').show();
                     }
                 },

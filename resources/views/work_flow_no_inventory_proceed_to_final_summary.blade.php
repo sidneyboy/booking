@@ -37,6 +37,9 @@
                     <th style="text-align: center;" colspan="3">REP: {{ $agent_user->agent_name }}</th>
                 </tr>
                 <tr>
+                    <th style="text-align: center;" colspan="3">SO: {{ $sales_order_number }}</th>
+                </tr>
+                <tr>
                     <th style="text-align: center;" colspan="3">{{ $date }}</th>
                 </tr>
                 <tr>
@@ -116,19 +119,31 @@
                             @php
                                 $discount_value_holder_dummy = $discount_value_holder;
                                 $less_percentage_by = $data_discount->discount_rate / 100;
-
+                                
                                 $discount_rate_answer = $discount_value_holder * $less_percentage_by;
                                 $discount_value_holder = $discount_value_holder - $discount_value_holder_dummy * $less_percentage_by;
                                 $discount_holder[] = $discount_value_holder;
-                                echo number_format($discount_value_holder, 2, '.', ',')
+                                echo number_format($discount_value_holder, 2, '.', ',');
                             @endphp
                         </th>
                     </tr>
                 @endforeach
-                    <tr>
-                        <th colspan="3" style="text-align: right">Final Total</th>
-                        <th style="text-align: right;text-decoration: overline">{{ number_format(end($discount_holder), 2, '.', ',') }}</th>
-                    </tr>
+                <tr>
+                    <th colspan="3" style="text-align: right">Final Total</th>
+                    <th style="text-align: right;text-decoration: overline">
+                        @if (array_sum($discount_holder) != 0)
+                            {{ number_format(end($discount_holder), 2, '.', ',') }}
+                            @php
+                                $final_total = end($discount_holder);
+                            @endphp
+                        @else
+                            {{ number_format(array_sum($sum_total), 2, '.', ',') }}
+                            @php
+                                $final_total = array_sum($sum_total);
+                            @endphp
+                        @endif
+                    </th>
+                </tr>
             </tfoot>
         </table>
     </div>
@@ -138,7 +153,8 @@
     </div>
 
     <input type="hidden" name="agent_id" value="{{ $agent_user->agent_id }}">
-    <input type="hidden" name="total_amount" value="{{ end($discount_holder) }}">
+    <input type="hidden" name="total_amount" value="{{ $final_total }}">
+    <input type="hidden" name="sales_order_number" value="{{ $sales_order_number }}">
     <input type="hidden" name="principal_id" value="{{ $principal_id }}">
     <input type="hidden" name="customer_id" value="{{ $customer_id }}">
     <input type="hidden" name="sku_type" value="{{ $sku_type }}">

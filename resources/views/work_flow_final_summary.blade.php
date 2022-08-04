@@ -187,7 +187,18 @@
                 <tr>
                     <th colspan="3" style="text-align: right">Final Total</th>
                     <th style="text-align: right;text-decoration: overline">
-                        {{ number_format(end($discount_holder), 2, '.', ',') }}</th>
+                        @if (array_sum($discount_holder) != 0)
+                            {{ number_format(end($discount_holder), 2, '.', ',') }}
+                            @php
+                                $final_total = end($discount_holder);
+                            @endphp
+                        @else
+                            {{ number_format(array_sum($sum_total), 2, '.', ',') }}
+                            @php
+                                $final_total = array_sum($sum_total);
+                            @endphp
+                        @endif
+                    </th>
                 </tr>
                 <tr>
                     <th colspan="4">
@@ -201,7 +212,8 @@
         </table>
     </div>
     <input type="hidden" name="agent_id" value="{{ $agent_user->agent_id }}">
-    <input type="hidden" name="total_amount" value="{{ array_sum($sum_total) }}">
+    <input type="hidden" name="total_amount" value="{{ $final_total }}">
+    <input type="hidden" name="sales_order_number" value="{{ $sales_order_number }}">
     <input type="hidden" name="principal_id" value="{{ $principal_id }}">
     <input type="hidden" name="customer_id" value="{{ $customer_id }}">
     <input type="hidden" name="sku_type" value="{{ $sku_type }}">

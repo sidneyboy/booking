@@ -240,7 +240,7 @@ class Customer_controller extends Controller
 
     public function customer_export_saved(Request $request)
     {
-        $explode = explode('-',$request->input('location'));
+        $explode = explode('-', $request->input('location'));
         $location_id = $explode[0];
         $location = $explode[1];
 
@@ -254,6 +254,7 @@ class Customer_controller extends Controller
             'detailed_address' => $request->input('detailed_address'),
             'coordinates' => $request->input('coordinates'),
             'exported' => 'not_yet',
+            'kob' =>$request->input('kob'),
         ]);
 
         $customer_export_saved->save();
@@ -270,12 +271,22 @@ class Customer_controller extends Controller
         $time = date('His');
 
         $agent_user = Agent_user::first();
-        $customer_export = Customer_export::where('exported','!=','exported')->get();
-        return view('new_customer_generate_csv',[
+        $customer_export = Customer_export::where('exported', '!=', 'exported')->get();
+        return view('new_customer_generate_csv', [
             'customer_export' => $customer_export,
             'agent_user' => $agent_user,
         ])->with('date', $date)
             ->with('time', $time)
             ->with('active', 'new_customer_generate_csv');
+    }
+
+    public function customer_export(Request $request)
+    {
+        foreach ($request->input('customer_export_id') as $key => $data) {
+            Customer_export::where('id', $data)
+                ->update(['exported' => 'exported']);
+        }
+
+        return 'saved';
     }
 }

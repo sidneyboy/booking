@@ -81,10 +81,13 @@ Route::get('/collection_export', [App\Http\Controllers\Collection_controller::cl
 Route::get('/new_customer', [App\Http\Controllers\Customer_controller::class, 'new_customer'])->name('new_customer');
 Route::post('/customer_export_saved', [App\Http\Controllers\Customer_controller::class, 'customer_export_saved'])->name('customer_export_saved');
 Route::get('/new_customer_generate_csv', [App\Http\Controllers\Customer_controller::class, 'new_customer_generate_csv'])->name('new_customer_generate_csv');
+Route::post('/customer_export', [App\Http\Controllers\Customer_controller::class, 'customer_export'])->name('customer_export');
+
 
 
 
 
 
 Route::get('/sales_order_export', [App\Http\Controllers\Sales_order_export_controller::class, 'index'])->name('sales_order_export');
+Route::post('/sales_order_export_process', [App\Http\Controllers\Sales_order_export_controller::class, 'sales_order_export_process'])->name('sales_order_export_process');
 

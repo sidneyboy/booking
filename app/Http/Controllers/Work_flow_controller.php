@@ -22,12 +22,14 @@ class Work_flow_controller extends Controller
         $agent_user = Agent_user::first();
         $customer = Customer::select('id', 'store_name')->get();
         $principal = Principal::select('id', 'principal')->where('principal', '!=', 'NONE')->get();
+        $sales_order_check = Sales_order::where('exported','not_yet_exported')->count();
 
         return view('work_flow', [
             'customer' => $customer,
             'principal' => $principal,
         ])->with('active', 'work_flow')
-            ->with('agent_user', $agent_user);
+          ->with('agent_user', $agent_user)
+          ->with('sales_order_check', $sales_order_check);
     }
 
     public function work_flow_show_inventory(Request $request)
@@ -162,6 +164,27 @@ class Work_flow_controller extends Controller
             $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
         }
 
+        $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
+
+        $sales_order_data = Sales_order::select('sales_order_number')->latest()->first();
+
+
+
+        if ($sales_order_data) {
+            $var_explode = explode('-', $sales_order_data->sales_order_number);
+            $year_and_month = $var_explode[3] . "-" . $var_explode[4];
+            $series = $var_explode[5];
+
+
+            if ($date_receipt != $year_and_month) {
+                $sales_order_number = "SO-" . $agent_user->agent_name  . "-" . $customer_principal_price->customer->store_name  . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+            } else {
+                $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $customer_principal_price->customer->store_name . "-" . $agent_user->agent_id . "-" . $date_receipt . "-" . str_pad($series + 1, 4, 0, STR_PAD_LEFT);
+            }
+        } else {
+            $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $customer_principal_price->customer->store_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+        }
+
 
 
         $inventory_data = Inventory::select(
@@ -177,7 +200,7 @@ class Work_flow_controller extends Controller
         )->whereIn('id', $request->input('sales_order_final_inventory_id'))
             ->get();
 
-        $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
+  
 
 
 
@@ -200,13 +223,16 @@ class Work_flow_controller extends Controller
             ->with('customer_id', $request->input('customer_id'))
             ->with('agent_user', $agent_user)
             ->with('sku_type', $request->input('sku_type'))
-            ->with('date', $date);
+            ->with('date', $date)
+            ->with('sales_order_number', $sales_order_number);
     }
 
     public function work_flow_no_inventory_proceed_to_final_summary(Request $request)
     {
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
+        $date_receipt = date('Y-m');
+
         $customer_principal_price = Customer_principal_price::select('price_level', 'customer_id', 'principal_id')
             ->where('customer_id', $request->input('customer_id'))
             ->where('principal_id', $request->input('principal_id'))
@@ -215,6 +241,29 @@ class Work_flow_controller extends Controller
         $customer_principal_discount = Customer_principal_discount::where('customer_id', $request->input('customer_id'))->where('principal_id', $request->input('principal_id'))->get();
 
         $new_sales_order_inventory_quantity = array_filter($request->input('new_sales_order_inventory_quantity'));
+
+        $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
+
+        $sales_order_data = Sales_order::select('sales_order_number')->latest()->first();
+
+
+
+        if ($sales_order_data) {
+            $var_explode = explode('-', $sales_order_data->sales_order_number);
+            $year_and_month = $var_explode[3] . "-" . $var_explode[4];
+            $series = $var_explode[5];
+
+
+            if ($date_receipt != $year_and_month) {
+                $sales_order_number = "SO-" . $agent_user->agent_name  . "-" . $customer_principal_price->customer->store_name  . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+            } else {
+                $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $customer_principal_price->customer->store_name . "-" . $agent_user->agent_id . "-" . $date_receipt . "-" . str_pad($series + 1, 4, 0, STR_PAD_LEFT);
+            }
+        } else {
+            $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $customer_principal_price->customer->store_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+        }
+
+       
 
         $inventory_data = Inventory::select(
             'sku_type',
@@ -228,7 +277,6 @@ class Work_flow_controller extends Controller
         )->whereIn('id', array_keys($new_sales_order_inventory_quantity))
             ->get();
 
-        $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
 
         return view('work_flow_no_inventory_proceed_to_final_summary', [
             'inventory_data' => $inventory_data,
@@ -240,7 +288,8 @@ class Work_flow_controller extends Controller
             ->with('sku_type', $request->input('sku_type'))
             ->with('agent_user', $agent_user)
             ->with('customer_principal_discount', $customer_principal_discount)
-            ->with('date', $date);
+            ->with('date', $date)
+            ->with('sales_order_number', $sales_order_number);
     }
 
     public function work_flow_no_inventory_save(Request $request)
@@ -258,6 +307,7 @@ class Work_flow_controller extends Controller
             'status' => 'New',
             'exported' => 'not_yet_exported',
             'amount_paid' => 0,
+            'sales_order_number' => $request->input('sales_order_number'),
         ]);
 
         $sales_order_save->save();
@@ -320,6 +370,7 @@ class Work_flow_controller extends Controller
             'status' => 'New',
             'exported' => 'not_yet_exported',
             'amount_paid' => 0,
+            'sales_order_number' => $request->input('sales_order_number'),
         ]);
 
         $sales_order_save->save();
