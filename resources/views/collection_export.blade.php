@@ -64,7 +64,7 @@
                                 <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
                                     Store Name
                                 </th>
-                              
+
                                 <th rowspan="2" style="vertical-align: middle;font-weight:bold;text-align:center">
                                     Principal
                                 </th>
@@ -123,12 +123,39 @@
                                     <td>{{ $data->mode_of_transaction }}</td>
                                     <td>{{ $data->total_amount }}</td>
                                     <td>{{ $data->total_bo }}</td>
-                                    <td>{{ $data->collection_details_first->cash }}</td>
-                                    <td>{{ $data->collection_details_first->cash_add_refer }}</td>
-                                    <td>{{ $data->collection_details_first->cheque }}</td>
-                                    <td>{{ $data->collection_details_first->cheque_add_refer }}</td>
-                                    <td>{{ $data->collection_details_first->less_refer }}</td>
-                                    <td>{{ $data->collection_details_first->balance }}</td>
+                                    <td style="text-align: right">
+                                        {{ $data->collection_details_first->cash }}
+                                        @php
+                                            $upper_cash_total[] = $data->collection_details_first->cash;
+                                        @endphp
+                                    </td>
+                                    <td style="text-align: right">
+                                        {{ $data->collection_details_first->cash_add_refer }}
+                                        @php
+                                            $upper_cash_add_refer[] = $data->collection_details_first->cash_add_refer;
+                                        @endphp
+                                    </td>
+                                    <td style="text-align: right">
+                                        {{ $data->collection_details_first->cheque }}
+                                        @php
+                                            $upper_cheque[] = $data->collection_details_first->cheque;
+                                        @endphp
+                                    </td>
+                                    <td style="text-align: right">
+                                        {{ $data->collection_details_first->cheque_add_refer }}
+                                        @php
+                                            $upper_cheque_add_refer[] = $data->collection_details_first->cheque_add_refer;
+                                        @endphp
+                                    </td>
+                                    <td style="text-align: right">
+                                        {{ $data->collection_details_first->less_refer }}
+                                        @php
+                                            $upper_less_refer[] = $data->collection_details_first->less_refer;
+                                        @endphp
+                                    </td>
+                                    <td style="text-align: right">
+                                        {{ $data->collection_details_first->balance }}
+                                    </td>
                                     <td>{{ $data->collection_details_first->specify }}</td>
                                     <td>{{ $data->collection_details_first->remarks }}</td>
                                 </tr>
@@ -143,19 +170,52 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td>{{ $details->cash_add_refer }}</td>
-                                        <td></td>
-                                        <td>{{ $details->cheque_add_refer }}</td>
-
-                                        <td>{{ $details->less_refer }}</td>
+                                        <td style="text-align: right">
+                                            {{ $details->cash_add_refer  }}
+                                            @php
+                                                $lower_cash_add_refer[] = $data->collection_details_first->cash_add_refer;
+                                            @endphp
+                                        </td>
+                                        <td style="text-align: right"></td>
+                                        <td style="text-align: right">
+                                            {{ $details->cheque_add_refer }}
+                                            @php
+                                                $lower_cheque_add_refer[] = $data->collection_details_first->cheque_add_refer;
+                                            @endphp
+                                        </td>
+                                        <td style="text-align: right">
+                                            {{ $details->less_refer }}
+                                            @php
+                                                $lower_less_refer[] = $data->collection_details_first->less_refer;
+                                            @endphp
+                                        </td>
                                         <td>{{ $details->balance }}</td>
                                         <td>{{ $details->specify }}</td>
                                         <td>{{ $details->remarks }}</td>
-
                                     </tr>
                                 @endforeach
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ array_sum($upper_cash_total) }}</td>
+                                <td>{{ array_sum($upper_cash_add_refer) + array_sum($lower_cash_add_refer) }}</td>
+                                <td>{{ array_sum($upper_cheque) }}</td>
+                                <td>{{ array_sum($upper_cheque_add_refer) + array_sum($lower_cheque_add_refer) }}</td>
+                                <td>{{ array_sum($upper_less_refer) + array_sum($lower_less_refer) }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>

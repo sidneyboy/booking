@@ -12,6 +12,7 @@ class Sales_order_export_controller extends Controller
     {
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
+        $time = date('His');
 
         $agent_user = Agent_user::first();
         $sales_order = Sales_order::where('exported', '!=', 'exported')->get();
@@ -19,7 +20,8 @@ class Sales_order_export_controller extends Controller
             'sales_order' => $sales_order,
         ])->with('active', 'sales_order_export')
             ->with('agent_user', $agent_user)
-            ->with('date', $date);
+            ->with('date', $date)
+            ->with('time', $time);
     }
 
     public function sales_order_export_process(Request $request)

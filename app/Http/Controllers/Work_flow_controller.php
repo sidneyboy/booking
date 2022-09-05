@@ -107,7 +107,7 @@ class Work_flow_controller extends Controller
 
     public function work_flow_suggested_sales_order(Request $request)
     {
-        //return $request->input();
+       // return $request->input();
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
 
@@ -172,8 +172,8 @@ class Work_flow_controller extends Controller
 
         if ($sales_order_data) {
             $var_explode = explode('-', $sales_order_data->sales_order_number);
-            $year_and_month = $var_explode[3] . "-" . $var_explode[4];
-            $series = $var_explode[5];
+            $year_and_month = $var_explode[4] . "-" . $var_explode[5];
+            $series = $var_explode[6];
 
 
             if ($date_receipt != $year_and_month) {
@@ -249,9 +249,11 @@ class Work_flow_controller extends Controller
 
 
         if ($sales_order_data) {
-            $var_explode = explode('-', $sales_order_data->sales_order_number);
-            $year_and_month = $var_explode[3] . "-" . $var_explode[4];
-            $series = $var_explode[5];
+            //return 'diri';
+            //return $sales_order_data->sales_order_number;
+             $var_explode = explode('-', $sales_order_data->sales_order_number);
+            $year_and_month = $var_explode[4] . "-" . $var_explode[5];
+            $series = $var_explode[6];
 
 
             if ($date_receipt != $year_and_month) {
@@ -262,6 +264,8 @@ class Work_flow_controller extends Controller
         } else {
             $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $customer_principal_price->customer->store_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
         }
+
+
 
        
 

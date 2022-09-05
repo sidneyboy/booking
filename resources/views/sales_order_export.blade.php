@@ -103,7 +103,7 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button id="trigger" onclick="exportTableToCSV('{{ $agent_user->agent_name }} Sales Order {{ $date }}.csv')"
+                <button id="trigger" onclick="exportTableToCSV('{{ $agent_user->agent_name }} Sales Order {{ $date }} {{ $time }}.csv')"
                     class="btn btn-success btn-block btn-sm" style="display: none">Export Sales Order</button>
             </div>
             <!-- /.card-footer-->

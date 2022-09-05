@@ -93,122 +93,215 @@
             </thead>
             <tbody>
 
-                @foreach ($sales_register_dr as $data)
-                    @if ($sales_register_number_of_transactions[$data] < 1)
+                @foreach ($sales_register_number_of_transactions as $key => $number_of_transactions)
+                    @if ($number_of_transactions == 1)
                         <tr>
-                            <td>{{ $data }}</td>
+                            <td>{{ $sales_register_or_number[$key] }}</td>
+                            <td>{{ $sales_register_dr[$key] }}</td>
+                            <td>{{ $sales_register_store_name[$key] }}</td>
+                            <td>{{ $sales_register_principal[$key] }}</td>
+                            <td>{{ $sales_register_sku_type[$key] }}</td>
+                            <td>{{ $sales_register_mode_of_transaction[$key] }}</td>
+                            <td>{{ $sales_register_total_amount[$key] }}</td>
+                            <td>{{ $sales_register_amount_paid[$key] }}</td>
+                            <td>{{ $sales_register_total_bo[$key] }}</td>
+                            <td>{{ $sales_register_balance[$key] }}</td>
+                            <td>
+                                {{ $sales_register_cash[$key] }}
+                                @php
+                                    $total_sales_register_cash[] = $sales_register_cash[$key];
+                                @endphp
+                            </td>
+                            <td>
+                                {{ $sales_register_cash_add_refer[$key] }}
+                                @php
+                                    $total_sales_register_cash_add_refer[] = $sales_register_cash_add_refer[$key];
+                                @endphp
+                            </td>
+                            <td>
+                                {{ $sales_register_cheque[$key] }}
+                                @php
+                                    $total_sales_register_cheque[] = $sales_register_cheque[$key];
+                                @endphp
+                            </td>
+                            <td>
+                                {{ $sales_register_cheque_add_refer[$key] }}
+                                @php
+                                    $total_sales_register_cheque_add_refer[] = $sales_register_cheque_add_refer[$key];
+                                @endphp
+                            </td>
+                            <td>
+                                {{ $sales_register_less_refer[$key] }}
+                                @php
+                                    $total_sales_register_less_refer[] = $sales_register_less_refer[$key];
+                                @endphp
+                            </td>
+                            <td>
+                                {{-- @php
+                                    $discount_value_holder_dummy = $discount_value_holder;
+                                    
+                                    $discount_value_holder = $sales_register_balance[$key]  - $sales_register_cash[$key] - $sales_register_cash_add_refer[$key] - $sales_register_cheque[$key] - $sales_register_cheque_add_refer[$key] + $sales_register_less_refer[$key];;
+                                    $discount_holder[] = $discount_value_holder;
+                                    echo number_format($discount_value_holder, 2, '.', ',');
+                                    
+                                @endphp
+                                <input type="hidden" name="sales_register_updated_balance[{{ $key }}]" value="{{ $discount_value_holder }}"> --}}
+                                @php
+                                    echo $sales_register_final_balance = $sales_register_balance[$key] - $sales_register_cash[$key] - $sales_register_cash_add_refer[$key] - $sales_register_cheque[$key] - $sales_register_cheque_add_refer[$key] + $sales_register_less_refer[$key];
+                                    
+                                @endphp
+                                <input type="hidden" name="sales_register_updated_balance[{{ $key }}]"
+                                    value="{{ $sales_register_final_balance }}">
+                            </td>
+                            <td>{{ $sales_register_specify[$key] }}</td>
+                            <td>{{ $sales_register_remarks[$key] }}
+                                <input type="hidden" value="{{ $sales_register_or_number[$key] }}"
+                                name="sales_register_or_number[{{ $key }}]">
+                                <input type="hidden" value="{{ $key }}" name="sales_register_dr[]">
+                                <input type="hidden" value="{{ $sales_register_store_name[$key] }}"
+                                    name="sales_register_store_name[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_principal[$key] }}"
+                                    name="sales_register_principal[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_sku_type[$key] }}"
+                                    name="sales_register_sku_type[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_mode_of_transaction[$key] }}"
+                                    name="sales_register_mode_of_transaction[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_total_amount[$key] }}"
+                                    name="sales_register_total_amount[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_amount_paid[$key] }}"
+                                    name="sales_register_amount_paid[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_total_bo[$key] }}"
+                                    name="sales_register_total_bo[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_balance[$key] }}"
+                                    name="sales_register_balance[{{ $key }}]">
+                                <input type="hidden" value="{{ $number_of_transactions }}"
+                                    name="sales_register_number_of_transactions[{{ $key }}]">
+
+
+                                <input type="hidden" value="{{ $sales_register_cash[$key] }}"
+                                    name="sales_register_cash[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_cash_add_refer[$key] }}"
+                                    name="sales_register_cash_add_refer[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_cheque[$key] }}"
+                                    name="sales_register_cheque[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_cheque_add_refer[$key] }}"
+                                    name="sales_register_cheque_add_refer[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_less_refer[$key] }}"
+                                    name="sales_register_less_refer[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_specify[$key] }}"
+                                    name="sales_register_specify[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_remarks[$key] }}"
+                                    name="sales_register_remarks[{{ $key }}]">
+                            
+                            </td>
                         </tr>
                     @else
                         @php
-                            $total = $sales_register_total_amount[$data];
+                            $total = $sales_register_total_amount[$key];
                             $discount_holder = [];
                             $discount_value_holder = $total;
                         @endphp
                         <tr>
                             <td>
-                                {{ $sales_register_or_number[$data] }}
-                                <input type="hidden" value="{{ $sales_register_or_number[$data] }}"
-                                    name="sales_register_or_number[{{ $data }}]">
+                                {{ $sales_register_or_number[$key] }}
+                                <input type="hidden" value="{{ $sales_register_or_number[$key] }}"
+                                    name="sales_register_or_number[{{ $key }}]">
                             </td>
                             <td>
-                                {{ $data }}
-                                <input type="hidden" value="{{ $data }}" name="sales_register_dr[]">
-                                <input type="hidden" value="{{ $sales_register_store_name[$data] }}"
-                                    name="sales_register_store_name[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_principal[$data] }}"
-                                    name="sales_register_principal[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_sku_type[$data] }}"
-                                    name="sales_register_sku_type[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_mode_of_transaction[$data] }}"
-                                    name="sales_register_mode_of_transaction[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_total_amount[$data] }}"
-                                    name="sales_register_total_amount[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_amount_paid[$data] }}"
-                                    name="sales_register_amount_paid[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_total_bo[$data] }}"
-                                    name="sales_register_total_bo[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_balance[$data] }}"
-                                    name="sales_register_balance[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_number_of_transactions[$data] }}"
-                                    name="sales_register_number_of_transactions[{{ $data }}]">
+                                {{ $key }}
+                                <input type="hidden" value="{{ $key }}" name="sales_register_dr[]">
+                                <input type="hidden" value="{{ $sales_register_store_name[$key] }}"
+                                    name="sales_register_store_name[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_principal[$key] }}"
+                                    name="sales_register_principal[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_sku_type[$key] }}"
+                                    name="sales_register_sku_type[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_mode_of_transaction[$key] }}"
+                                    name="sales_register_mode_of_transaction[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_total_amount[$key] }}"
+                                    name="sales_register_total_amount[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_amount_paid[$key] }}"
+                                    name="sales_register_amount_paid[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_total_bo[$key] }}"
+                                    name="sales_register_total_bo[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_balance[$key] }}"
+                                    name="sales_register_balance[{{ $key }}]">
+                                <input type="hidden" value="{{ $number_of_transactions }}"
+                                    name="sales_register_number_of_transactions[{{ $key }}]">
 
 
-                                <input type="hidden" value="{{ $sales_register_cash[$data] }}"
-                                    name="sales_register_cash[{{ $data }}]">
-                                <input type="hidden" value="{{ $sales_register_cash_add_refer[$data] }}"
-                                    name="sales_register_cash_add_refer[{{ $data }}]">
-
-                                <input type="hidden" value="{{ $sales_register_cheque[$data] }}"
-                                    name="sales_register_cheque[{{ $data }}]">
-
-                                <input type="hidden" value="{{ $sales_register_cheque_add_refer[$data] }}"
-                                    name="sales_register_cheque_add_refer[{{ $data }}]">
-
-                                <input type="hidden" value="{{ $sales_register_less_refer[$data] }}"
-                                    name="sales_register_less_refer[{{ $data }}]">
-
-                                <input type="hidden" value="{{ $sales_register_specify[$data] }}"
-                                    name="sales_register_specify[{{ $data }}]">
-
-                                <input type="hidden" value="{{ $sales_register_remarks[$data] }}"
-                                    name="sales_register_remarks[{{ $data }}]">
+                                <input type="hidden" value="{{ $sales_register_cash[$key] }}"
+                                    name="sales_register_cash[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_cash_add_refer[$key] }}"
+                                    name="sales_register_cash_add_refer[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_cheque[$key] }}"
+                                    name="sales_register_cheque[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_cheque_add_refer[$key] }}"
+                                    name="sales_register_cheque_add_refer[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_less_refer[$key] }}"
+                                    name="sales_register_less_refer[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_specify[$key] }}"
+                                    name="sales_register_specify[{{ $key }}]">
+                                <input type="hidden" value="{{ $sales_register_remarks[$key] }}"
+                                    name="sales_register_remarks[{{ $key }}]">
 
 
                             </td>
-                            <td>{{ $sales_register_store_name[$data] }}</td>
-                            <td>{{ $sales_register_principal[$data] }}</td>
-                            <td>{{ $sales_register_sku_type[$data] }}</td>
-                            <td>{{ $sales_register_mode_of_transaction[$data] }}</td>
-                            <td>{{ $sales_register_total_amount[$data] }}</td>
-                            <td>{{ $sales_register_amount_paid[$data] }}</td>
-                            <td>{{ $sales_register_total_bo[$data] }}</td>
-                            <td>{{ $sales_register_balance[$data] }}</td>
+                            <td>{{ $sales_register_store_name[$key] }}</td>
+                            <td>{{ $sales_register_principal[$key] }}</td>
+                            <td>{{ $sales_register_sku_type[$key] }}</td>
+                            <td>{{ $sales_register_mode_of_transaction[$key] }}</td>
+                            <td>{{ $sales_register_total_amount[$key] }}</td>
+                            <td>{{ $sales_register_amount_paid[$key] }}</td>
+                            <td>{{ $sales_register_total_bo[$key] }}</td>
+                            <td>{{ $sales_register_balance[$key] }}</td>
                             <td>
-                                {{ $sales_register_cash[$data] }}
+                                {{ $sales_register_cash[$key] }}
                                 @php
-                                    $total_sales_register_cash[] = $sales_register_cash[$data];
+                                    $total_sales_register_cash[] = $sales_register_cash[$key];
                                 @endphp
                             </td>
                             <td>
-                                {{ $sales_register_cash_add_refer[$data] }}
+                                {{ $sales_register_cash_add_refer[$key] }}
                                 @php
-                                    $total_sales_register_cash_add_refer[] = $sales_register_cash_add_refer[$data];
+                                    $total_sales_register_cash_add_refer[] = $sales_register_cash_add_refer[$key];
                                 @endphp
                             </td>
                             <td>
-                                {{ $sales_register_cheque[$data] }}
+                                {{ $sales_register_cheque[$key] }}
                                 @php
-                                    $total_sales_register_cheque[] = $sales_register_cheque[$data];
+                                    $total_sales_register_cheque[] = $sales_register_cheque[$key];
                                 @endphp
                             </td>
                             <td>
-                                {{ $sales_register_cheque_add_refer[$data] }}
+                                {{ $sales_register_cheque_add_refer[$key] }}
                                 @php
-                                    $total_sales_register_cheque_add_refer[] = $sales_register_cheque_add_refer[$data];
+                                    $total_sales_register_cheque_add_refer[] = $sales_register_cheque_add_refer[$key];
                                 @endphp
                             </td>
                             <td>
-                                {{ $sales_register_less_refer[$data] }}
+                                {{ $sales_register_less_refer[$key] }}
                                 @php
-                                    $total_sales_register_less_refer[] = $sales_register_less_refer[$data];
+                                    $total_sales_register_less_refer[] = $sales_register_less_refer[$key];
                                 @endphp
                             </td>
                             <td>
                                 @php
                                     $discount_value_holder_dummy = $discount_value_holder;
                                     
-                                    $discount_value_holder = $sales_register_balance[$data]  - $sales_register_cash[$data] - $sales_register_cash_add_refer[$data] - $sales_register_cheque[$data] - $sales_register_cheque_add_refer[$data] + $sales_register_less_refer[$data];;
+                                    $discount_value_holder = $sales_register_balance[$key] - $sales_register_cash[$key] - $sales_register_cash_add_refer[$key] - $sales_register_cheque[$key] - $sales_register_cheque_add_refer[$key] + $sales_register_less_refer[$key];
                                     $discount_holder[] = $discount_value_holder;
                                     echo number_format($discount_value_holder, 2, '.', ',');
                                     
                                 @endphp
-                                <input type="hidden" name="sales_register_updated_balance[{{ $data }}]" value="{{ $discount_value_holder }}">
+                                <input type="hidden" name="sales_register_updated_balance[{{ $key }}]"
+                                    value="{{ $discount_value_holder }}">
                             </td>
-                            <td>{{ $sales_register_specify[$data] }}</td>
-                            <td>{{ $sales_register_remarks[$data] }}</td>
+                            <td>{{ $sales_register_specify[$key] }}</td>
+                            <td>{{ $sales_register_remarks[$key] }}</td>
                         </tr>
                         @php
-                            $final_sales_register_number_of_transactions = $sales_register_number_of_transactions[$data] - 1;
+                            $final_sales_register_number_of_transactions = $number_of_transactions - 1;
                         @endphp
                         @for ($i = 0; $i < $final_sales_register_number_of_transactions; $i++)
                             @php
@@ -230,56 +323,58 @@
                                 <td></td>
 
                                 <td>
-                                    {{ $lower_sales_register_cash_add_refer[$data . '-' . $i] }}
+                                    {{ $lower_sales_register_cash_add_refer[$key . '-' . $i] }}
                                     @php
-                                        $total_lower_sales_register_cash_add_refer[$data] = $lower_sales_register_cash_add_refer[$data . '-' . $i];
+                                        $total_lower_sales_register_cash_add_refer[] = $lower_sales_register_cash_add_refer[$key . '-' . $i];
                                     @endphp
                                 </td>
                                 <td></td>
                                 <td>
-                                    {{ $lower_sales_register_cheque_add_refer[$data . '-' . $i] }}
+                                    {{ $lower_sales_register_cheque_add_refer[$key . '-' . $i] }}
                                     @php
-                                        $total_lower_sales_register_cheque_add_refer[$data] = $lower_sales_register_cheque_add_refer[$data . '-' . $i];
+                                        $total_lower_sales_register_cheque_add_refer[] = $lower_sales_register_cheque_add_refer[$key . '-' . $i];
                                     @endphp
                                 </td>
                                 <td>
-                                    {{ $lower_sales_register_less_refer[$data . '-' . $i] }}
+                                    {{ $lower_sales_register_less_refer[$key . '-' . $i] }}
                                     @php
-                                        $total_lower_sales_register_less_refer[$data] = $lower_sales_register_less_refer[$data . '-' . $i];
+                                        $total_lower_sales_register_less_refer[] = $lower_sales_register_less_refer[$key . '-' . $i];
                                     @endphp
                                 </td>
                                 <td>
                                     @php
                                         $discount_value_holder_dummy_2 = $discount_value_holder_2;
                                         
-                                        $discount_value_holder_2 = $discount_value_holder_dummy_2 - $lower_sales_register_cash_add_refer[$data ."-". $i] - $lower_sales_register_cheque_add_refer[$data ."-". $i] + $lower_sales_register_less_refer[$data ."-". $i];
+                                        $discount_value_holder_2 = $discount_value_holder_dummy_2 - $lower_sales_register_cash_add_refer[$key . '-' . $i] - $lower_sales_register_cheque_add_refer[$key . '-' . $i] + $lower_sales_register_less_refer[$key . '-' . $i];
                                         $discount_holder_2[] = $discount_value_holder_2;
                                         echo number_format($discount_value_holder_2, 2, '.', ',');
                                     @endphp
-                                     <input type="hidden" name="lower_sales_register_updated_balance[{{ $data ."-". $i }}]" value="{{ $discount_value_holder_2 }}">
+                                    <input type="hidden"
+                                        name="lower_sales_register_updated_balance[{{ $key . '-' . $i }}]"
+                                        value="{{ $discount_value_holder_2 }}">
                                 </td>
-                                <td>{{ $lower_sales_register_specify[$data . '-' . $i] }}</td>
+                                <td>{{ $lower_sales_register_specify[$key . '-' . $i] }}</td>
                                 <td>
-                                    {{ $lower_sales_register_remarks[$data . '-' . $i] }}
+                                    {{ $lower_sales_register_remarks[$key . '-' . $i] }}
 
                                     <input type="hidden"
-                                        value="{{ $lower_sales_register_cash_add_refer[$data . '-' . $i] }}"
-                                        name="lower_sales_register_cash_add_refer[{{ $data . '-' . $i }}]">
+                                        value="{{ $lower_sales_register_cash_add_refer[$key . '-' . $i] }}"
+                                        name="lower_sales_register_cash_add_refer[{{ $key . '-' . $i }}]">
                                     <input type="hidden"
-                                        value="{{ $lower_sales_register_cheque_add_refer[$data . '-' . $i] }}"
-                                        name="lower_sales_register_cheque_add_refer[{{ $data . '-' . $i }}]">
+                                        value="{{ $lower_sales_register_cheque_add_refer[$key . '-' . $i] }}"
+                                        name="lower_sales_register_cheque_add_refer[{{ $key . '-' . $i }}]">
 
                                     <input type="hidden"
-                                        value="{{ $lower_sales_register_less_refer[$data . '-' . $i] }}"
-                                        name="lower_sales_register_less_refer[{{ $data . '-' . $i }}]">
+                                        value="{{ $lower_sales_register_less_refer[$key . '-' . $i] }}"
+                                        name="lower_sales_register_less_refer[{{ $key . '-' . $i }}]">
 
                                     <input type="hidden"
-                                        value="{{ $lower_sales_register_specify[$data . '-' . $i] }}"
-                                        name="lower_sales_register_specify[{{ $data . '-' . $i }}]">
+                                        value="{{ $lower_sales_register_specify[$key . '-' . $i] }}"
+                                        name="lower_sales_register_specify[{{ $key . '-' . $i }}]">
 
                                     <input type="hidden"
-                                        value="{{ $lower_sales_register_remarks[$data . '-' . $i] }}"
-                                        name="lower_sales_register_remarks[{{ $data . '-' . $i }}]">
+                                        value="{{ $lower_sales_register_remarks[$key . '-' . $i] }}"
+                                        name="lower_sales_register_remarks[{{ $key . '-' . $i }}]">
 
 
                                 </td>
@@ -291,12 +386,14 @@
             <tfoot>
                 <tr>
                     <th colspan="10">TOTAL</th>
-                    <th>{{ array_sum($total_sales_register_cash) }}</th>
-                    <th>{{ array_sum($total_sales_register_cash_add_refer) + array_sum($total_lower_sales_register_cash_add_refer) }}
+                    <th>{{ number_format(array_sum($total_sales_register_cash), 2, '.', ',') }}</th>
+                    <th>{{ number_format(array_sum($total_sales_register_cash_add_refer) + array_sum($total_lower_sales_register_cash_add_refer), 2, '.', ',') }}
                     </th>
-                    <th>{{ array_sum($total_sales_register_cheque)}}</th>
-                    <th>{{ array_sum($total_sales_register_cheque_add_refer)  + array_sum($total_lower_sales_register_cheque_add_refer) }}</th>
-                    <th>{{ array_sum($total_sales_register_less_refer) + array_sum($total_lower_sales_register_less_refer) }}</th>
+                    <th>{{ number_format(array_sum($total_sales_register_cheque), 2, '.', ',') }}</th>
+                    <th>{{ number_format(array_sum($total_sales_register_cheque_add_refer) + array_sum($total_lower_sales_register_cheque_add_refer), 2, '.', ',') }}
+                    </th>
+                    <th>{{ number_format(array_sum($total_sales_register_less_refer) + array_sum($total_lower_sales_register_less_refer), 2, '.', ',') }}
+                    </th>
                 </tr>
             </tfoot>
         </table>
@@ -318,21 +415,13 @@
             processData: false,
             success: function(data) {
                 $('.loading').hide();
-                // if (data == 'saved') {
-                //     Swal.fire(
-                //         'Successfully Submitted Collection',
-                //         'Redirecting To Work Flow',
-                //         'success'
-                //     );
+                    Swal.fire(
+                        'Successfully Submitted Collection',
+                        'Redirecting To Work Flow',
+                        'success'
+                    );
 
-                //     window.location.href = "/collection_export";
-                // } else {
-                //     Swal.fire(
-                //         'Uploaded file must be an image',
-                //         'Cannot Proceed',
-                //         'error'
-                //     );
-                // }
+                    window.location.href = "/collection_export";
             },
         });
     }));
