@@ -1,14 +1,25 @@
-<form id="work_flow_no_inventory_proceed_to_final_summary">
+<style>
+    .current_inventory th:first-child,
+    .current_inventory td:first-child {
+        position: sticky;
+        left: 0px;
+        background-color: antiquewhite;
+    }
+</style>
+
+<form id="work_flow_no_inventory_proceed_to_final_summary" >
     @csrf
     <div class="table table-responsive">
-        <table class="table table-sm table-bordered">
+        <table class="table table-sm table-bordered current_inventory" id="example2">
             <thead>
                 <tr>
-                    <th colspan="3">New Sales Order</th>
+                    <th colspan="3">Current Inventory</th>
                 </tr>
                 <tr>
                     <th>Desc</th>
-                    <th>Qty</th>
+                    <th>Delivery Date</th>
+                    <th>Delivered QTY</th>
+                    <th>Current Inventory</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,8 +32,10 @@
                             <input type="hidden" name="new_sales_order_inventory_description[{{ $data->id }}]"
                                 value="{{ $data->description }}">
                         </td>
-                        <td><input style="width:100px;" name="new_sales_order_inventory_quantity[{{ $data->id }}]"
-                                type="number" min="0" value="0" required class="form-control"></td>
+                        <td><input type="date" class="form-control" required name="delivery_date"></td>
+                        <td><input type="number" min="0" class="form-control" value="0 "></td>
+                        {{-- <td><input style="width:100px;" name="new_sales_order_inventory_quantity[{{ $data->id }}]"
+                                type="number" min="0" value="0" required class="form-control"></td> --}}
                     </tr>
                 @endforeach
             </tbody>
@@ -54,4 +67,14 @@
             },
         });
     }));
+
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+        "paging": false,
+        "lengthChange": false,
+        "searching": true,
+        "ordering": true,
+        "info": false,
+        "autoWidth": false,
+    });
 </script>

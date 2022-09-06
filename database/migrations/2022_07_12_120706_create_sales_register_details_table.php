@@ -20,7 +20,7 @@ return new class extends Migration
             $table->BigInteger('inventory_id')->unsigned()->index();
             $table->foreign('inventory_id')->references('id')->on('inventories');
             $table->Integer('delivered_quantity');
-            $table->Double('unit_price', 15, 4);
+            $table->Double('unit_price', 15, 4)->nullable();
             $table->string('sku_type');
             $table->timestamps();
         });
