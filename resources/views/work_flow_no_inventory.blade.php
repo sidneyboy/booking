@@ -1,25 +1,28 @@
-<style>
+{{-- <style>
     .current_inventory th:first-child,
     .current_inventory td:first-child {
         position: sticky;
         left: 0px;
         background-color: antiquewhite;
     }
-</style>
+</style> --}}
 
 <form id="work_flow_no_inventory_proceed_to_final_summary" >
     @csrf
     <div class="table table-responsive">
-        <table class="table table-sm table-bordered current_inventory" id="example2">
+        <table class="table table-sm table-bordered" id="example2">
             <thead>
                 <tr>
-                    <th colspan="3">Current Inventory</th>
+                    <th colspan="2">Current Inventory</th>
+                </tr>
+                <tr>
+                    <td>Delivery Date</td>
+                    <td><input type="date" class="form-control" required name="delivery_date"></th>
                 </tr>
                 <tr>
                     <th>Desc</th>
-                    <th>Delivery Date</th>
                     <th>Delivered QTY</th>
-                    <th>Current Inventory</th>
+                    {{-- <th>U/P</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -28,14 +31,8 @@
                         <td>
                             {{ $data->description }} <br />
                             {{ $data->sku_type }}
-                            <input type="hidden" name="new_sales_order_inventory_id[]" value="{{ $data->id }}">
-                            <input type="hidden" name="new_sales_order_inventory_description[{{ $data->id }}]"
-                                value="{{ $data->description }}">
                         </td>
-                        <td><input type="date" class="form-control" required name="delivery_date"></td>
-                        <td><input type="number" min="0" class="form-control" value="0 "></td>
-                        {{-- <td><input style="width:100px;" name="new_sales_order_inventory_quantity[{{ $data->id }}]"
-                                type="number" min="0" value="0" required class="form-control"></td> --}}
+                        <td><input type="number" min="0" class="form-control" value="0" name="delivered_quantity[{{ $data->id }}]"></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -62,8 +59,8 @@
             processData: false,
             success: function(data) {
                 $('.loading').hide();
-                $('#work_flow_suggested_sales_order_page').hide();
-                $('#work_flow_final_summary_page').html(data);
+                // $('#work_flow_suggested_sales_order_page').hide();
+                $('#work_flow_suggested_sales_order_page').html(data);
             },
         });
     }));

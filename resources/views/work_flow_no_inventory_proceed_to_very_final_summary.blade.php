@@ -8,7 +8,7 @@
 </style>
 
 
-<form id="work_flow_no_inventory_proceed_to_very_final_summary">
+<form id="">
     <div class="table table-responsive">
         <table class="table table-bordered table-hover table-sm current_inventory">
             <thead>
@@ -20,7 +20,7 @@
                     <th>Desc</th>
                     <th>Delivered QTY</th>
                     {{-- <th>Current Inventory</th>
-                    <th>BO</th> --}}
+                          <th>BO</th> --}}
                     <th>U/P</th>
                 </tr>
             </thead>
@@ -32,18 +32,31 @@
                             {{ $current_sku_inventory[$data->id] }}
                             <input type="hidden" name="current_sku_inventory[{{ $data->id }}]"
                                 value="{{ $current_sku_inventory[$data->id] }}">
+
                         </td>
-                        <td><input type="text" class="form-control unit_price" name="unit_price[{{ $data->id }}]"
-                                style="width:100px;"></td>
+                        <td>
+                            {{ $unit_price[$data->id] }}
+                            <input type="hidden" class="form-control unit_price" name="unit_price[{{ $data->id }}]"
+                                value="{{ $unit_price[$data->id] }}" style="width:100px;">
+                            @php
+                                $total = $current_sku_inventory[$data->id] * $unit_price[$data->id];
+                                $gross[] = $total;
+                            @endphp
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
+                    <td></td>
+                </tr>
+                <tr>
                     <td>Total Discount</td>
                     <td></td>
-                    <td><input type="text" class="form-control unit_price" name="total_discount"
-                            style="width:100px;">
+                    <td>
+                        {{ $total_discount }}
+                        <input type="hidden" class="form-control unit_price" name="total_discount" style="width:100px;"
+                            value="{{ $total_discount }}">
                     </td>
                 </tr>
             </tfoot>
@@ -68,21 +81,21 @@
         $(this).val(val);
     });
 
-    $("#work_flow_no_inventory_proceed_to_very_final_summary").on('submit', (function(e) {
-        e.preventDefault();
-        //$('.loading').show();
-        $.ajax({
-            url: "work_flow_no_inventory_proceed_to_very_final_summary",
-            type: "POST",
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(data) {
-                $('.loading').hide();
-                // $('#work_flow_suggested_sales_order_page').hide();
-                $('#work_flow_final_summary_page').html(data);
-            },
-        });
-    }));
+    //     $("#").on('submit', (function(e) {
+    //         e.preventDefault();
+    //         //$('.loading').show();
+    //         $.ajax({
+    //             url: "",
+    //             type: "POST",
+    //             data: new FormData(this),
+    //             contentType: false,
+    //             cache: false,
+    //             processData: false,
+    //             success: function(data) {
+    //                 $('.loading').hide();
+    //                 // $('#work_flow_suggested_sales_order_page').hide();
+    //                 $('#work_flow_final_summary_page').html(data);
+    //             },
+    //         });
+    //     }));
 </script>
