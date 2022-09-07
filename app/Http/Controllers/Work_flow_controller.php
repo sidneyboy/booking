@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agent_user;
 use App\Models\Customer;
+use App\Models\Location;
 use App\Models\Principal;
 use App\Models\Inventory;
 use App\Models\Customer_principal_price;
@@ -37,6 +38,8 @@ class Work_flow_controller extends Controller
     {
         //return $request->input();
         if ($request->input('customer') == 'NEW CUSTOMER') {
+            $agent_user = Agent_user::first();
+            $location = location::select('id', 'location')->get();
             $inventory_data = Inventory::select('sku_type', 'description', 'sku_code', 'id')
                 ->where('principal_id', $request->input('principal'))
                 ->where('sku_type', $request->input('sku_type'))
@@ -44,6 +47,8 @@ class Work_flow_controller extends Controller
 
             return view('work_flow_new_customer_new_sales_order', [
                 'inventory_data' => $inventory_data,
+                'location' => $location,
+                'agent_user' => $agent_user,
             ])->with('principal_id', $request->input('principal'))
                 ->with('sku_type', $request->input('sku_type'));
         } else {
@@ -498,11 +503,9 @@ class Work_flow_controller extends Controller
 
     public function work_flow_new_customer_final_summary(Request $request)
     {
-        //return $request->input();
+        return $request->input();
 
         $new_sales_order = array_filter($request->input('new_sales_order_inventory_quantity'));
-
-
         $inventory_data = Inventory::select(
             'sku_type',
             'description',
@@ -512,10 +515,28 @@ class Work_flow_controller extends Controller
             'price_1',
             'price_2',
             'price_3',
-            'price_4'
-        )->whereIn('id', $new_sales_order)
+            'price_4',
+        )->whereIn('id', array_keys($new_sales_order))
             ->get();
 
-        return view()
+        return view('work_flow_new_customer_final_summary', [
+            'inventory_data' => $inventory_data,
+            'new_sales_order' => $new_sales_order,
+        ])->with('price_level', $request->input('price_level'))
+            ->with('principal_id', $request->input('principal_id'))
+            ->with('sku_type', $request->input('sku_type'))
+            ->with('agent_name', $request->input('agent_name'))
+            ->with('contact_number', $request->input('contact_number'))
+            ->with('contact_person', $request->input('contact_person'))
+            ->with('detailed_address', str_replace(',',' ',$request->input('detailed_address')))
+            ->with('kob', $request->input('kob'))
+            ->with('latitude', $request->input('latitude'))
+            ->with('location', $request->input('location'))
+            ->with('longitude', $request->input('longitude'));
+    }
+
+    public function work_flow_new_customer_saved(Request $request)
+    {
+        return $request->input();
     }
 }
