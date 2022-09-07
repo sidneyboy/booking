@@ -44,7 +44,7 @@ class Work_flow_controller extends Controller
 
             return view('work_flow_new_customer_new_sales_order', [
                 'inventory_data' => $inventory_data,
-            ])->with('principal_id', $request->input('principal_id'))
+            ])->with('principal_id', $request->input('principal'))
                 ->with('sku_type', $request->input('sku_type'));
         } else {
             $sales_register = Sales_register::select('id', 'date_delivered')
@@ -498,6 +498,24 @@ class Work_flow_controller extends Controller
 
     public function work_flow_new_customer_final_summary(Request $request)
     {
-        return $request->input();
+        //return $request->input();
+
+        $new_sales_order = array_filter($request->input('new_sales_order_inventory_quantity'));
+
+
+        $inventory_data = Inventory::select(
+            'sku_type',
+            'description',
+            'sku_code',
+            'id',
+            'uom',
+            'price_1',
+            'price_2',
+            'price_3',
+            'price_4'
+        )->whereIn('id', $new_sales_order)
+            ->get();
+
+        return view()
     }
 }
