@@ -33,7 +33,8 @@
                             <label>Customer</label>
                             <select name="customer" id="customer" class="form-control select2" required
                                 style="width:100%;">
-                                <option value="" default>Select</option>
+                                <option value="" default>SELECT</option>
+                                <option value="NEW CUSTOMER">NEW CUSTOMER</option>
                                 @foreach ($customer as $data)
                                     <option value="{{ $data->id }}">{{ $data->store_name }}</option>
                                 @endforeach
@@ -42,7 +43,7 @@
                             <label>Principal</label>
                             <select name="principal" id="principal" class="form-control select2" required
                                 style="width:100%;">
-                                <option value="" default>Select</option>
+                                <option value="" default>SELECT</option>
                                 @foreach ($principal as $data)
                                     <option value="{{ $data->id }}">{{ $data->principal }}</option>
                                 @endforeach
@@ -51,7 +52,7 @@
                             <label>Type</label>
                             <select name="sku_type" id="sku_type" class="form-control select2" required
                                 style="width:100%;">
-                                <option value="" default>Select</option>
+                                <option value="" default>SELECT</option>
                                 <option value="BUTAL">BUTAL</option>
                                 <option value="CASE">CASE</option>
                             </select>
@@ -138,27 +139,31 @@
             e.preventDefault();
             //$('.loading').show();
             customer = $('#customer').val();
-            $.post({
-                type: "POST",
-                url: "/work_flow_check_customer_sales_order_status",
-                data: 'customer=' + customer,
-                success: function(data) {
-                    if (data == 'maximum_allowed_sales_order_consumed') {
-                        Swal.fire(
-                            'Maximum Allowed Sales Order Consumed',
-                            'Please Pay Past Sales Order First!',
-                            'error'
-                        );
+            if (customer == "NEW CUSTOMER") {
+                $('#proceed').show();
+            } else {
+                $.post({
+                    type: "POST",
+                    url: "/work_flow_check_customer_sales_order_status",
+                    data: 'customer=' + customer,
+                    success: function(data) {
+                        if (data == 'maximum_allowed_sales_order_consumed') {
+                            Swal.fire(
+                                'Maximum Allowed Sales Order Consumed',
+                                'Please Pay Past Sales Order First!',
+                                'error'
+                            );
 
-                        $('#proceed').hide();
-                    } else {
-                        $('#proceed').show();
+                            $('#proceed').hide();
+                        } else {
+                            $('#proceed').show();
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
                     }
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
+                });
+            }
         });
 
         $("#work_flow_show_inventory").on('submit', (function(e) {

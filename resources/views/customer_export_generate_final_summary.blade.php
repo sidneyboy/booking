@@ -75,7 +75,7 @@
 
                     $('.loading').hide();
                     // location.reload();
-                    // window.location.href = "/new_customer_generate_csv";
+                    window.location.href = "/new_customer_generate_csv";
                 } else {
                     Swal.fire(
                         'Something went wrong!',

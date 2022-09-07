@@ -62,6 +62,7 @@ Route::post('/work_flow_inventory_save', [App\Http\Controllers\Work_flow_control
 Route::post('/work_flow_check_customer_sales_order_status', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_check_customer_sales_order_status'])->name('work_flow_check_customer_sales_order_status');
 Route::post('/work_flow_no_inventory_proceed_to_very_final_summary', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory_proceed_to_very_final_summary'])->name('work_flow_no_inventory_proceed_to_very_final_summary');
 Route::post('/work_flow_no_inventory_save_previous_sales_register', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory_save_previous_sales_register'])->name('work_flow_no_inventory_save_previous_sales_register');
+Route::post('/work_flow_new_customer_final_summary', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_new_customer_final_summary'])->name('work_flow_new_customer_final_summary');
 
 
 

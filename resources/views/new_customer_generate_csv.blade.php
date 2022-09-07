@@ -51,21 +51,20 @@
                                 </tr>
                                 <tr>
                                     <th>KOB</th>
-                                    <th>Scheduled Day</th>
                                     <th>Store Name</th>
                                     <th>Contact Person</th>
                                     <th>Contact Number</th>
                                     <th>Location ID</th>
                                     <th>Location </th>
                                     <th>Detailed Address</th>
-                                    <th>Coordinates</th>
+                                    <th>Longitude</th>
+                                    <th>Latitude</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($customer_export as $exported)
                                     <tr>
                                         <td>{{ $exported->kob }}</td>
-                                        <td>{{ $exported->schedule_day }}</td>
                                         <td>{{ $exported->store_name }}</td>
                                         <td>{{ $exported->contact_person }}</td>
                                         <td>{{ $exported->contact_number }}</td>
@@ -73,9 +72,10 @@
                                         <td>{{ $exported->location }}</td>
                                         <td>{{ $exported->detailed_address }}</td>
                                         <td>
-                                            {{ $exported->coordinates }}
+                                            {{ $exported->longitude }}
                                             <input type="hidden" value="{{ $exported->id }}" name="customer_export_id[]">
                                         </td>
+                                        <td>{{ $exported->latitude }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

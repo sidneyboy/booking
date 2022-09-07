@@ -35,41 +35,54 @@ class Work_flow_controller extends Controller
 
     public function work_flow_show_inventory(Request $request)
     {
-        $sales_register = Sales_register::select('id', 'date_delivered')
-            ->where('customer_id', $request->input('customer'))
-            ->where('principal_id', $request->input('principal'))
-            ->where('sku_type', $request->input('sku_type'))
-            ->latest()
-            ->first();
-
-        if ($sales_register) {
-            foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
-                $registered_inventory[] = $data->inventory_id;
-            }
-
-            $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+        //return $request->input();
+        if ($request->input('customer') == 'NEW CUSTOMER') {
+            $inventory_data = Inventory::select('sku_type', 'description', 'sku_code', 'id')
                 ->where('principal_id', $request->input('principal'))
                 ->where('sku_type', $request->input('sku_type'))
-                ->whereNotIn('id', $registered_inventory)
                 ->get();
 
-            return view('work_flow_show_inventory', [
-                'sales_register' => $sales_register,
-                'sales_order_inventory' => $sales_order_inventory,
-            ])->with('customer_id', $request->input('customer'))
-                ->with('principal_id', $request->input('principal'))
+            return view('work_flow_new_customer_new_sales_order', [
+                'inventory_data' => $inventory_data,
+            ])->with('principal_id', $request->input('principal_id'))
                 ->with('sku_type', $request->input('sku_type'));
         } else {
-            $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+            $sales_register = Sales_register::select('id', 'date_delivered')
+                ->where('customer_id', $request->input('customer'))
                 ->where('principal_id', $request->input('principal'))
                 ->where('sku_type', $request->input('sku_type'))
-                ->get();
+                ->latest()
+                ->first();
 
-            return view('work_flow_no_inventory', [
-                'sales_order_inventory' => $sales_order_inventory,
-            ])->with('customer_id', $request->input('customer'))
-                ->with('principal_id', $request->input('principal'))
-                ->with('sku_type', $request->input('sku_type'));
+            if ($sales_register) {
+                foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
+                    $registered_inventory[] = $data->inventory_id;
+                }
+
+                $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+                    ->where('principal_id', $request->input('principal'))
+                    ->where('sku_type', $request->input('sku_type'))
+                    ->whereNotIn('id', $registered_inventory)
+                    ->get();
+
+                return view('work_flow_show_inventory', [
+                    'sales_register' => $sales_register,
+                    'sales_order_inventory' => $sales_order_inventory,
+                ])->with('customer_id', $request->input('customer'))
+                    ->with('principal_id', $request->input('principal'))
+                    ->with('sku_type', $request->input('sku_type'));
+            } else {
+                $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+                    ->where('principal_id', $request->input('principal'))
+                    ->where('sku_type', $request->input('sku_type'))
+                    ->get();
+
+                return view('work_flow_no_inventory', [
+                    'sales_order_inventory' => $sales_order_inventory,
+                ])->with('customer_id', $request->input('customer'))
+                    ->with('principal_id', $request->input('principal'))
+                    ->with('sku_type', $request->input('sku_type'));
+            }
         }
     }
 
@@ -481,5 +494,10 @@ class Work_flow_controller extends Controller
         }
 
         return 'saved';
+    }
+
+    public function work_flow_new_customer_final_summary(Request $request)
+    {
+        return $request->input();
     }
 }
