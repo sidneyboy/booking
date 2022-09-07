@@ -9,6 +9,8 @@
 
 
 <form id="work_flow_no_inventory_proceed_to_very_final_summary">
+    <input type="text" class="form-control" name="dr" required placeholder="Delivery Receipt">
+    <br />
     <div class="table table-responsive">
         <table class="table table-bordered table-hover table-sm current_inventory">
             <thead>

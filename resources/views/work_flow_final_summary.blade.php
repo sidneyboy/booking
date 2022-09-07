@@ -20,59 +20,63 @@
 
 <form id="work_flow_inventory_save">
     <div id="export_table_as_image">
-        @if (array_sum($current_bo) != 0)
-            <table class="table table-bordered table-sm table_suggested_so">
-                <thead>
-                    <tr>
-                        <th colspan="4">This will serve as un-official PCM</th>
-                    </tr>
-                    <tr>
-                        <th colspan="4">
-                            {{ $pcm_number }}
-                            <input type="hidden" value="{{ $pcm_number }}" name="pcm_number">
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Desc</th>
-                        <th>BO</th>
-                        <th>U/P</th>
-                        <th>Sub Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($current_bo_inventory_id as $bo_data)
-                        <tr>
-                            <td>{{ $current_inventory_description[$bo_data] }} - {{ $sku_type }}</td>
-                            <td style="text-align: right">{{ $current_bo[$bo_data] }}</td>
-                            <td style="text-align: right">
-                                {{ number_format($current_inventory_unit_price[$bo_data], 2, ',', '.') }}</td>
-                            <td style="text-align: right">
-                                @php
-                                    $bo_sub_total = $current_inventory_unit_price[$bo_data] * $current_bo[$bo_data];
-                                    echo number_format($bo_sub_total, 2, ',', '.');
-                                    $bo_total[] = $bo_sub_total;
-                                @endphp
-                                <input type="hidden" value="{{ $bo_data }}" name="current_bo_inventory_id[]">
 
-                                <input type="hidden" value="{{ $current_inventory_unit_price[$bo_data] }}"
-                                    name="current_bo_unit_price[{{ $bo_data }}]">
-                                <input type="hidden" value="{{ $current_bo[$bo_data] }}"
-                                    name="current_bo_quantity[{{ $bo_data }}]">
-                            </td>
+        @if (isset($current_bo))
+            @if (array_sum($current_bo) != 0)
+                <table class="table table-bordered table-sm table_suggested_so">
+                    <thead>
+                        <tr>
+                            <th colspan="4">This will serve as un-official PCM</th>
                         </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="3" style="text-align: center">Total</th>
-                        <th style="text-align: right">
-                            {{ number_format(array_sum($bo_total), 2, ',', '.') }}
-                            <input type="hidden" value="{{ array_sum($bo_total) }}" name="total_bo_amount">
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
+                        <tr>
+                            <th colspan="4">
+                                PCM NO - {{ $pcm_number }}
+                                <input type="hidden" value="{{ $pcm_number }}" name="pcm_number">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Desc</th>
+                            <th>BO</th>
+                            <th>U/P</th>
+                            <th>Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($current_bo_inventory_id as $bo_data)
+                            <tr>
+                                <td>{{ $current_inventory_description[$bo_data] }} - {{ $sku_type }}</td>
+                                <td style="text-align: right">{{ $current_bo[$bo_data] }}</td>
+                                <td style="text-align: right">
+                                    {{ number_format($current_inventory_unit_price[$bo_data], 2, ',', '.') }}</td>
+                                <td style="text-align: right">
+                                    @php
+                                        $bo_sub_total = $current_inventory_unit_price[$bo_data] * $current_bo[$bo_data];
+                                        echo number_format($bo_sub_total, 2, ',', '.');
+                                        $bo_total[] = $bo_sub_total;
+                                    @endphp
+                                    <input type="hidden" value="{{ $bo_data }}" name="current_bo_inventory_id[]">
+
+                                    <input type="hidden" value="{{ $current_inventory_unit_price[$bo_data] }}"
+                                        name="current_bo_unit_price[{{ $bo_data }}]">
+                                    <input type="hidden" value="{{ $current_bo[$bo_data] }}"
+                                        name="current_bo_quantity[{{ $bo_data }}]">
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" style="text-align: center">Total</th>
+                            <th style="text-align: right">
+                                {{ number_format(array_sum($bo_total), 2, ',', '.') }}
+                                <input type="hidden" value="{{ array_sum($bo_total) }}" name="total_bo_amount">
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            @endif
         @endif
+
         <br /><br /> <br />
 
         <table class="table table-borderless table-sm"
@@ -95,6 +99,9 @@
                 </tr>
                 <tr>
                     <th style="text-align: center;" colspan="3">{{ $date }}</th>
+                </tr>
+                <tr>
+                    <th style="text-align: center;" colspan="3">{{ $sales_order_number }}</th>
                 </tr>
                 <tr>
                     <th style="text-align: center;text-transform:uppercase" colspan="3">
@@ -269,7 +276,19 @@
             processData: false,
             success: function(data) {
                 $('.loading').hide();
-                window.location.href = "/collection";
+                if (data == "saved") {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    window.location.href = "/collection";
+                }else{
+                    alert('asdasd');
+                }
+                
             },
         });
     }));

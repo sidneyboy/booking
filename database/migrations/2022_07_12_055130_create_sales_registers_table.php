@@ -19,11 +19,12 @@ return new class extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->BigInteger('principal_id')->unsigned()->index();
             $table->foreign('principal_id')->references('id')->on('principals');
-            $table->string('export_code');
-            $table->decimal('total_amount',15,2);
-            $table->string('dr');
+            $table->string('export_code')->nullable();
+            $table->decimal('total_amount',15,2)->nullable();
+            $table->string('dr')->nullable();
+            $table->string('sku_type')->nullable();
             $table->date('date_delivered')->nullable();
-            $table->string('status',20);
+            $table->string('status',20)->nullable();
             $table->timestamps();
         });
     }

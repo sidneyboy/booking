@@ -14,7 +14,6 @@ class Sales_register_details extends Model
         'inventory_id',
         'delivered_quantity',
         'unit_price',
-        'amount',
         'sku_type',
     ];
 

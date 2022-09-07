@@ -9,6 +9,7 @@ use App\Models\Inventory;
 use App\Models\Customer_principal_price;
 use App\Models\Customer_principal_discount;
 use App\Models\Sales_register;
+use App\Models\Sales_register_details;
 use App\Models\Sales_order_details;
 use App\Models\Sales_order;
 use App\Models\Bad_order;
@@ -133,6 +134,7 @@ class Work_flow_controller extends Controller
 
     public function work_flow_final_summary(Request $request)
     {
+
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
         $time = date('h:i:s a');
@@ -147,22 +149,22 @@ class Work_flow_controller extends Controller
 
         $agent_user = Agent_user::select('agent_name', 'agent_id')->first();
 
-        $bad_order_data = Bad_order::select('pcm_number')->latest()->first();
+        // return $bad_order_data = Bad_order::select('pcm_number')->latest()->first();
 
-        if (!is_null($bad_order_data)) {
-            $var_explode = explode('-', $bad_order_data->pcm_number);
-            $year_and_month = $var_explode[3] . "-" . $var_explode[4];
-            $series = $var_explode[5];
+        // if (!is_null($bad_order_data)) {
+        //     $var_explode = explode('-', $bad_order_data->pcm_number);
+        //     $year_and_month = $var_explode[3] . "-" . $var_explode[4];
+        //     $series = $var_explode[5];
 
 
-            if ($date_receipt != $year_and_month) {
-                $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
-            } else {
-                $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt . "-" . str_pad($series + 1, 4, 0, STR_PAD_LEFT);
-            }
-        } else {
-            $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
-        }
+        //     if ($date_receipt != $year_and_month) {
+        //         $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+        //     } else {
+        //         $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt . "-" . str_pad($series + 1, 4, 0, STR_PAD_LEFT);
+        //     }
+        // } else {
+        //     $pcm_number = "PCM-" . $agent_user->agent_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+        // }
 
         $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
 
@@ -170,7 +172,7 @@ class Work_flow_controller extends Controller
 
 
 
-        if ($sales_order_data) {
+        if ($sales_order_data != "") {
             $var_explode = explode('-', $sales_order_data->sales_order_number);
             $year_and_month = $var_explode[4] . "-" . $var_explode[5];
             $series = $var_explode[6];
@@ -210,7 +212,7 @@ class Work_flow_controller extends Controller
             'sales_order_final_quantity' => $request->input('sales_order_final_quantity'),
             'inventory_data' => $inventory_data,
             'customer_principal_discount' => $customer_principal_discount,
-            'pcm_number' => strtoupper($pcm_number),
+            'pcm_number' => strtoupper($request->input('pcm_number')),
 
 
             'current_inventory_description' => $request->input('current_inventory_description'),
@@ -361,6 +363,8 @@ class Work_flow_controller extends Controller
 
         $pcm_number = $request->input('pcm_number');
 
+
+
         if (isset($pcm_number)) {
             $bad_order_save = new Bad_order([
                 'pcm_number' => $request->input('pcm_number'),
@@ -390,7 +394,7 @@ class Work_flow_controller extends Controller
             'customer_id' => $request->input('customer_id'),
             'principal_id' => $request->input('principal_id'),
             'mode_of_transaction' => $request->input('mode_of_transaction'),
-            'sku_type' => $request->input('sku_type'),
+            'sku_type' => strtoupper($request->input('sku_type')),
             'total_amount' => $request->input('total_amount'),
             'agent_id' => $request->input('agent_id'),
             'status' => 'New',
@@ -407,7 +411,7 @@ class Work_flow_controller extends Controller
                 'inventory_id' => $data,
                 'quantity' => $request->input('sales_order_quantity')[$data],
                 'unit_price' => $request->input('unit_price')[$data],
-                'sku_type' => $request->input('sku_type'),
+                'sku_type' => strtoupper($request->input('sku_type')),
             ]);
 
             $sales_order_details_save->save();
@@ -442,9 +446,40 @@ class Work_flow_controller extends Controller
             'unit_price' => $request->input('unit_price')
         ])->with('customer_id', $request->input('customer_id'))
             ->with('principal_id', $request->input('principal_id'))
+            ->with('dr', $request->input('dr'))
             ->with('delivery_date', $request->input('delivery_date'))
             ->with('sku_type', $request->input('sku_type'))
-            ->with('total_discount',$request->input('total_discount'))
+            ->with('total_discount', $request->input('total_discount'))
             ->with('date', $date);
+    }
+
+    public function work_flow_no_inventory_save_previous_sales_register(Request $request)
+    {
+        //return $request->input();
+
+        $pre_sales_register = new Sales_register([
+            'customer_id' => $request->input('customer_id'),
+            'total_amount' => $request->input('total_amount'),
+            'dr' => $request->input('dr'),
+            'date_delivered' => $request->input('date_delivered'),
+            'sku_type' => strtoupper($request->input('sku_type')),
+            'principal_id' => $request->input('principal_id'),
+        ]);
+
+        $pre_sales_register->save();
+
+        foreach ($request->input('current_sku_inventory') as $key => $data) {
+            $pre_sales_register_details = new Sales_register_details([
+                'sales_register_id' => $pre_sales_register->id,
+                'inventory_id' => $key,
+                'delivered_quantity' => $data,
+                'unit_price' => $request->input('unit_price')[$key],
+                'sku_type' => strtoupper($request->input('sku_type')),
+            ]);
+
+            $pre_sales_register_details->save();
+        }
+
+        return 'saved';
     }
 }

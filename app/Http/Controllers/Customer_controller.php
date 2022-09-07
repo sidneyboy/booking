@@ -238,6 +238,59 @@ class Customer_controller extends Controller
             ->with('schedule_day', $schedule_day);
     }
 
+
+
+
+    public function customer_export_generate_customer(Request $request)
+    {
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+
+        if ($request->input('select_mode') == 'New Customer') {
+            $agent_user = Agent_user::first();
+            $location = location::select('id', 'location')->get();
+            return view('customer_export_generate_customer_new_customer')
+                ->with('agent_user', $agent_user)
+                ->with('location', $location);
+        }
+    }
+
+    public function customer_export_generate_final_summary(Request $request)
+    {
+        $explode = explode('-',$request->input('location'));
+        $location_id = $explode[0];
+        $location = $explode[1];
+        return view('customer_export_generate_final_summary')
+            ->with('agent_name',$request->input('agent_name'))
+            ->with('contact_number',$request->input('contact_number'))
+            ->with('contact_person',$request->input('contact_person'))
+            ->with('detailed_address',str_replace(',','',$request->input('detailed_address')))
+            ->with('kob',$request->input('kob'))
+            ->with('latitude',$request->input('latitude'))
+            ->with('longitude',$request->input('longitude'))
+            ->with('location_id',$location_id)
+            ->with('location',$location);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function customer_export_saved(Request $request)
     {
         $explode = explode('-', $request->input('location'));
@@ -254,7 +307,7 @@ class Customer_controller extends Controller
             'detailed_address' => $request->input('detailed_address'),
             'coordinates' => $request->input('coordinates'),
             'exported' => 'not_yet',
-            'kob' =>$request->input('kob'),
+            'kob' => $request->input('kob'),
         ]);
 
         $customer_export_saved->save();

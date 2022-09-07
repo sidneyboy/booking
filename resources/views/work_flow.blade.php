@@ -62,7 +62,8 @@
                         </div>
                     </form>
                 @else
-                    CANNOT TRANSACT PLEASE EXPORT THE PREVIOUS SO AND SEND TO ENCODER THANK YOU.
+                    <p style="color:blue">
+                        CANNOT TRANSACT PLEASE EXPORT THE PREVIOUS SO AND SEND TO ENCODER THANK YOU.</p>
                 @endif
             </div>
             <!-- /.card-body -->

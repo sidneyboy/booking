@@ -1,6 +1,6 @@
 <style>
-    .current_inventory th:first-child,
-    .current_inventory td:first-child {
+    .very_final_inventory th:first-child,
+    .very_final_inventory td:first-child {
         position: sticky;
         left: 0px;
         background-color: antiquewhite;
@@ -8,10 +8,14 @@
 </style>
 
 
-<form id="">
+<form id="work_flow_no_inventory_save_previous_sales_register">
+
     <div class="table table-responsive">
-        <table class="table table-bordered table-hover table-sm current_inventory">
+        <table class="table table-bordered table-hover table-sm very_final_inventory">
             <thead>
+                <tr>
+                    <th colspan="4">Delivery Receipt: {{ $dr }}</th>
+                </tr>
                 <tr>
                     <th>Delivery Date</th>
                     <th colspan="3">{{ $delivery_date }}</th>
@@ -19,8 +23,6 @@
                 <tr>
                     <th>Desc</th>
                     <th>Delivered QTY</th>
-                    {{-- <th>Current Inventory</th>
-                          <th>BO</th> --}}
                     <th>U/P</th>
                 </tr>
             </thead>
@@ -32,12 +34,14 @@
                             {{ $current_sku_inventory[$data->id] }}
                             <input type="hidden" name="current_sku_inventory[{{ $data->id }}]"
                                 value="{{ $current_sku_inventory[$data->id] }}">
-
                         </td>
-                        <td>
-                            {{ $unit_price[$data->id] }}
-                            <input type="hidden" class="form-control unit_price" name="unit_price[{{ $data->id }}]"
+                        <td style="text-align: right">
+                            {{ number_format($unit_price[$data->id], 2, '.', ',') }}
+                            <input type="hidden" class="form-control" name="unit_price[{{ $data->id }}]"
                                 value="{{ $unit_price[$data->id] }}" style="width:100px;">
+                            <input type="hidden" class="form-control" name="amount[{{ $data->id }}]"
+                                value="{{ $unit_price[$data->id] * $current_sku_inventory[$data->id] }}"
+                                style="width:100px;">
                             @php
                                 $total = $current_sku_inventory[$data->id] * $unit_price[$data->id];
                                 $gross[] = $total;
@@ -48,15 +52,27 @@
             </tbody>
             <tfoot>
                 <tr>
+                    <td>Gross</td>
                     <td></td>
+                    <td style="text-align: right">{{ number_format(array_sum($gross), 2, '.', ',') }}</td>
                 </tr>
                 <tr>
                     <td>Total Discount</td>
                     <td></td>
-                    <td>
-                        {{ $total_discount }}
+                    <td style="text-align: right">
+                        {{ number_format($total_discount, 2, '.', ',') }}
                         <input type="hidden" class="form-control unit_price" name="total_discount" style="width:100px;"
                             value="{{ $total_discount }}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td></td>
+                    <td style="text-align: right">
+                        {{ number_format(array_sum($gross) - $total_discount, 2, '.', ',') }}
+                        @php
+                            $total_amount = array_sum($gross) - $total_discount;
+                        @endphp
                     </td>
                 </tr>
             </tfoot>
@@ -64,10 +80,12 @@
     </div>
 
     <input type="text" name="customer_id" value="{{ $customer_id }}">
+    <input type="text" name="total_amount" value="{{ $total_amount }}">
+    <input type="text" name="dr" value="{{ $dr }}">
     <input type="text" name="principal_id" value="{{ $principal_id }}">
     <input type="text" name="sku_type" value="{{ $sku_type }}">
-    <input type="text" name="delivery_date" value="{{ $delivery_date }}">
-    <button class="btn btn-info btn-block">Proceed To Final Summary</button>
+    <input type="text" name="date_delivered" value="{{ $delivery_date }}">
+    <button class="btn btn-success btn-block">Submit</button>
 </form>
 
 <script>
@@ -81,21 +99,31 @@
         $(this).val(val);
     });
 
-    //     $("#").on('submit', (function(e) {
-    //         e.preventDefault();
-    //         //$('.loading').show();
-    //         $.ajax({
-    //             url: "",
-    //             type: "POST",
-    //             data: new FormData(this),
-    //             contentType: false,
-    //             cache: false,
-    //             processData: false,
-    //             success: function(data) {
-    //                 $('.loading').hide();
-    //                 // $('#work_flow_suggested_sales_order_page').hide();
-    //                 $('#work_flow_final_summary_page').html(data);
-    //             },
-    //         });
-    //     }));
+    $("#work_flow_no_inventory_save_previous_sales_register").on('submit', (function(e) {
+        e.preventDefault();
+        //$('.loading').show();
+        $.ajax({
+            url: "work_flow_no_inventory_save_previous_sales_register",
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                if (data == "saved") {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Your work has been saved',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    window.location.href = "/collection";
+                }else{
+                    alert('saved');
+                }
+            },
+        });
+    }));
 </script>

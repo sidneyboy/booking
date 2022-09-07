@@ -11,6 +11,9 @@
     @csrf
     <div class="table table-responsive">
         @if (array_sum($current_bo) != 0)
+            <label>BO</label>
+            <input type="text" class="form-control" name="pcm_number" placeholder="PCM No">
+            <br />
             <table class="table table-bordered table-sm table_suggested_so">
                 <thead>
                     <tr>
@@ -23,19 +26,23 @@
                 <tbody>
                     @foreach ($current_inventory_id as $bo_data)
                         <tr>
-                            <td>{{ $current_inventory_description[$bo_data] }} - {{  $sku_type }}</td>
+                            <td>{{ $current_inventory_description[$bo_data] }} - {{ $sku_type }}</td>
                             <td style="text-align: right">{{ $current_bo[$bo_data] }}</td>
-                            <td style="text-align: right">{{ number_format($current_inventory_unit_price[$bo_data], 2, '.', ',') }}</td>
+                            <td style="text-align: right">
+                                {{ number_format($current_inventory_unit_price[$bo_data], 2, '.', ',') }}</td>
                             <td style="text-align: right">
                                 @php
                                     $bo_sub_total = $current_inventory_unit_price[$bo_data] * $current_bo[$bo_data];
                                     echo number_format($bo_sub_total, 2, '.', ',');
                                     $bo_total[] = $bo_sub_total;
                                 @endphp
-                                 <input type="hidden" value="{{ $bo_data }}" name="current_bo_inventory_id[]">
-                                <input type="hidden" value="{{ $current_inventory_description[$bo_data] }}" name="current_inventory_description[{{ $bo_data }}]">
-                                <input type="hidden" value="{{ $current_bo[$bo_data] }}" name="current_bo[{{ $bo_data }}]">
-                                <input type="hidden" value="{{ $current_inventory_unit_price[$bo_data] }}" name="current_inventory_unit_price[{{ $bo_data }}]">                                
+                                <input type="hidden" value="{{ $bo_data }}" name="current_bo_inventory_id[]">
+                                <input type="hidden" value="{{ $current_inventory_description[$bo_data] }}"
+                                    name="current_inventory_description[{{ $bo_data }}]">
+                                <input type="hidden" value="{{ $current_bo[$bo_data] }}"
+                                    name="current_bo[{{ $bo_data }}]">
+                                <input type="hidden" value="{{ $current_inventory_unit_price[$bo_data] }}"
+                                    name="current_inventory_unit_price[{{ $bo_data }}]">
                             </td>
                         </tr>
                     @endforeach
@@ -50,6 +57,7 @@
         @endif
     </div>
     <div class="table table-responsive">
+        <label>SUGGESTED SALES ORDER</label>
         <table class="table table-bordered table-sm table_suggested_so">
             <thead>
                 <tr>

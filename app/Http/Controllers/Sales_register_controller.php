@@ -50,7 +50,7 @@ class Sales_register_controller extends Controller
                 'dr' => $csv[1][4],
                 'date_delivered' => $csv[1][5],
                 'status' => $csv[1][6],
-                'sku_type' => $csv[1][7],
+                'sku_type' => strtoupper($csv[1][7]),
                 'amount_paid' => '0',
             ]);
             $sales_register_saved->save();
@@ -63,7 +63,7 @@ class Sales_register_controller extends Controller
                     'inventory_id' => $csv[$i][0],
                     'delivered_quantity' => $csv[$i][1],
                     'unit_price' => $csv[$i][2],
-                    'sku_type' => $csv[$i][3],
+                    'sku_type' => strtoupper($csv[$i][3]),
                 ]);
 
                 $sales_register_details->save();

@@ -18,7 +18,8 @@ class Customer_export extends Model
         'location_id',
         'detailed_address',
         'coordinates',
-        'exported',
+        'longitude',
+        'latitude',
         'kob',
     ];
 }
