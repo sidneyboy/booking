@@ -10,7 +10,6 @@ class Customer_export extends Model
     use HasFactory;
 
     protected $fillable = [
-        'schedule_day',
         'store_name',
         'contact_person',
         'contact_number',
@@ -21,5 +20,6 @@ class Customer_export extends Model
         'longitude',
         'latitude',
         'kob',
+        'status',
     ];
 }

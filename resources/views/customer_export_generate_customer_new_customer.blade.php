@@ -46,7 +46,7 @@
         <input type="hidden" value="{{ $agent_user->agent_name }}" name="agent_name">
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-success btn-block">PROCEED</button>
+        <button type="submit" class="btn btn-info btn-block">PROCEED</button>
     </div>
 </form>
 

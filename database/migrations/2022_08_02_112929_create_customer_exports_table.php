@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('customer_exports', function (Blueprint $table) {
             $table->id();
-            $table->string('schedule_day');
             $table->string('store_name');
             $table->string('contact_person');
             $table->string('contact_number');

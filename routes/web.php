@@ -86,6 +86,7 @@ Route::get('/new_customer', [App\Http\Controllers\Customer_controller::class, 'n
 
 Route::post('/customer_export_generate_customer', [App\Http\Controllers\Customer_controller::class, 'customer_export_generate_customer'])->name('customer_export_generate_customer');
 Route::post('/customer_export_generate_final_summary', [App\Http\Controllers\Customer_controller::class, 'customer_export_generate_final_summary'])->name('customer_export_generate_final_summary');
+Route::post('/customer_export_new_customer_saved', [App\Http\Controllers\Customer_controller::class, 'customer_export_new_customer_saved'])->name('customer_export_new_customer_saved');
 
 
 

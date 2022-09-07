@@ -257,19 +257,45 @@ class Customer_controller extends Controller
 
     public function customer_export_generate_final_summary(Request $request)
     {
-        $explode = explode('-',$request->input('location'));
+        $explode = explode('-', $request->input('location'));
         $location_id = $explode[0];
         $location = $explode[1];
         return view('customer_export_generate_final_summary')
-            ->with('agent_name',$request->input('agent_name'))
-            ->with('contact_number',$request->input('contact_number'))
-            ->with('contact_person',$request->input('contact_person'))
-            ->with('detailed_address',str_replace(',','',$request->input('detailed_address')))
-            ->with('kob',$request->input('kob'))
-            ->with('latitude',$request->input('latitude'))
-            ->with('longitude',$request->input('longitude'))
-            ->with('location_id',$location_id)
-            ->with('location',$location);
+            ->with('agent_name', $request->input('agent_name'))
+            ->with('store_name', $request->input('store_name'))
+            ->with('contact_number', $request->input('contact_number'))
+            ->with('contact_person', $request->input('contact_person'))
+            ->with('detailed_address', str_replace(',', ' ', $request->input('detailed_address')))
+            ->with('kob', $request->input('kob'))
+            ->with('latitude', $request->input('latitude'))
+            ->with('longitude', $request->input('longitude'))
+            ->with('location_id', $location_id)
+            ->with('location', $location);
+    }
+
+    public function customer_export_new_customer_saved(Request $request)
+    {
+        // $explode = explode('-', $request->input('location'));
+        // $location_id = $explode[0];
+        // $location = $explode[1];
+
+        $customer_export_saved = new Customer_export([
+            'store_name' => $request->input('store_name'),
+            'contact_person' => $request->input('contact_person'),
+            'contact_number' => $request->input('contact_number'),
+            'location' => $request->input('location'),
+            'location_id' => $request->input('location_id'),
+            'detailed_address' => $request->input('detailed_address'),
+            'longitude' => $request->input('longitude'),
+            'latitude' => $request->input('latitude'),
+            'exported' => 'not_yet',
+            'kob' => $request->input('kob'),
+            'status' => 'Pending Approval',
+        ]);
+
+        $customer_export_saved->save();
+
+        return 'saved';
     }
 
 
