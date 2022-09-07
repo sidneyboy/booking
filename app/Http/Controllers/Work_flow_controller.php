@@ -524,15 +524,15 @@ class Work_flow_controller extends Controller
             'new_sales_order' => $new_sales_order,
         ])->with('price_level', $request->input('price_level'))
             ->with('principal_id', $request->input('principal_id'))
-            ->with('sku_type', $request->input('sku_type'))
-            ->with('agent_name', $request->input('agent_name'))
-            ->with('contact_number', $request->input('contact_number'))
-            ->with('contact_person', $request->input('contact_person'))
-            ->with('detailed_address', str_replace(',',' ',$request->input('detailed_address')))
-            ->with('kob', $request->input('kob'))
-            ->with('latitude', $request->input('latitude'))
-            ->with('location', $request->input('location'))
-            ->with('longitude', $request->input('longitude'));
+            ->with('sku_type', strtoupper($request->input('sku_type')))
+            ->with('agent_name', strtoupper($request->input('agent_name')))
+            ->with('contact_number', strtoupper($request->input('contact_number')))
+            ->with('contact_person', strtoupper($request->input('contact_person')))
+            ->with('detailed_address', str_replace(',',' ',strtoupper($request->input('detailed_address'))))
+            ->with('kob', strtoupper($request->input('kob')))
+            ->with('latitude', strtoupper($request->input('latitude')))
+            ->with('location', strtoupper($request->input('location')))
+            ->with('longitude', strtoupper($request->input('longitude')));
     }
 
     public function work_flow_new_customer_saved(Request $request)
