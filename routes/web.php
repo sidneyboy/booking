@@ -96,6 +96,8 @@ Route::post('/customer_export_new_customer_saved', [App\Http\Controllers\Custome
 Route::post('/customer_export_saved', [App\Http\Controllers\Customer_controller::class, 'customer_export_saved'])->name('customer_export_saved');
 Route::get('/new_customer_generate_csv', [App\Http\Controllers\Customer_controller::class, 'new_customer_generate_csv'])->name('new_customer_generate_csv');
 Route::post('/customer_export', [App\Http\Controllers\Customer_controller::class, 'customer_export'])->name('customer_export');
+Route::post('/customer_export_generate_customer_data_update_generate_data', [App\Http\Controllers\Customer_controller::class, 'customer_export_generate_customer_data_update_generate_data'])->name('customer_export_generate_customer_data_update_generate_data');
+
 
 
 
@@ -104,4 +106,4 @@ Route::post('/customer_export', [App\Http\Controllers\Customer_controller::class
 
 Route::get('/sales_order_export', [App\Http\Controllers\Sales_order_export_controller::class, 'index'])->name('sales_order_export');
 Route::post('/sales_order_export_process', [App\Http\Controllers\Sales_order_export_controller::class, 'sales_order_export_process'])->name('sales_order_export_process');
-
+Route::post('/sales_order_new_customer_export_process', [App\Http\Controllers\Sales_order_export_controller::class, 'sales_order_new_customer_export_process'])->name('sales_order_new_customer_export_process');

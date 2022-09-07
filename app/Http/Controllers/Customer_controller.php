@@ -252,6 +252,11 @@ class Customer_controller extends Controller
             return view('customer_export_generate_customer_new_customer')
                 ->with('agent_user', $agent_user)
                 ->with('location', $location);
+        } else {
+            $customer = Customer::get();
+            return view('customer_export_generate_customer_data_update', [
+                'customer' => $customer,
+            ]);
         }
     }
 
@@ -262,9 +267,9 @@ class Customer_controller extends Controller
         $location = $explode[1];
         return view('customer_export_generate_final_summary')
             ->with('agent_name', $request->input('agent_name'))
-            ->with('store_name', str_replace(',',' ', $request->input('store_name')))
+            ->with('store_name', str_replace(',', ' ', $request->input('store_name')))
             ->with('contact_number', $request->input('contact_number'))
-            ->with('contact_person', str_replace(',',' ', $request->input('contact_person')))
+            ->with('contact_person', str_replace(',', ' ', $request->input('contact_person')))
             ->with('detailed_address', str_replace(',', ' ', $request->input('detailed_address')))
             ->with('kob', $request->input('kob'))
             ->with('latitude', $request->input('latitude'))
@@ -363,5 +368,18 @@ class Customer_controller extends Controller
         }
 
         return 'saved';
+    }
+
+    public function customer_export_generate_customer_data_update_generate_data(Request $request)
+    {   
+        return 'NO FUNCTION YET';
+        return $customer_data = Customer::find($request->input('customer_id'));
+        $agent_user = Agent_user::first();
+        $location = location::select('id', 'location')->get();
+        return view('customer_export_generate_customer_data_update_generate_data',[
+            'customer_data' => $customer_data,
+            'agent_user' => $agent_user,
+            'location' => $location,
+        ]);
     }
 }

@@ -64,6 +64,24 @@
             </div>
             <!-- /.card-footer-->
         </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title" style="font-weight: bold;">FINAL</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                        title="Collapse">
+                        <i class="fas fa-minus"></i></button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
+                        title="Remove">
+                        <i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="customer_export_generate_final_summary_for_customer_update"></div>
+            </div>
+            <!-- /.card-footer-->
+        </div>
     </section>
     <!-- /.content -->
 @endsection

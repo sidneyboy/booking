@@ -7,6 +7,9 @@ use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Principal;
 use App\Models\Inventory;
+use App\Models\Sales_order_new_customer;
+use App\Models\Sales_order_for_new_customer;
+use App\Models\Sales_order_for_new_customer_details;
 use App\Models\Customer_principal_price;
 use App\Models\Customer_principal_discount;
 use App\Models\Sales_register;
@@ -25,13 +28,15 @@ class Work_flow_controller extends Controller
         $customer = Customer::select('id', 'store_name')->get();
         $principal = Principal::select('id', 'principal')->where('principal', '!=', 'NONE')->get();
         $sales_order_check = Sales_order::where('exported', 'not_yet_exported')->count();
+        $sales_order_new_customer_check = Sales_order_for_new_customer::where('exported',null)->count();
 
         return view('work_flow', [
             'customer' => $customer,
             'principal' => $principal,
         ])->with('active', 'work_flow')
             ->with('agent_user', $agent_user)
-            ->with('sales_order_check', $sales_order_check);
+            ->with('sales_order_check', $sales_order_check)
+            ->with('sales_order_new_customer_check', $sales_order_new_customer_check);
     }
 
     public function work_flow_show_inventory(Request $request)
@@ -503,7 +508,31 @@ class Work_flow_controller extends Controller
 
     public function work_flow_new_customer_final_summary(Request $request)
     {
-        return $request->input();
+        //return $request->input();
+
+        date_default_timezone_set('Asia/Manila');
+        $date = date('Y-m-d');
+        $time = date('h:i:s a');
+        $date_receipt = date('Y-m');
+
+        $sales_order_data = Sales_order::select('sales_order_number')->latest()->first();
+            $agent_user = Agent_user::latest()->first();
+
+
+        if ($sales_order_data != "") {
+            $var_explode = explode('-', $sales_order_data->sales_order_number);
+            $year_and_month = $var_explode[4] . "-" . $var_explode[5];
+            $series = $var_explode[6];
+
+
+            if ($date_receipt != $year_and_month) {
+                $sales_order_number = "SO-" . $agent_user->agent_name  . "-" . $request->input('store_name')  . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+            } else {
+                $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $request->input('store_name') . "-" . $agent_user->agent_id . "-" . $date_receipt . "-" . str_pad($series + 1, 4, 0, STR_PAD_LEFT);
+            }
+        } else {
+            $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $request->input('store_name') . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
+        }
 
         $new_sales_order = array_filter($request->input('new_sales_order_inventory_quantity'));
         $inventory_data = Inventory::select(
@@ -522,13 +551,16 @@ class Work_flow_controller extends Controller
         return view('work_flow_new_customer_final_summary', [
             'inventory_data' => $inventory_data,
             'new_sales_order' => $new_sales_order,
+            'agent_user' => $agent_user,
         ])->with('price_level', $request->input('price_level'))
             ->with('principal_id', $request->input('principal_id'))
+            ->with('sales_order_number', strtoupper($sales_order_number))
             ->with('sku_type', strtoupper($request->input('sku_type')))
+            ->with('store_name', strtoupper($request->input('store_name')))
             ->with('agent_name', strtoupper($request->input('agent_name')))
             ->with('contact_number', strtoupper($request->input('contact_number')))
             ->with('contact_person', strtoupper($request->input('contact_person')))
-            ->with('detailed_address', str_replace(',',' ',strtoupper($request->input('detailed_address'))))
+            ->with('detailed_address', str_replace(',', ' ', strtoupper($request->input('detailed_address'))))
             ->with('kob', strtoupper($request->input('kob')))
             ->with('latitude', strtoupper($request->input('latitude')))
             ->with('location', strtoupper($request->input('location')))
@@ -537,6 +569,53 @@ class Work_flow_controller extends Controller
 
     public function work_flow_new_customer_saved(Request $request)
     {
-        return $request->input();
+
+     
+
+        $explode = explode('-',$request->input('location'));
+        $location_id = $explode[0];
+        $location = $explode[1];
+
+        $new_sales_order = new Sales_order_for_new_customer([
+            'principal_id' => $request->input('principal_id'),
+            'agent_id' => $request->input('agent_id'),
+            'mode_of_transaction' => 'COD',
+            'sku_type' => $request->input('sku_type'),
+            'status' => 'NEW',
+            'sales_order_number' => $request->input('sales_order_number'),
+            'total_amount' => $request->input('total_amount'),
+        ]);
+
+        $new_sales_order->save();
+
+        foreach ($request->input('inventory_id') as $key => $data) {
+            $new_sales_order_details = new Sales_order_for_new_customer_details([
+                'sales_order_new_id' => $new_sales_order->id,
+                'inventory_id' => $data,
+                'quantity' => $request->input('quantity')[$data],
+                'unit_price' => $request->input('unit_price')[$data],
+                'sku_type' => $request->input('sku_type'),
+            ]);
+
+            $new_sales_order_details->save();
+        }
+
+        $new_customer = new Sales_order_new_customer([
+            'sales_order_id' => $new_sales_order->id,
+            'store_name' => $request->input('store_name'),
+            'kob' => $request->input('kob'),
+            'contact_person' => $request->input('contact_person'),
+            'contact_number' => $request->input('contact_number'),
+            'location' => $location,
+            'location_id' => $location_id,
+            'detailed_address' => $request->input('detailed_address'),
+            'longitude' => $request->input('longitude'),
+            'latitude' => $request->input('latitude'),
+            'status' => 'Pending Approval',
+        ]);
+
+        $new_customer->save();
+
+        return 'saved';
     }
 }

@@ -21,6 +21,7 @@ class Customer extends Model
         'schedule_day',
         'longitude',
         'latitude',
+        'kob',
     ];
 
     public function customer_principal_price()

@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="card-body">
-                @if ($sales_order_check == 0)
+                @if ($sales_order_check == 0 AND $sales_order_new_customer_check == 0)
                     <form id="work_flow_show_inventory">
                         <div class="form-group">
                             <label>Customer</label>
@@ -62,6 +62,7 @@
                                 style="display: none">PROCEED</button>
                         </div>
                     </form>
+                
                 @else
                     <p style="color:blue">
                         CANNOT TRANSACT PLEASE EXPORT THE PREVIOUS SO AND SEND TO ENCODER THANK YOU.</p>
