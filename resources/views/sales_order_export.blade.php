@@ -148,7 +148,7 @@
                                         
                                         <tr>
                                             <td>NEW CUSTOMER</td>
-                                            <td>{{ $data->store_name }}</td>
+                                            <td>{{ $data->sales_order_new_customer->store_name }}</td>
                                             <td>{{ $data->principal_id }}</td>
                                             <td>{{ $data->principal->principal }}</td>
                                             <td>{{ $data->agent_id }}</td>

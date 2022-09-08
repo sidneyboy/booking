@@ -42,6 +42,7 @@ class Work_flow_controller extends Controller
     public function work_flow_show_inventory(Request $request)
     {
         //return $request->input();
+        
         if ($request->input('customer') == 'NEW CUSTOMER') {
             $agent_user = Agent_user::first();
             $location = location::select('id', 'location')->get();
