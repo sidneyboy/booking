@@ -69,7 +69,7 @@
            processData:false,
            success: function(data){
              console.log(data);
-             if (data == 'saved') {
+             if (data == "saved") {
                Swal.fire({
                  position: 'top-end',
                  icon: 'success',

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('total_amount',15,2)->nullable();
             $table->string('dr')->nullable();
             $table->string('sku_type')->nullable();
-            $table->date('date_delivered')->nullable();
+            $table->string('date_delivered')->nullable();
             $table->string('status',20)->nullable();
             $table->timestamps();
         });

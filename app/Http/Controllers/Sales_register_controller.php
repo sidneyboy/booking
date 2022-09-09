@@ -37,19 +37,21 @@ class Sales_register_controller extends Controller
 
 
         //
-        //return $csv;
+       // return $csv;
         $counter = count($csv);
+        //delete puhon ayaw sa karun kay testing pa.
+        //$sales_register = Sales_register::where('customer_id',$csv[1][0])->first();
 
 
-        if ($csv[0][5] == 'delivered date') {
+        if ($csv[0][3] == 'SR-CODE') {
             $sales_register_saved = new Sales_register([
                 'customer_id' => $csv[1][0],
                 'principal_id' => $csv[1][1],
-                'export_code' => $csv[1][2],
-                'total_amount' => $csv[1][3],
-                'dr' => $csv[1][4],
-                'date_delivered' => $csv[1][5],
-                'status' => $csv[1][6],
+                'export_code' => $csv[1][3],
+                'total_amount' => $csv[1][4],
+                'dr' => $csv[1][5],
+                'date_delivered' => $csv[1][6],
+                'status' => '',
                 'sku_type' => strtoupper($csv[1][7]),
                 'amount_paid' => '0',
             ]);
@@ -57,7 +59,6 @@ class Sales_register_controller extends Controller
             $sales_register_saved_last_id = $sales_register_saved->id;
 
             for ($i = 2; $i < $counter; $i++) {
-
                 $sales_register_details = new Sales_register_details([
                     'sales_register_id' => $sales_register_saved_last_id,
                     'inventory_id' => $csv[$i][0],
