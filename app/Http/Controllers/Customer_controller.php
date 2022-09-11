@@ -41,7 +41,7 @@ class Customer_controller extends Controller
 
         $counter = count($csv);
 
-        if ($csv[0][1] != 'export_customer_applied_to_agent') {
+        if ($csv[0][0] != 'export_customer_applied_to_agent') {
             return 'incorrect_file';
         } else {
             for ($i = 1; $i < $counter; $i++) {
@@ -70,6 +70,13 @@ class Customer_controller extends Controller
                         'status' => $csv[$i][8],
                     ]);
                     $customer_saved->save();
+
+                    $customer_principal_price = new Customer_principal_price([
+                        'customer_id' => $csv[$i][0],
+                        'principal_id' => $csv[$i][9],
+                        'price_level' => $csv[$i][10],
+                    ]);
+                    $customer_principal_price->save();
                 }
             }
 
