@@ -18,6 +18,9 @@ use App\Models\Sales_order_details;
 use App\Models\Sales_order;
 use App\Models\Bad_order;
 use App\Models\Bad_order_details;
+use App\Models\Customer_export;
+
+use App\Models\Customer_principal_code;
 use Illuminate\Http\Request;
 
 class Work_flow_controller extends Controller
@@ -28,7 +31,7 @@ class Work_flow_controller extends Controller
         $customer = Customer::select('id', 'store_name')->get();
         $principal = Principal::select('id', 'principal')->where('principal', '!=', 'NONE')->get();
         $sales_order_check = Sales_order::where('exported', 'not_yet_exported')->count();
-        $sales_order_new_customer_check = Sales_order_for_new_customer::where('exported',null)->count();
+        $sales_order_new_customer_check = Sales_order_for_new_customer::where('exported', null)->count();
 
         return view('work_flow', [
             'customer' => $customer,
@@ -42,7 +45,7 @@ class Work_flow_controller extends Controller
     public function work_flow_show_inventory(Request $request)
     {
         //return $request->input();
-        
+
         if ($request->input('customer') == 'NEW CUSTOMER') {
             $agent_user = Agent_user::first();
             $location = location::select('id', 'location')->get();
@@ -65,35 +68,60 @@ class Work_flow_controller extends Controller
                 ->latest()
                 ->first();
 
-            if ($sales_register) {
-                foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
-                    $registered_inventory[] = $data->inventory_id;
-                }
+            $customer = Customer::find($request->input('customer'));
+            $customer_principal_check = Customer_principal_price::where('customer_id', $customer->id)
+                ->where('principal_id', $request->input('principal'))
+                ->first();
 
-                $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
-                    ->where('principal_id', $request->input('principal'))
-                    ->where('sku_type', $request->input('sku_type'))
-                    ->whereNotIn('id', $registered_inventory)
-                    ->get();
-
-                return view('work_flow_show_inventory', [
-                    'sales_register' => $sales_register,
-                    'sales_order_inventory' => $sales_order_inventory,
-                ])->with('customer_id', $request->input('customer'))
-                    ->with('principal_id', $request->input('principal'))
-                    ->with('sku_type', $request->input('sku_type'));
+            if ($customer_principal_check->price_level == 'none') {
+                return 'Cannot Proceed. Please Change Price Level of this customer base on the selected principal!';
             } else {
-                $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
-                    ->where('principal_id', $request->input('principal'))
-                    ->where('sku_type', $request->input('sku_type'))
-                    ->get();
+                if ($customer->status == 'Pending Approval') {
+                    return 'Please Update Customer Profile First!';
+                } else {
+                    if ($sales_register) {
+                        foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
+                            $registered_inventory[] = $data->inventory_id;
+                        }
 
-                return view('work_flow_no_inventory', [
-                    'sales_order_inventory' => $sales_order_inventory,
-                ])->with('customer_id', $request->input('customer'))
-                    ->with('principal_id', $request->input('principal'))
-                    ->with('sku_type', $request->input('sku_type'));
+                        $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+                            ->where('principal_id', $request->input('principal'))
+                            ->where('sku_type', $request->input('sku_type'))
+                            ->whereNotIn('id', $registered_inventory)
+                            ->get();
+
+                        return view('work_flow_show_inventory', [
+                            'sales_register' => $sales_register,
+                            'sales_order_inventory' => $sales_order_inventory,
+                            'customer' => $customer,
+                            // 'location' => $location,
+                            // 'customer_principal_price' => $customer_principal_price,
+                            // 'agent_user' => $agent_user,
+                        ])->with('customer_id', $request->input('customer'))
+                            ->with('principal_id', $request->input('principal'))
+                            ->with('sku_type', $request->input('sku_type'));
+                    } else {
+                        $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
+                            ->where('principal_id', $request->input('principal'))
+                            ->where('sku_type', $request->input('sku_type'))
+                            ->get();
+
+                        return view('work_flow_no_inventory', [
+                            'sales_order_inventory' => $sales_order_inventory,
+                            // 'location' => $location,
+                            // 'customer_principal_price' => $customer_principal_price,
+                            // 'agent_user' => $agent_user,
+                            'customer' => $customer,
+                        ])->with('customer_id', $request->input('customer'))
+                            ->with('principal_id', $request->input('principal'))
+                            ->with('sku_type', $request->input('sku_type'));
+                    }
+                }
             }
+            // $location = location::select('id', 'location')->get();
+            // $customer_principal_price = Customer_principal_price::where('customer_id', $customer->id)->where('principal_id', $request->input('principal_id'))->first();
+            // $agent_user = Agent_user::first();
+
         }
     }
 
@@ -255,9 +283,14 @@ class Work_flow_controller extends Controller
 
     public function work_flow_no_inventory_proceed_to_final_summary(Request $request)
     {
+        //return $request->input();
         date_default_timezone_set('Asia/Manila');
         $date = date('Y-m-d');
         $date_receipt = date('Y-m');
+
+        // $explode = explode('-', $request->input('location_id'));
+        // $location_id = $explode[0];
+        // $location = $explode[1];
 
         $current_sku_inventory = array_filter($request->input('delivered_quantity'));
 
@@ -279,69 +312,6 @@ class Work_flow_controller extends Controller
             ->with('delivery_date', $request->input('delivery_date'))
             ->with('sku_type', $request->input('sku_type'))
             ->with('date', $date);
-
-
-
-
-        //--------------------------------------------------------------------------
-
-        // $customer_principal_price = Customer_principal_price::select('price_level', 'customer_id', 'principal_id')
-        //     ->where('customer_id', $request->input('customer_id'))
-        //     ->where('principal_id', $request->input('principal_id'))
-        //     ->first();
-
-        // $customer_principal_discount = Customer_principal_discount::where('customer_id', $request->input('customer_id'))->where('principal_id', $request->input('principal_id'))->get();
-
-        // $new_sales_order_inventory_quantity = array_filter($request->input('new_sales_order_inventory_quantity'));
-
-        // $agent_user = Agent_user::select('agent_id', 'agent_name')->first();
-
-        // $sales_order_data = Sales_order::select('sales_order_number')->latest()->first();
-
-
-
-        // if ($sales_order_data) {
-        //     //return 'diri';
-        //     //return $sales_order_data->sales_order_number;
-        //      $var_explode = explode('-', $sales_order_data->sales_order_number);
-        //     $year_and_month = $var_explode[4] . "-" . $var_explode[5];
-        //     $series = $var_explode[6];
-
-
-        //     if ($date_receipt != $year_and_month) {
-        //         $sales_order_number = "SO-" . $agent_user->agent_name  . "-" . $customer_principal_price->customer->store_name  . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
-        //     } else {
-        //         $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $customer_principal_price->customer->store_name . "-" . $agent_user->agent_id . "-" . $date_receipt . "-" . str_pad($series + 1, 4, 0, STR_PAD_LEFT);
-        //     }
-        // } else {
-        //     $sales_order_number = "SO-" . $agent_user->agent_name . "-" . $customer_principal_price->customer->store_name . "-" . $agent_user->agent_id . "-" . $date_receipt  . "-0001";
-        // }
-
-        // $inventory_data = Inventory::select(
-        //     'sku_type',
-        //     'description',
-        //     'sku_code',
-        //     'id',
-        //     'price_1',
-        //     'price_2',
-        //     'price_3',
-        //     'price_4'
-        // )->whereIn('id', array_keys($new_sales_order_inventory_quantity))
-        //     ->get();
-
-
-        // return view('work_flow_no_inventory_proceed_to_final_summary', [
-        //     'inventory_data' => $inventory_data,
-        //     'new_sales_order_inventory_description' => $request->input('new_sales_order_inventory_description'),
-        //     'new_sales_order_inventory_quantity' => $request->input('new_sales_order_inventory_quantity'),
-        // ])->with('customer_id', $request->input('customer_id'))
-        // ->with('principal_id', $request->input('principal_id'))
-        // ->with('customer_principal_price', $customer_principal_price)
-        // ->with('sku_type', $request->input('sku_type'))
-        // ->with('agent_user', $agent_user)
-        // ->with('customer_principal_discount', $customer_principal_discount)
-        // ->with('date', $date)
-        // ->with('sales_order_number', $sales_order_number);
     }
 
     public function work_flow_no_inventory_save(Request $request)
@@ -517,7 +487,7 @@ class Work_flow_controller extends Controller
         $date_receipt = date('Y-m');
 
         $sales_order_data = Sales_order::select('sales_order_number')->latest()->first();
-            $agent_user = Agent_user::latest()->first();
+        $agent_user = Agent_user::latest()->first();
 
 
         if ($sales_order_data != "") {
@@ -571,9 +541,9 @@ class Work_flow_controller extends Controller
     public function work_flow_new_customer_saved(Request $request)
     {
 
-     
 
-        $explode = explode('-',$request->input('location'));
+
+        $explode = explode('-', $request->input('location'));
         $location_id = $explode[0];
         $location = $explode[1];
 

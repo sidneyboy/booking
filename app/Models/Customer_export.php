@@ -21,5 +21,14 @@ class Customer_export extends Model
         'latitude',
         'kob',
         'status',
+        'customer_id',
+        'principal_id',
+        'price_level',
+        'mode_of_transaction',
     ];
+
+    public function customer_export_details()
+    {
+        return $this->hasMany('App\Models\Customer_export_details', 'customer_export_id');
+    }
 }

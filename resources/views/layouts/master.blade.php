@@ -359,7 +359,7 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ url('customer_principal_code_upload') }}"
                                     class="nav-link {{ $active == 'customer_principal_code_upload' ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-th"></i>
@@ -367,9 +367,9 @@
                                         Principal Code Upload
                                     </p>
                                 </a>
-                            </li>
+                            </li> --}}
 
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ url('customer_principal_price_upload') }}"
                                     class="nav-link {{ $active == 'customer_principal_price_upload' ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-th"></i>
@@ -386,7 +386,7 @@
                                         Principal Discount Upload
                                     </p>
                                 </a>
-                            </li>
+                            </li> --}}
 
                             <li class="nav-item">
                                 <a href="{{ url('inventory_upload') }}"
@@ -417,6 +417,17 @@
                                     </p>
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{ url('update_customer') }}"
+                                    class="nav-link {{ $active == 'update_customer' ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p>
+                                        Update Customer
+                                    </p>
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a href="{{ url('new_customer_generate_csv') }}"
                                     class="nav-link {{ $active == 'new_customer_generate_csv' ? 'active' : '' }}">

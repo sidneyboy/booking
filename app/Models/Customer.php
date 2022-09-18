@@ -22,7 +22,15 @@ class Customer extends Model
         'longitude',
         'latitude',
         'kob',
+        'contact_person',
+        'contact_number',
+        'detailed_address',
     ];
+
+    public function location()
+    {
+      return $this->belongsTo('App\Models\Location', 'location_id');
+    }
 
     public function customer_principal_price()
     {

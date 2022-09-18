@@ -52,10 +52,10 @@
         </table>
     </div>
 
-    <input type="text" name="customer_id" value="{{ $customer_id }}">
-    <input type="text" name="principal_id" value="{{ $principal_id }}">
-    <input type="text" name="sku_type" value="{{ $sku_type }}">
-    <input type="text" name="delivery_date" value="{{ $delivery_date }}">
+    <input type="hidden" name="customer_id" value="{{ $customer_id }}">
+    <input type="hidden" name="principal_id" value="{{ $principal_id }}">
+    <input type="hidden" name="sku_type" value="{{ $sku_type }}">
+    <input type="hidden" name="delivery_date" value="{{ $delivery_date }}">
     <button class="btn btn-info btn-block">Proceed To Final Summary</button>
 </form>
 

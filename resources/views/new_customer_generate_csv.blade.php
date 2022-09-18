@@ -48,6 +48,8 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 <tr>
                                     <th>KOB</th>
@@ -59,6 +61,8 @@
                                     <th>Detailed Address</th>
                                     <th>Longitude</th>
                                     <th>Latitude</th>
+                                    <th>Customer ID</th>
+                                    <th>Mode of Transaction</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,7 +80,17 @@
                                             <input type="hidden" value="{{ $exported->id }}" name="customer_export_id[]">
                                         </td>
                                         <td>{{ $exported->latitude }}</td>
+                                        <td>{{ $exported->customer_id }}</td>
+                                        <td>{{ $exported->mode_of_transaction }}</td>
                                     </tr>
+                                    @foreach ($exported->customer_export_details as $details)
+                                        <tr>
+                                            <td>Principal</td>
+                                            <td>{{ $details->customer_id }}</td>
+                                            <td>{{ $details->principal_id }}</td>
+                                            <td>{{ $details->price_level }}</td>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             </tbody>
                         </table>
@@ -84,15 +98,15 @@
 
                     </div>
 
-                  
+
 
                     <button class="btn btn-block btn-success" type="submit">EXPORT DATA</button>
                 </form>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button onclick="exportTableToCSV('{{ $agent_user->agent_name }} New Customer.csv')"
-                    style="display: none" id="button_export">EXPORT
+                <button onclick="exportTableToCSV('{{ $agent_user->agent_name }} New Customer.csv')" style="display: none"
+                    id="button_export">EXPORT
                     DATA</button>
             </div>
             <!-- /.card-footer-->
@@ -112,7 +126,7 @@
             }
         });
 
-      
+
         function downloadCSV(csv, filename) {
             var csvFile;
             var downloadLink;
@@ -198,9 +212,6 @@
                 },
             });
         }));
-
-
-       
     </script>
     </body>
 

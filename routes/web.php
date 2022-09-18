@@ -85,6 +85,15 @@ Route::post('/collection_save', [App\Http\Controllers\Collection_controller::cla
 Route::get('/collection_export', [App\Http\Controllers\Collection_controller::class, 'collection_export'])->name('collection_export');
 
 Route::get('/new_customer', [App\Http\Controllers\Customer_controller::class, 'new_customer'])->name('new_customer');
+Route::get('/update_customer', [App\Http\Controllers\Customer_controller::class, 'update_customer'])->name('update_customer');
+Route::post('/update_customer_generate', [App\Http\Controllers\Customer_controller::class, 'update_customer_generate'])->name('update_customer_generate');
+Route::post('/update_customer_generate_page_final_summary', [App\Http\Controllers\Customer_controller::class, 'update_customer_generate_page_final_summary'])->name('update_customer_generate_page_final_summary');
+Route::post('/update_customer_save', [App\Http\Controllers\Customer_controller::class, 'update_customer_save'])->name('update_customer_save');
+
+
+
+
+
 
 Route::post('/customer_export_generate_customer', [App\Http\Controllers\Customer_controller::class, 'customer_export_generate_customer'])->name('customer_export_generate_customer');
 Route::post('/customer_export_generate_final_summary', [App\Http\Controllers\Customer_controller::class, 'customer_export_generate_final_summary'])->name('customer_export_generate_final_summary');
