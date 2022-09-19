@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->string('special_account');
-            $table->string('mode_of_transaction');
-            $table->string('status');
+            $table->string('special_account')->nullable();
+            $table->string('mode_of_transaction')->nullable();
+            $table->string('status')->nullable();
         });
     }
 
@@ -28,9 +28,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->dropColumn('special_account');
-            $table->dropColumn('mode_of_transaction');
-            $table->dropColumn('status');
+            $table->dropColumn('special_account')->nullable();
+            $table->dropColumn('mode_of_transaction')->nullable();
+            $table->dropColumn('status')->nullable();
         });
     }
 };

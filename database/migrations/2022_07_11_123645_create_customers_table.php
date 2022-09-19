@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->BigInteger('location_id')->unsigned()->index();
             $table->foreign('location_id')->references('id')->on('locations');
-            $table->Double('credit_limit',15,2);
-            $table->string('store_name');
+            $table->Double('credit_limit',15,2)->nullable();
+            $table->string('store_name')->nullable();
         });
     }
 

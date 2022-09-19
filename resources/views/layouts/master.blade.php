@@ -28,8 +28,7 @@
         href="{{ asset('/adminLte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ asset('/adminLte/plugins/select2/css/select2.min.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('/adminLte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/adminLte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <!-- Bootstrap4 Duallistbox -->
     <link rel="stylesheet"
         href="{{ asset('/adminLte/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css') }}">
@@ -174,7 +173,7 @@
     </style>
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini" onload="getLocation()">
     <!-- Site wrapper -->
     <div class="wrapper">
         @section('navbar')
@@ -325,7 +324,7 @@
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
-                  with font-awesome or any other icon font library -->
+                          with font-awesome or any other icon font library -->
                             <li class="nav-item">
                                 <a href="{{ url('location_upload') }}"
                                     class="nav-link {{ $active == 'location_upload' ? 'active' : '' }}">
@@ -458,7 +457,7 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ url('collection') }}"
                                     class="nav-link {{ $active == 'collection' ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-th"></i>
@@ -476,7 +475,7 @@
                                         Collection Export
                                     </p>
                                 </a>
-                            </li>
+                            </li> --}}
 
 
 
@@ -543,6 +542,9 @@
         <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 
         <script>
+           
+
+
             $('.select2').select2()
             //Initialize Select2 Elements
             $('.select2bs4').select2({

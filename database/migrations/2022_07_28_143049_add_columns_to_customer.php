@@ -14,9 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('Customers', function (Blueprint $table) {
-            $table->string('schedule_day');
-            $table->string('longitude');
-            $table->string('latitude');
+            $table->string('longitude')->nullable();
+            $table->string('latitude')->nullable();
         });
     }
 
@@ -28,9 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('Customers', function (Blueprint $table) {
-            $table->dropColumn('schedule_day');
-            $table->dropColumn('longitude');
-            $table->dropColumn('latitude');
+            $table->dropColumn('longitude')->nullable();
+            $table->dropColumn('latitude')->nullable();
         });
     }
 };

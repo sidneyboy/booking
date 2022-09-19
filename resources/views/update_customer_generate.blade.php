@@ -10,7 +10,9 @@
                     <option value="{{ $data->principal->principal }}-{{ $data->principal_id }}-price_3">price_3</option>
                     <option value="{{ $data->principal->principal }}-{{ $data->principal_id }}-price_4">price_4</option>
                     <option value="{{ $data->principal->principal }}-{{ $data->principal_id }}-none">none</option>
-                    <option value="{{ $data->principal->principal }}-{{ $data->principal_id }}-{{ $data->price_level }}" selected>{{ $data->price_level }}</option>
+                    <option
+                        value="{{ $data->principal->principal }}-{{ $data->principal_id }}-{{ $data->price_level }}"
+                        selected>{{ $data->price_level }}</option>
                 </select>
             @endforeach
         @endif
@@ -52,7 +54,8 @@
             <option value="COD">COD</option>
             <option value="PDC">PDC</option>
             <option value="VALE">VALE</option>
-            <option value="{{ $customer->mode_of_transaction }}" selected>{{ $customer->mode_of_transaction }}</option>
+            <option value="{{ $customer->mode_of_transaction }}" selected>{{ $customer->mode_of_transaction }}
+            </option>
         </select>
 
         <label>Store Name</label>
@@ -81,10 +84,12 @@
             required>
 
         <label>Longitude</label>
-        <input type="text" class="form-control" name="longitude" value="{{ $customer->longitude }}" required>
+        <input type="text" class="form-control" id="longitude" name="longitude" value="{{ $customer->longitude }}"
+            required>
 
         <label>Latitude</label>
-        <input type="text" class="form-control" name="latitude" value="{{ $customer->latitude }}" required>
+        <input type="text" class="form-control" id="latitude" name="latitude" value="{{ $customer->latitude }}"
+            required>
 
         <input type="hidden" value="{{ $agent_user->agent_name }}" name="agent_name">
     </div>
@@ -96,6 +101,24 @@
 
 
 <script>
+    $(document).ready(function() {
+        // function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+        // }
+
+        function showPosition(position) {
+            // x.innerHTML = "Latitude: " + position.coords.latitude +
+            //     "<br>Longitude: " + position.coords.longitude;
+
+            $('#latitude').val(position.coords.latitude);
+            $('#longitude').val(position.coords.longitude);
+        }
+    });
+
     $("#update_customer_generate_page_final_summary").on('submit', (function(e) {
         e.preventDefault();
         //$('.loading').show();

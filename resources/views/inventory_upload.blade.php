@@ -81,8 +81,8 @@
                             showConfirmButton: false,
                             timer: 1500
                         })
-                        location.reload();
-                        //window.location.href = "/sku_inventory_data";
+                        //location.reload();
+                        window.location.href = "/work_flow";
                     } else if (data == 'existing_sku_upload_code') {
                         Swal.fire(
                             'Existing Sku Upload Code',

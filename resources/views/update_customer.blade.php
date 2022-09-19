@@ -71,7 +71,11 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
+                <label>Longitude</label>
+                <input type="text" class="form-control" id="longitude" name="longitude" required>
 
+                <label>Latitude</label>
+                <input type="text" class="form-control" id="latitude" name="latitude" required>
             </div>
             <!-- /.card-footer-->
         </div>
@@ -87,6 +91,24 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $(document).ready(function() {
+            // function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            // }
+
+            function showPosition(position) {
+                // x.innerHTML = "Latitude: " + position.coords.latitude +
+                //     "<br>Longitude: " + position.coords.longitude;
+
+                $('#latitude').val(position.coords.latitude);
+                $('#longitude').val(position.coords.longitude);
             }
         });
 
