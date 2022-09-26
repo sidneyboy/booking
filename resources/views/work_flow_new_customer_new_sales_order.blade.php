@@ -1,5 +1,5 @@
 <form id="work_flow_new_customer_final_summary">
-  
+
     <div class="form-group">
         <label>Price Level</label>
         <select name="price_level" class="form-control" required>
@@ -10,7 +10,7 @@
             <option value="price_4">Price 4</option>
             <option value="price_5">Price 5</option>
         </select>
-    
+
         <label>Kind of Business</label>
         <select name="kob" class="form-control select2" required>
             <option value="" default>Select</option>
@@ -48,10 +48,10 @@
         <input type="text" class="form-control" name="detailed_address" required>
 
         <label>Longitude</label>
-        <input type="text" class="form-control" name="longitude" required>
+        <input type="text" class="form-control" name="longitude" id="longitude" required>
 
         <label>Latitude</label>
-        <input type="text" class="form-control" name="latitude" required>
+        <input type="text" class="form-control" name="latitude" id="latitude" required>
 
 
         <input type="hidden" value="{{ $agent_user->agent_name }}" name="agent_name">
@@ -89,6 +89,24 @@
 </form>
 
 <script>
+    $(document).ready(function() {
+        // function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+        // }
+
+        function showPosition(position) {
+            // x.innerHTML = "Latitude: " + position.coords.latitude +
+            //     "<br>Longitude: " + position.coords.longitude;
+
+            $('#latitude').val(position.coords.latitude);
+            $('#longitude').val(position.coords.longitude);
+        }
+    });
+
     $("#work_flow_new_customer_final_summary").on('submit', (function(e) {
         e.preventDefault();
         //$('.loading').show();

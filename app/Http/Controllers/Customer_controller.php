@@ -341,7 +341,7 @@ class Customer_controller extends Controller
     public function update_customer()
     {
         $agent_user = Agent_user::first();
-        $customer = Customer::where('status', 'Pending Approval')->get();
+        $customer = Customer::get();
         return view('update_customer', [
             'customer' => $customer,
         ])->with('active', 'customer_upload')
@@ -448,13 +448,20 @@ class Customer_controller extends Controller
                 $principal_id = $explode[1];
                 $price_level = $explode[2];
 
-                $new_principal_price = new Customer_principal_price([
-                    'customer_id' => $request->input('customer_id'),
-                    'principal_id' => $principal_id,
-                    'price_level' => $price_level,
-                ]);
+                $filter_for_update = Customer_principal_price::where('principal_id',$principal_id)->where('customer_id',$request->input('customer_id'))->first();
 
-                $new_principal_price->save();
+                if ($filter_for_update) {
+                    Customer_principal_price::where('id', $filter_for_update->id)
+                    ->update(['price_level' => $price_level]);
+                }else{
+                    $new_principal_price = new Customer_principal_price([
+                        'customer_id' => $request->input('customer_id'),
+                        'principal_id' => $principal_id,
+                        'price_level' => $price_level,
+                    ]);
+    
+                    $new_principal_price->save();
+                }
             }
         }
 
@@ -475,7 +482,7 @@ class Customer_controller extends Controller
                     'kob' => $request->input('kob'),
                     'status' => 'Pending Approval',
                     'customer_id' => $request->input('customer_id'),
-                    // 'principal_id' => $request->input('principal_id'),
+                    // 'coordinates' => 'none',
                     // 'price_level' => $request->input('price_level'),
                     'mode_of_transaction' => $request->input('mode_of_transaction'),
                 ]);

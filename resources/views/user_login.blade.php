@@ -24,8 +24,8 @@
                 <form action="{{ route('user_credential')}}" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                     @csrf
                     <div class="form-group">
-                        <input type="file" name="user_image" required class="form-control">
-                        <br />
+                        {{-- <input type="file" name="user_image" required class="form-control">
+                        <br /> --}}
                         <input type="number" placeholder="Salesman ID" min="0" class="form-control" name="user_id" required>
                         <br />
                         <input type="text" placeholder="Full Name" class="form-control" name="agent_name" required>

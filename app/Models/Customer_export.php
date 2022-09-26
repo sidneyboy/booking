@@ -16,7 +16,6 @@ class Customer_export extends Model
         'location',
         'location_id',
         'detailed_address',
-        'coordinates',
         'longitude',
         'latitude',
         'kob',

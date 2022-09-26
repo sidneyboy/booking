@@ -1,7 +1,7 @@
 <form id="work_flow_suggested_sales_order">
     @csrf
-    asdasdasdasd
-    <div class="form-group">
+    {{-- asdasdasdasd --}}
+    {{-- <div class="form-group">
         <label>Price Level</label>
         <select name="price_level" class="form-control" required>
             <option value="" default>SELECT PRICE LEVEL</option>
@@ -55,7 +55,7 @@
         <input type="text" class="form-control" name="latitude" required>
 
         <input type="hidden" value="{{ $agent_user->agent_name }}" name="agent_name">
-    </div>
+    </div> --}}
 
     <div class="table table-responsive">
         <table class="table table-sm table-bordered">

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('location');
             $table->string('location_id');
             $table->string('detailed_address');
-            $table->string('coordinates');
             $table->timestamps();
         });
     }

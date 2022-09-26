@@ -60,7 +60,7 @@
 
   $("#customer_upload_process").on('submit',(function(e){
         e.preventDefault();
-        //$('.loading').show();
+        $('.loading').show();
         $.ajax({
                   url: "customer_upload_process",
                   type: "POST",

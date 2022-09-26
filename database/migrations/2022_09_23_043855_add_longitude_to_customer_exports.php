@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('Agent_users', function (Blueprint $table) {
-            $table->string('agent_image');
+        Schema::table('Customer_exports', function (Blueprint $table) {
+            $table->string('longitude')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('Agent_users', function (Blueprint $table) {
-             $table->dropColumn('agent_image');
+        Schema::table('Customer_exports', function (Blueprint $table) {
+            $table->dropColumn('longitude')->nullable();
         });
     }
 };

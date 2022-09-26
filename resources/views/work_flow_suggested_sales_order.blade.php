@@ -12,7 +12,7 @@
     <div class="table table-responsive">
         @if (array_sum($current_bo) != 0)
             <label>BO</label>
-            <input type="text" class="form-control" name="pcm_number" placeholder="PCM No">
+            <input type="text" class="form-control" name="pcm_number" required placeholder="PCM No">
             <br />
             <table class="table table-bordered table-sm table_suggested_so">
                 <thead>

@@ -12,6 +12,6 @@ class Agent_user extends Model
     protected $fillable = [
         'agent_id',
         'agent_name',
-        'agent_image',
+        // 'agent_image',
     ];
 }

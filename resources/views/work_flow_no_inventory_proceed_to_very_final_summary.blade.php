@@ -79,12 +79,12 @@
         </table>
     </div>
 
-    <input type="text" name="customer_id" value="{{ $customer_id }}">
-    <input type="text" name="total_amount" value="{{ $total_amount }}">
-    <input type="text" name="dr" value="{{ $dr }}">
-    <input type="text" name="principal_id" value="{{ $principal_id }}">
-    <input type="text" name="sku_type" value="{{ $sku_type }}">
-    <input type="text" name="date_delivered" value="{{ $delivery_date }}">
+    <input type="hidden" name="customer_id" value="{{ $customer_id }}">
+    <input type="hidden" name="total_amount" value="{{ $total_amount }}">
+    <input type="hidden" name="dr" value="{{ $dr }}">
+    <input type="hidden" name="principal_id" value="{{ $principal_id }}">
+    <input type="hidden" name="sku_type" value="{{ $sku_type }}">
+    <input type="hidden" name="date_delivered" value="{{ $delivery_date }}">
     <button class="btn btn-success btn-block">Submit</button>
 </form>
 

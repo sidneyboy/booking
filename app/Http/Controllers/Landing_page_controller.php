@@ -23,14 +23,14 @@ class Landing_page_controller extends Controller
     public function user_credential(Request $request)
     {
 
-        $file= $request->file('user_image');
-        $filename= $file->getClientOriginalName();
-        $file->move(public_path('images'), $filename);
+        // $file= $request->file('user_image');
+        // $filename= $file->getClientOriginalName();
+        // $file->move(public_path('images'), $filename);
            
         $user_save = new Agent_user([
             'agent_id' => $request->input('user_id'),
             'agent_name' => $request->input('agent_name'),
-            'agent_image' => $filename,
+            'agent_image' => '123123',
         ]);
 
         $user_save->save();

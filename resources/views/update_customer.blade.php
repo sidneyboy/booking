@@ -71,11 +71,11 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <label>Longitude</label>
+                {{-- <label>Longitude</label>
                 <input type="text" class="form-control" id="longitude" name="longitude" required>
 
                 <label>Latitude</label>
-                <input type="text" class="form-control" id="latitude" name="latitude" required>
+                <input type="text" class="form-control" id="latitude" name="latitude" required> --}}
             </div>
             <!-- /.card-footer-->
         </div>
