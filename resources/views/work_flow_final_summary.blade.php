@@ -266,7 +266,7 @@
 
     $("#work_flow_inventory_save").on('submit', (function(e) {
         e.preventDefault();
-        //$('.loading').show();
+        $('.loading').show();
         $.ajax({
             url: "work_flow_inventory_save",
             type: "POST",

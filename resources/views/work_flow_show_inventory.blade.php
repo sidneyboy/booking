@@ -61,7 +61,7 @@
         <table class="table table-sm table-bordered">
             <thead>
                 <tr>
-                    <th colspan="3">Current Inventory</th>
+                    <th colspan="3">Warehouse Inventory</th>
                 </tr>
                 <tr>
                     <th>Desc</th>
@@ -138,17 +138,54 @@
     $("#work_flow_suggested_sales_order").on('submit', (function(e) {
         e.preventDefault();
         //$('.loading').show();
-        $.ajax({
-            url: "work_flow_suggested_sales_order",
-            type: "POST",
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            success: function(data) {
-                $('.loading').hide();
-                $('#work_flow_suggested_sales_order_page').html(data);
-            },
-        });
+
+        Swal.fire({
+            title: 'Save as draft ?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "work_flow_inventory_save_as_draft",
+                    type: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(data) {
+                        $('.loading').hide();
+
+                        if (data == 'saved') {
+                            Swal.fire(
+                                'Work saved to Draft',
+                                '',
+                                'success'
+                            )
+                        }
+                        //$('#work_flow_inventory_save_as_draft_page').html(data);
+                    },
+                });
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+
+
+
+        // $.ajax({
+        //     url: "work_flow_suggested_sales_order",
+        //     type: "POST",
+        //     data: new FormData(this),
+        //     contentType: false,
+        //     cache: false,
+        //     processData: false,
+        //     success: function(data) {
+        //         $('.loading').hide();
+        //         $('#work_flow_suggested_sales_order_page').html(data);
+        //     },
+        // });
     }));
 </script>

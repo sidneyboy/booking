@@ -53,6 +53,21 @@ Route::post('/sales_register_upload_process', [App\Http\Controllers\Sales_regist
 
 Route::get('/work_flow', [App\Http\Controllers\Work_flow_controller::class, 'index'])->name('work_flow');
 Route::post('/work_flow_show_inventory', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_show_inventory'])->name('work_flow_show_inventory');
+Route::post('/work_flow_inventory_save_as_draft', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_inventory_save_as_draft'])->name('work_flow_inventory_save_as_draft');
+Route::post('/work_flow_proceed_to_pre_inventory', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_proceed_to_pre_inventory'])->name('work_flow_proceed_to_pre_inventory');
+
+
+
+
+
+
+
+
+
+
+
+
+
 Route::post('/work_flow_suggested_sales_order', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_suggested_sales_order'])->name('work_flow_suggested_sales_order');
 Route::post('/work_flow_final_summary', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_final_summary'])->name('work_flow_final_summary');
 Route::post('/work_flow_no_inventory', [App\Http\Controllers\Work_flow_controller::class, 'work_flow_no_inventory'])->name('work_flow_no_inventory');
