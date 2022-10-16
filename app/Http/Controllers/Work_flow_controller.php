@@ -104,49 +104,6 @@ class Work_flow_controller extends Controller
                     if ($customer_principal_check->price_level == 'none') {
                         return 'Cannot Proceed. Please Change Price Level of this customer base on the selected principal!';
                     } else {
-                        // if ($customer->status == 'Pending Approval') {
-                        //     return 'Please Update Customer Profile First!';
-                        // } else {
-                        //     if ($sales_register) {
-
-                        //         foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
-                        //             $registered_inventory[] = $data->inventory_id;
-                        //         }
-
-                        //         $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
-                        //             ->where('principal_id', $request->input('principal'))
-                        //             ->where('sku_type', $request->input('sku_type'))
-                        //             ->whereNotIn('id', $registered_inventory)
-                        //             ->get();
-
-                        //         return view('work_flow_show_inventory', [
-                        //             'sales_register' => $sales_register,
-                        //             'sales_order_inventory' => $sales_order_inventory,
-                        //             'customer' => $customer,
-                        //             // 'location' => $location,
-                        //             // 'customer_principal_price' => $customer_principal_price,
-                        //             // 'agent_user' => $agent_user,
-                        //         ])->with('customer_id', $request->input('customer'))
-                        //             ->with('principal_id', $request->input('principal'))
-                        //             ->with('sku_type', $request->input('sku_type'));
-                        //     } else {
-                        //         $sales_order_inventory =  Inventory::select('sku_type', 'description', 'sku_code', 'id')
-                        //             ->where('principal_id', $request->input('principal'))
-                        //             ->where('sku_type', $request->input('sku_type'))
-                        //             ->get();
-
-                        //         return view('work_flow_no_inventory', [
-                        //             'sales_order_inventory' => $sales_order_inventory,
-                        //             // 'location' => $location,
-                        //             // 'customer_principal_price' => $customer_principal_price,
-                        //             // 'agent_user' => $agent_user,
-                        //             'customer' => $customer,
-                        //         ])->with('customer_id', $request->input('customer'))
-                        //             ->with('principal_id', $request->input('principal'))
-                        //             ->with('sku_type', $request->input('sku_type'));
-                        //     }
-                        // }
-
                         if ($sales_register) {
 
                             foreach ($sales_register->sales_register_details_for_inventory_filter as $key => $data) {
@@ -163,9 +120,6 @@ class Work_flow_controller extends Controller
                                 'sales_register' => $sales_register,
                                 'sales_order_inventory' => $sales_order_inventory,
                                 'customer' => $customer,
-                                // 'location' => $location,
-                                // 'customer_principal_price' => $customer_principal_price,
-                                // 'agent_user' => $agent_user,
                             ])->with('customer_id', $request->input('customer'))
                                 ->with('principal_id', $request->input('principal'))
                                 ->with('sku_type', $request->input('sku_type'));
@@ -177,9 +131,6 @@ class Work_flow_controller extends Controller
 
                             return view('work_flow_no_inventory', [
                                 'sales_order_inventory' => $sales_order_inventory,
-                                // 'location' => $location,
-                                // 'customer_principal_price' => $customer_principal_price,
-                                // 'agent_user' => $agent_user,
                                 'customer' => $customer,
                             ])->with('customer_id', $request->input('customer'))
                                 ->with('principal_id', $request->input('principal'))

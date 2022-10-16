@@ -97,7 +97,7 @@
             </tbody>
         </table>
     </div>
-    <div class="table table-responsive">
+    {{-- <div class="table table-responsive">
         <table class="table table-sm table-bordered">
             <thead>
                 <tr>
@@ -124,7 +124,7 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
+    </div> --}}
     <input type="hidden" value="{{ $customer_id }}" name="customer_id">
     <input type="hidden" value="{{ $principal_id }}" name="principal_id">
     <input type="hidden" value="{{ $sku_type }}" name="sku_type">
@@ -164,8 +164,9 @@
                                 '',
                                 'success'
                             )
+                            window.location.href = "/collection";
                         }
-                        //$('#work_flow_inventory_save_as_draft_page').html(data);
+                        
                     },
                 });
             } else if (result.isDenied) {

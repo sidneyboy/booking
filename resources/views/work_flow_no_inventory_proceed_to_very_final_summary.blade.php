@@ -29,7 +29,7 @@
             <tbody>
                 @foreach ($inventory_data as $data)
                     <tr>
-                        <td>{{ $data->description }}</td>
+                        <td>{{ $data->description }} <br /> {{ $data->sku_type }}</td>
                         <td>
                             {{ $current_sku_inventory[$data->id] }}
                             <input type="hidden" name="current_sku_inventory[{{ $data->id }}]"
